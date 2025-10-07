@@ -69,6 +69,9 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    dogbreeds: Dogbreed;
+    fciGroups: FciGroup;
+    fciSections: FciSection;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -77,6 +80,9 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    dogbreeds: DogbreedsSelect<false> | DogbreedsSelect<true>;
+    fciGroups: FciGroupsSelect<false> | FciGroupsSelect<true>;
+    fciSections: FciSectionsSelect<false> | FciSectionsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -158,6 +164,42 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "dogbreeds".
+ */
+export interface Dogbreed {
+  id: number;
+  breed: string;
+  image?: (number | null) | Media;
+  fciGroup: number | FciGroup;
+  fciSection: number | FciSection;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fciGroups".
+ */
+export interface FciGroup {
+  id: number;
+  name: string;
+  number: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fciSections".
+ */
+export interface FciSection {
+  id: number;
+  name: string;
+  number: number;
+  group: number | FciGroup;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -170,6 +212,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'dogbreeds';
+        value: number | Dogbreed;
+      } | null)
+    | ({
+        relationTo: 'fciGroups';
+        value: number | FciGroup;
+      } | null)
+    | ({
+        relationTo: 'fciSections';
+        value: number | FciSection;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -252,6 +306,39 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "dogbreeds_select".
+ */
+export interface DogbreedsSelect<T extends boolean = true> {
+  breed?: T;
+  image?: T;
+  fciGroup?: T;
+  fciSection?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fciGroups_select".
+ */
+export interface FciGroupsSelect<T extends boolean = true> {
+  name?: T;
+  number?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fciSections_select".
+ */
+export interface FciSectionsSelect<T extends boolean = true> {
+  name?: T;
+  number?: T;
+  group?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
