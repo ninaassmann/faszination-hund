@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-export const coatColors: CollectionConfig = {
+export const CoatColors: CollectionConfig = {
   slug: 'coatColors',
   labels: {
     singular: 'Fellfarbe',
@@ -8,7 +8,7 @@ export const coatColors: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'group', 'colorCode'],
+    defaultColumns: ['name', 'group', 'linkedDogbreeds'],
     group: 'Hunde',
   },
   fields: [
@@ -49,6 +49,20 @@ export const coatColors: CollectionConfig = {
           value: 'pattern',
         },
       ],
+    },
+    {
+      name: 'dogbreeds',
+      label: 'Hunderassen',
+      type: 'relationship',
+      relationTo: 'dogbreeds',
+      hasMany: true,
+    },
+    {
+      name: 'linkedDogbreeds',
+      label: 'Verlinkung',
+      type: 'join',
+      on: 'details.coatColors',
+      collection: 'dogbreeds',
     },
   ],
 }

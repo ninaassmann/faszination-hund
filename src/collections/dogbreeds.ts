@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-export const dogbreeds: CollectionConfig = {
+export const Dogbreeds: CollectionConfig = {
   slug: 'dogbreeds',
   labels: {
     singular: 'Hunderasse',
@@ -23,64 +23,183 @@ export const dogbreeds: CollectionConfig = {
       },
     },
     {
-      name: 'thumbnail',
-      label: 'Bild',
-      type: 'upload',
-      relationTo: 'media',
-      admin: {
-        description: 'Wähle ein Hauptbild für die Rasse aus.',
-      },
+      name: 'general',
+      label: 'Allgemein',
+      type: 'group',
+      fields: [
+        {
+          name: 'isHybrid',
+          label: 'Hybrid / Mischling',
+          type: 'checkbox',
+          defaultValue: false,
+          admin: {
+            description: 'Aktivieren, wenn es sich um eine Hybrid- oder Mischlingsrasse handelt.',
+          },
+        },
+        {
+          name: 'parentBreeds',
+          label: 'Elternrassen',
+          type: 'relationship',
+          relationTo: 'dogbreeds',
+          hasMany: true,
+          admin: {
+            placeholder: 'Wähle die Elternrassen',
+            description: 'Typische Rassen, die für diese Hybridrasse kombiniert wurden.',
+            condition: (data) => !!data.general.isHybrid, // nur sichtbar, wenn isHybrid true
+          },
+        },
+        {
+          name: 'tags',
+          label: 'Tags',
+          type: 'relationship',
+          relationTo: 'tags',
+          hasMany: true,
+          admin: {
+            placeholder: 'Wähle einen oder mehrere Tags',
+            description: 'Schlagworte, z. B. Eigenschaften oder typische Nutzung.',
+          },
+        },
+      ],
     },
     {
       name: 'images',
-      label: 'Galerie',
-      type: 'upload',
-      relationTo: 'media',
-      hasMany: true,
-      admin: {
-        description: 'Weitere Bilder der Rasse zur Galerie hinzufügen.',
+      label: 'Bilder',
+      labels: {
+        singular: 'Bild',
+        plural: 'Bilder',
       },
-    },
-    {
-      name: 'fciGroup',
-      label: 'FCI Gruppe',
-      type: 'relationship',
-      relationTo: 'fciGroups',
-      required: true,
-      admin: {
-        placeholder: 'Wähle eine FCI-Gruppe',
-        description: 'Die offizielle FCI-Gruppe, zu der die Rasse gehört.',
-      },
-    },
-    {
-      name: 'fciSection',
-      label: 'FCI Sektion',
-      type: 'relationship',
-      relationTo: 'fciSections',
-      required: true,
-      admin: {
-        placeholder: 'Wähle eine FCI-Sektion',
-        description: 'Die Sektion innerhalb der FCI-Gruppe, passend zur Rasse.',
-      },
-      filterOptions: ({ data }) => {
-        if (!data?.fciGroup) return true
-        return {
-          group: {
-            equals: data.fciGroup,
-          },
+      type: 'array',
+      minRows: 0,
+      maxRows: 20,
+      validate: (value) => {
+        const items = value as { media: string; type: 'thumbnail' | 'gallery' }[] | undefined
+        if (!items) return true
+
+        const thumbnails = items.filter((item) => item.type === 'thumbnail')
+        if (thumbnails.length > 1) {
+          return 'Es darf nur ein Thumbnail ausgewählt werden.'
         }
+        return true
       },
+      fields: [
+        {
+          name: 'media',
+          label: 'Bild',
+          type: 'relationship',
+          relationTo: 'media',
+          required: true,
+          admin: {
+            description: 'Wähle ein Bild aus der Media-Collection.',
+          },
+        },
+        {
+          name: 'type',
+          label: 'Typ',
+          type: 'select',
+          required: true,
+          options: [
+            { label: 'Thumbnail', value: 'thumbnail' },
+            { label: 'Galerie', value: 'gallery' },
+          ],
+          admin: {
+            description:
+              'Wähle aus, ob das Bild als Thumbnail oder in der Galerie angezeigt werden soll.',
+          },
+        },
+      ],
     },
+
     {
-      name: 'tags',
-      label: 'Tags',
-      type: 'relationship',
-      relationTo: 'tags',
-      hasMany: true,
-      admin: {
-        placeholder: 'Wähle einen oder mehrere Tags',
-        description: 'Schlagworte, z. B. Eigenschaften oder typische Nutzung.',
-      },
+      name: 'fci',
+      label: 'FCI Informationen',
+      type: 'group',
+      fields: [
+        {
+          name: 'fciGroup',
+          label: 'FCI Gruppe',
+          type: 'relationship',
+          relationTo: 'fciGroups',
+          required: true,
+          admin: {
+            placeholder: 'Wähle eine FCI-Gruppe',
+            description: 'Die offizielle FCI-Gruppe, zu der die Rasse gehört.',
+          },
+        },
+        {
+          name: 'fciSection',
+          label: 'FCI Sektion',
+          type: 'relationship',
+          relationTo: 'fciSections',
+          required: true,
+          admin: {
+            placeholder: 'Wähle eine FCI-Sektion',
+            description: 'Die Sektion innerhalb der FCI-Gruppe, passend zur Rasse.',
+            condition: (data) => {
+              // zeigt das Feld nur an, wenn fciGroup gesetzt ist
+              return !!data.fciGroup
+            },
+          },
+          filterOptions: ({ data }) => {
+            if (!data?.fciGroup) return true
+            return {
+              group: {
+                equals: data.fciGroup,
+              },
+            }
+          },
+        },
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'fciAcceptanceDate',
+              label: 'Datum der endgültigen Anerkennung der Rasse durch die FCI',
+              type: 'date',
+            },
+            {
+              name: 'fciPublicationDate',
+              label: 'Datum der Publikation des gültigen offiziellen Standards',
+              type: 'date',
+            },
+          ],
+        },
+        {
+          name: 'fciSource',
+          label: 'Link zur FCI Seite der Rasse',
+          type: 'text',
+          admin: {
+            description: 'Trage hier den Link zur Rasse ein.',
+          },
+          validate: (value: string | null | undefined) => {
+            if (!value) return true
+
+            try {
+              new URL(value)
+              return true
+            } catch {
+              return 'Bitte eine gültige URL eingeben'
+            }
+          },
+        },
+        {
+          name: 'fciSourcePDF',
+          label: 'Link zum PDF',
+          type: 'text',
+          admin: {
+            description: 'Trage hier den Link zum PDF des offiziellen Standard ein.',
+          },
+          validate: (value: string | null | undefined) => {
+            if (!value) return true
+
+            try {
+              new URL(value)
+              return true
+            } catch {
+              return 'Bitte eine gültige URL eingeben'
+            }
+          },
+        },
+      ],
     },
     {
       name: 'details',
@@ -144,7 +263,7 @@ export const dogbreeds: CollectionConfig = {
           ],
         },
         {
-          name: 'colors',
+          name: 'coatColors',
           label: 'Fellfarbe',
           type: 'relationship',
           relationTo: 'coatColors',
@@ -155,7 +274,7 @@ export const dogbreeds: CollectionConfig = {
           },
         },
         {
-          name: 'coat',
+          name: 'coatTypes',
           label: 'Felltyp',
           type: 'relationship',
           relationTo: 'coatTypes',
@@ -175,7 +294,7 @@ export const dogbreeds: CollectionConfig = {
           },
         },
         {
-          name: 'usage',
+          name: 'roles',
           label: 'Einsatzbereiche',
           type: 'relationship',
           relationTo: 'roles',
@@ -229,7 +348,7 @@ export const dogbreeds: CollectionConfig = {
           },
         },
         {
-          name: 'usage',
+          name: 'roles',
           label: 'Nutzung / Aufgaben',
           type: 'textarea',
           admin: {
@@ -260,13 +379,13 @@ export const dogbreeds: CollectionConfig = {
     {
       name: 'breeders',
       label: 'Züchter',
-      type: 'array',
-      minRows: 0,
-      maxRows: 10,
       labels: {
         singular: 'Züchter',
         plural: 'Züchter',
       },
+      type: 'array',
+      minRows: 0,
+      maxRows: 10,
       fields: [
         {
           name: 'name',
@@ -300,13 +419,13 @@ export const dogbreeds: CollectionConfig = {
     {
       name: 'influencers',
       label: 'Influencer',
-      type: 'array',
-      minRows: 0,
-      maxRows: 10,
       labels: {
         singular: 'Influencer',
         plural: 'Influencer',
       },
+      type: 'array',
+      minRows: 0,
+      maxRows: 10,
       fields: [
         {
           name: 'name',

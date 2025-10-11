@@ -7,6 +7,7 @@ export const Media: CollectionConfig = {
     plural: 'Dateien',
   },
   admin: {
+    defaultColumns: ['alt', 'linkedDogbreeds'],
     group: 'Allgemein',
   },
   access: {
@@ -17,6 +18,20 @@ export const Media: CollectionConfig = {
       name: 'alt',
       type: 'text',
       required: true,
+    },
+    {
+      name: 'dogbreeds',
+      label: 'Hunderassen',
+      type: 'relationship',
+      relationTo: 'dogbreeds',
+      hasMany: true,
+    },
+    {
+      name: 'linkedDogbreeds',
+      label: 'Verlinkung',
+      type: 'join',
+      on: 'images.media',
+      collection: 'dogbreeds',
     },
   ],
   upload: true,

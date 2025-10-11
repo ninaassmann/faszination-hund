@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-export const countries: CollectionConfig = {
+export const Countries: CollectionConfig = {
   slug: 'countries',
   labels: {
     singular: 'Herkunftsland',
@@ -8,7 +8,7 @@ export const countries: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'continent'],
+    defaultColumns: ['name', 'continent', 'linkedDogbreeds'],
     group: 'Hunde',
   },
   fields: [
@@ -37,6 +37,13 @@ export const countries: CollectionConfig = {
       type: 'relationship',
       relationTo: 'dogbreeds',
       hasMany: true,
+    },
+    {
+      name: 'linkedDogbreeds',
+      label: 'Verlinkung',
+      type: 'join',
+      on: 'details.origin',
+      collection: 'dogbreeds',
     },
   ],
 }
