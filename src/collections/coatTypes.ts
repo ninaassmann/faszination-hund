@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-export const coatTypes: CollectionConfig = {
+export const CoatTypes: CollectionConfig = {
   slug: 'coatTypes',
   labels: {
     singular: 'Felltyp',
@@ -8,6 +8,7 @@ export const coatTypes: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'name',
+    defaultColumns: ['name', 'group', 'linkedDogbreeds'],
     group: 'Hunde',
   },
   fields: [
@@ -37,9 +38,13 @@ export const coatTypes: CollectionConfig = {
       type: 'relationship',
       relationTo: 'dogbreeds',
       hasMany: true,
-      admin: {
-        placeholder: 'Hier können Rassen ausgewählt werden, die diesen Felltyp haben.',
-      },
+    },
+    {
+      name: 'linkedDogbreeds',
+      label: 'Verlinkung',
+      type: 'join',
+      on: 'details.coatTypes',
+      collection: 'dogbreeds',
     },
   ],
 }

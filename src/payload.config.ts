@@ -10,22 +10,24 @@ import { de } from '@payloadcms/translations/languages/de'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
-import { fciGroups } from './collections/fciGroups'
-import { fciSections } from './collections/fciSections'
-import { dogbreeds } from './collections/dogbreeds'
-import { tags } from './collections/tags'
-import { coatColors } from './collections/coatColors'
-import { coatTypes } from './collections/coatTypes'
-import { countries } from './collections/countries'
-import { roles } from './collections/roles'
+import { FciGroups } from './collections/FciGroups'
+import { FciSections } from './collections/FciSections'
+import { Dogbreeds } from './collections/Dogbreeds'
+import { Tags } from './collections/Tags'
+import { CoatColors } from './collections/CoatColors'
+import { CoatTypes } from './collections/CoatTypes'
+import { Countries } from './collections/Countries'
+import { Roles } from './collections/Roles'
+import { seedTags } from './seeds/tagsSeed'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
-  /* onInit: async (payload) => {
-    await seedRoles(payload)
-  }, */
+  onInit: async (payload) => {
+    await seedTags(payload)
+  },
+
   admin: {
     user: Users.slug,
     importMap: {
@@ -35,14 +37,14 @@ export default buildConfig({
   collections: [
     Users,
     Media,
-    dogbreeds,
-    coatColors,
-    coatTypes,
-    tags,
-    countries,
-    roles,
-    fciGroups,
-    fciSections,
+    Dogbreeds,
+    CoatColors,
+    CoatTypes,
+    Tags,
+    Countries,
+    Roles,
+    FciGroups,
+    FciSections,
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

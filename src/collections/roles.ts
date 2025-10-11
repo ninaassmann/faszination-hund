@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-export const roles: CollectionConfig = {
+export const Roles: CollectionConfig = {
   slug: 'roles',
   labels: {
     singular: 'Einsatzgebiet',
@@ -8,6 +8,7 @@ export const roles: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'name',
+    defaultColumns: ['name', 'linkedDogbreeds'],
     group: 'Hunde',
   },
   fields: [
@@ -64,6 +65,13 @@ export const roles: CollectionConfig = {
       type: 'relationship',
       relationTo: 'dogbreeds',
       hasMany: true,
+    },
+    {
+      name: 'linkedDogbreeds',
+      label: 'Verlinkung',
+      type: 'join',
+      on: 'details.roles',
+      collection: 'dogbreeds',
     },
   ],
 }
