@@ -3,6 +3,8 @@ import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
+import { seoPlugin } from '@payloadcms/plugin-seo'
+
 import { fileURLToPath } from 'url'
 
 import { en } from '@payloadcms/translations/languages/en'
@@ -18,15 +20,14 @@ import { CoatColors } from './collections/CoatColors'
 import { CoatTypes } from './collections/CoatTypes'
 import { Countries } from './collections/Countries'
 import { Roles } from './collections/Roles'
-import { seedTags } from './seeds/tagsSeed'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
-  onInit: async (payload) => {
+  /* onInit: async (payload) => {
     await seedTags(payload)
-  },
+  }, */
 
   admin: {
     user: Users.slug,
@@ -62,6 +63,12 @@ export default buildConfig({
         media: true,
       },
       token: process.env.BLOB_READ_WRITE_TOKEN || '',
+    }),
+    seoPlugin({
+      collections: ['dogbreeds'],
+      uploadsCollection: 'media',
+      generateTitle: ({ doc }) => `${doc.title} | Faszination Hund`,
+      generateDescription: ({ doc }) => doc.descriptions.general,
     }),
   ],
   i18n: {

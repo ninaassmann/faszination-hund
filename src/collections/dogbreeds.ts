@@ -8,6 +8,7 @@ export const Dogbreeds: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'breed',
+    defaultColumns: ['breed', 'status'],
     group: 'Hunde',
   },
   fields: [
@@ -23,10 +24,70 @@ export const Dogbreeds: CollectionConfig = {
       },
     },
     {
+      name: 'slug',
+      label: 'Slug',
+      type: 'text',
+      localized: false,
+      admin: {
+        placeholder: 'z.B. labrador-retriever',
+        description: 'Gib hier einen Slug ein, der später für die Detailseite benutzt wird.',
+      },
+      hooks: {
+        beforeValidate: [
+          ({ data, operation, value }) => {
+            if (data?.breed && (!value || operation === 'create')) {
+              return data.breed
+                .toLowerCase()
+                .trim()
+                .replace(/[^\w\s-]/g, '')
+                .replace(/\s+/g, '-')
+            }
+            return value
+          },
+        ],
+      },
+    },
+    {
+      name: 'status',
+      label: 'Status',
+      type: 'select',
+      required: true,
+      options: [
+        { label: 'Entwurf', value: 'draft' },
+        { label: 'Veröffentlicht', value: 'published' },
+        { label: 'Teilveröffentlicht', value: 'partial' },
+      ],
+      defaultValue: 'draft',
+      admin: {
+        description:
+          'Steuert, ob die Rasse auf der Website angezeigt wird und ob sie vollständig ist.',
+      },
+    },
+    {
       name: 'general',
       label: 'Allgemein',
       type: 'group',
       fields: [
+        {
+          name: 'Weitere Namen',
+          type: 'text',
+          hasMany: true,
+          admin: {
+            placeholder: 'weitere bekannte Namen',
+            description: 'Trage hier zusätzliche Namen ein, unter denen die Rasse bekannt ist.',
+          },
+        },
+        {
+          name: 'tags',
+          label: 'Tags',
+          type: 'relationship',
+          relationTo: 'tags',
+          hasMany: true,
+          admin: {
+            placeholder: 'Wähle einen oder mehrere Tags',
+            description: 'Schlagworte, z. B. Eigenschaften oder typische Nutzung.',
+          },
+        },
         {
           name: 'isHybrid',
           label: 'Hybrid / Mischling',
@@ -49,14 +110,34 @@ export const Dogbreeds: CollectionConfig = {
           },
         },
         {
-          name: 'tags',
-          label: 'Tags',
+          name: 'isVariant',
+          label: 'Variante',
+          type: 'checkbox',
+          defaultValue: false,
+          admin: {
+            description:
+              'Aktivieren, wenn dies eine Variante einer bestehenden Hunderasse ist. Alle nicht individuell ausgefüllten Felder werden von der Basisrasse übernommen.',
+          },
+        },
+        {
+          name: 'mainBreeds',
+          label: 'Hauptrasse',
           type: 'relationship',
-          relationTo: 'tags',
+          relationTo: 'dogbreeds',
+          admin: {
+            description: 'Wähle die Hauptrasse, von der diese Variante abstammt.',
+            condition: (data) => !!data.general.isVariant, // nur sichtbar, wenn isVariant true
+          },
+        },
+        {
+          name: 'variantBreeds',
+          label: 'Varianten',
+          type: 'relationship',
+          relationTo: 'dogbreeds',
           hasMany: true,
           admin: {
-            placeholder: 'Wähle einen oder mehrere Tags',
-            description: 'Schlagworte, z. B. Eigenschaften oder typische Nutzung.',
+            description: 'Wähle die bekannten Varianten dieser Hunderasse, falls vorhanden.',
+            condition: (data) => !data.general.isVariant, // nur sichtbar, wenn isVariant false
           },
         },
       ],
@@ -115,14 +196,37 @@ export const Dogbreeds: CollectionConfig = {
       type: 'group',
       fields: [
         {
+          name: 'fciStatus',
+          type: 'select',
+          label: 'FCI-Status',
+          admin: {
+            description:
+              'Wähle den FCI-Status der Rasse. Wenn "Nicht anerkannt" ausgewählt wird, bleiben die übrigen FCI-Felder ausgeblendet, da diese Informationen nur für anerkannte oder provisorisch anerkannte Rassen relevant sind.',
+          },
+          options: [
+            { label: 'Endgültig anerkannt', value: 'recognized' },
+            { label: 'Provisorisch anerkannt', value: 'provisional' },
+            { label: 'Nicht anerkannt', value: 'not_recognized' },
+          ],
+        },
+        {
+          name: 'fciAlert',
+          type: 'ui',
+          admin: {
+            components: {
+              Field: '@/components/fields/statusAlert#FciStatusAlert',
+            },
+          },
+        },
+        {
           name: 'fciGroup',
           label: 'FCI Gruppe',
           type: 'relationship',
           relationTo: 'fciGroups',
-          required: true,
           admin: {
             placeholder: 'Wähle eine FCI-Gruppe',
             description: 'Die offizielle FCI-Gruppe, zu der die Rasse gehört.',
+            condition: (data) => data.fci?.fciStatus !== 'not_recognized', // wird ausgeblendet, wenn der FCI Status "Nicht anerkannt" ist
           },
         },
         {
@@ -155,11 +259,20 @@ export const Dogbreeds: CollectionConfig = {
               name: 'fciAcceptanceDate',
               label: 'Datum der endgültigen Anerkennung der Rasse durch die FCI',
               type: 'date',
+              admin: {
+                description: 'Trage hier das Datum ein, andem die Rasse durch FCI anerkannt wurde',
+                condition: (data) => data.fci?.fciStatus !== 'not_recognized', // wird ausgeblendet, wenn der FCI Status "Nicht anerkannt" ist
+              },
             },
             {
               name: 'fciPublicationDate',
               label: 'Datum der Publikation des gültigen offiziellen Standards',
               type: 'date',
+              admin: {
+                description:
+                  'Trage hier das Datum ein, von der Publikation des gültigen offiziellen Standards',
+                condition: (data) => data.fci?.fciStatus !== 'not_recognized', // wird ausgeblendet, wenn der FCI Status "Nicht anerkannt" ist
+              },
             },
           ],
         },
@@ -169,6 +282,7 @@ export const Dogbreeds: CollectionConfig = {
           type: 'text',
           admin: {
             description: 'Trage hier den Link zur Rasse ein.',
+            condition: (data) => data.fci?.fciStatus !== 'not_recognized', // wird ausgeblendet, wenn der FCI Status "Nicht anerkannt" ist
           },
           validate: (value: string | null | undefined) => {
             if (!value) return true
@@ -187,6 +301,7 @@ export const Dogbreeds: CollectionConfig = {
           type: 'text',
           admin: {
             description: 'Trage hier den Link zum PDF des offiziellen Standard ein.',
+            condition: (data) => data.fci?.fciStatus !== 'not_recognized', // wird ausgeblendet, wenn der FCI Status "Nicht anerkannt" ist
           },
           validate: (value: string | null | undefined) => {
             if (!value) return true
@@ -284,16 +399,6 @@ export const Dogbreeds: CollectionConfig = {
           },
         },
         {
-          name: 'origin',
-          label: 'Herkunft',
-          type: 'relationship',
-          relationTo: 'countries',
-          admin: {
-            placeholder: 'Wähle das Herkunftsland',
-            description: 'Land oder Region, aus der die Rasse ursprünglich stammt.',
-          },
-        },
-        {
           name: 'roles',
           label: 'Einsatzbereiche',
           type: 'relationship',
@@ -302,6 +407,16 @@ export const Dogbreeds: CollectionConfig = {
           admin: {
             placeholder: 'Wähle die typischen Einsatzbereiche',
             description: 'Z. B. Jagdhund, Rettungshund, Therapiehund. Mehrfachauswahl möglich.',
+          },
+        },
+        {
+          name: 'origin',
+          label: 'Herkunft',
+          type: 'relationship',
+          relationTo: 'countries',
+          admin: {
+            placeholder: 'Wähle das Herkunftsland',
+            description: 'Land oder Region, aus der die Rasse ursprünglich stammt.',
           },
         },
       ],
@@ -349,7 +464,7 @@ export const Dogbreeds: CollectionConfig = {
         },
         {
           name: 'roles',
-          label: 'Nutzung / Aufgaben',
+          label: 'Einsatzbereiche',
           type: 'textarea',
           admin: {
             description: 'Typische Einsatzbereiche: Begleithund, Wachhund, Jagd, Assistenz etc.',
