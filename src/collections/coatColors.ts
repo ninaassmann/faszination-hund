@@ -24,7 +24,7 @@ export const CoatColors: CollectionConfig = {
       type: 'text',
       hasMany: true,
       admin: {
-        placeholder: 'Trage einen oder mehrere Hex-Codes ein',
+        placeholder: 'Trage einen oder mehrere Hex-Codes ein.',
       },
     },
 
