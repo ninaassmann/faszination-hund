@@ -110,13 +110,29 @@ export const Dogbreeds: CollectionConfig = {
           },
         },
         {
+          name: 'mixedAlert',
+          type: 'ui',
+          admin: {
+            components: {
+              Field: {
+                path: '@/components/fields/statusAlert#StatusAlert',
+                clientProps: {
+                  text: 'Diese Rasse ist einHybrid / Mischling.',
+                  variant: 'info',
+                },
+              },
+            },
+            condition: (data) => data.general?.isHybrid,
+          },
+        },
+        {
           name: 'isVariant',
           label: 'Variante',
           type: 'checkbox',
           defaultValue: false,
           admin: {
-            description:
-              'Aktivieren, wenn dies eine Variante einer bestehenden Hunderasse ist. Alle nicht individuell ausgefüllten Felder werden von der Basisrasse übernommen.',
+            description: 'Aktivieren, wenn dies eine Variante einer bestehenden Hunderasse ist.',
+            condition: (data) => !data.general?.isHybrid,
           },
         },
         {
@@ -127,6 +143,22 @@ export const Dogbreeds: CollectionConfig = {
           admin: {
             description: 'Wähle die Hauptrasse, von der diese Variante abstammt.',
             condition: (data) => !!data.general.isVariant, // nur sichtbar, wenn isVariant true
+          },
+        },
+        {
+          name: 'variantAlert',
+          type: 'ui',
+          admin: {
+            components: {
+              Field: {
+                path: '@/components/fields/statusAlert#StatusAlert',
+                clientProps: {
+                  text: 'Diese Rasse ist eine Variante. Alle nicht individuell ausgefüllten Felder werden von der Basisrasse übernommen.',
+                  variant: 'info',
+                },
+              },
+            },
+            condition: (data) => data.general?.isVariant,
           },
         },
         {
@@ -214,8 +246,15 @@ export const Dogbreeds: CollectionConfig = {
           type: 'ui',
           admin: {
             components: {
-              Field: '@/components/fields/statusAlert#FciStatusAlert',
+              Field: {
+                path: '@/components/fields/statusAlert#StatusAlert',
+                clientProps: {
+                  text: 'Diese Rasse ist von der FCI nicht anerkannt.',
+                  variant: 'info',
+                },
+              },
             },
+            condition: (data) => data.fci?.fciStatus == 'not_recognized', // wird ausgeblendet, wenn der FCI Status "Nicht anerkannt" ist
           },
         },
         {
