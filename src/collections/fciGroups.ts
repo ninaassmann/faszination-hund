@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-export const fciGroups: CollectionConfig = {
+export const FciGroups: CollectionConfig = {
   slug: 'fciGroups',
   labels: {
     singular: 'FCI Gruppe',
