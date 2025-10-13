@@ -233,7 +233,7 @@ export interface Dogbreed {
      */
     parentBreeds?: (number | Dogbreed)[] | null;
     /**
-     * Aktivieren, wenn dies eine Variante einer bestehenden Hunderasse ist. Alle nicht individuell ausgefüllten Felder werden von der Basisrasse übernommen.
+     * Aktivieren, wenn dies eine Variante einer bestehenden Hunderasse ist.
      */
     isVariant?: boolean | null;
     /**

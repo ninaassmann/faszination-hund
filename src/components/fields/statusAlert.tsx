@@ -1,10 +1,10 @@
-export const FciStatusAlert: React.FC = () => {
+import { Info } from 'lucide-react'
+
+export function StatusAlert({ text, variant }: { text: string; variant: string }) {
   return (
-    <div className="p-4 mb-4 border-l-4 border-yellow-500 bg-yellow-100 text-yellow-800">
-      {' '}
-      Wenn &quot;Nicht anerkannt&quot; ausgewählt wird, bleiben die übrigen FCI-Felder ausgeblendet,
-      da diese Informationen nur für anerkannte oder provisorisch anerkannte Rassen relevant
-      sind.{' '}
+    <div className="p-4 pl-5 mb-4 rounded bg-cyan-950/50 border-cyan-500/50 border-1 flex gap-5 items-center">
+      {variant === 'info' && <Info />}
+      <p>{text}</p>
     </div>
   )
 }

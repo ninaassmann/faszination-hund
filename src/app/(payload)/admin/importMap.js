@@ -1,4 +1,4 @@
-import { FciStatusAlert as FciStatusAlert_33ab4ab2512dc1d1ed86d52e1b721b2d } from '@/components/fields/statusAlert'
+import { StatusAlert as StatusAlert_33ab4ab2512dc1d1ed86d52e1b721b2d } from '@/components/fields/statusAlert'
 import { OverviewComponent as OverviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { MetaTitleComponent as MetaTitleComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { MetaDescriptionComponent as MetaDescriptionComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
@@ -7,7 +7,7 @@ import { PreviewComponent as PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860 }
 import { VercelBlobClientUploadHandler as VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e } from '@payloadcms/storage-vercel-blob/client'
 
 export const importMap = {
-  "@/components/fields/statusAlert#FciStatusAlert": FciStatusAlert_33ab4ab2512dc1d1ed86d52e1b721b2d,
+  "@/components/fields/statusAlert#StatusAlert": StatusAlert_33ab4ab2512dc1d1ed86d52e1b721b2d,
   "@payloadcms/plugin-seo/client#OverviewComponent": OverviewComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#MetaTitleComponent": MetaTitleComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#MetaDescriptionComponent": MetaDescriptionComponent_a8a977ebc872c5d5ea7ee689724c0860,
