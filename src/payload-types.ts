@@ -70,17 +70,46 @@ export interface Config {
     users: User;
     media: Media;
     dogbreeds: Dogbreed;
+    coatColors: CoatColor;
+    coatTypes: CoatType;
+    tags: Tag;
+    countries: Country;
+    roles: Role;
     fciGroups: FciGroup;
     fciSections: FciSection;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    media: {
+      linkedDogbreeds: 'dogbreeds';
+    };
+    coatColors: {
+      linkedDogbreeds: 'dogbreeds';
+    };
+    coatTypes: {
+      linkedDogbreeds: 'dogbreeds';
+    };
+    tags: {
+      linkedDogbreeds: 'dogbreeds';
+    };
+    countries: {
+      linkedDogbreeds: 'dogbreeds';
+    };
+    roles: {
+      linkedDogbreeds: 'dogbreeds';
+    };
+  };
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     dogbreeds: DogbreedsSelect<false> | DogbreedsSelect<true>;
+    coatColors: CoatColorsSelect<false> | CoatColorsSelect<true>;
+    coatTypes: CoatTypesSelect<false> | CoatTypesSelect<true>;
+    tags: TagsSelect<false> | TagsSelect<true>;
+    countries: CountriesSelect<false> | CountriesSelect<true>;
+    roles: RolesSelect<false> | RolesSelect<true>;
     fciGroups: FciGroupsSelect<false> | FciGroupsSelect<true>;
     fciSections: FciSectionsSelect<false> | FciSectionsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -150,6 +179,12 @@ export interface User {
 export interface Media {
   id: number;
   alt: string;
+  dogbreeds?: (number | Dogbreed)[] | null;
+  linkedDogbreeds?: {
+    docs?: (number | Dogbreed)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -168,10 +203,206 @@ export interface Media {
  */
 export interface Dogbreed {
   id: number;
+  /**
+   * Gib hier die offizielle Bezeichnung der Rasse ein.
+   */
   breed: string;
-  image?: (number | null) | Media;
-  fciGroup: number | FciGroup;
-  fciSection: number | FciSection;
+  /**
+   * Gib hier einen Slug ein, der später für die Detailseite benutzt wird.
+   */
+  slug?: string | null;
+  /**
+   * Steuert, ob die Rasse auf der Website angezeigt wird und ob sie vollständig ist.
+   */
+  status: 'draft' | 'published' | 'partial';
+  general?: {
+    /**
+     * Trage hier zusätzliche Namen ein, unter denen die Rasse bekannt ist.
+     */
+    'Weitere Namen'?: string[] | null;
+    /**
+     * Schlagworte, z. B. Eigenschaften oder typische Nutzung.
+     */
+    tags?: (number | Tag)[] | null;
+    /**
+     * Aktivieren, wenn es sich um eine Hybrid- oder Mischlingsrasse handelt.
+     */
+    isHybrid?: boolean | null;
+    /**
+     * Typische Rassen, die für diese Hybridrasse kombiniert wurden.
+     */
+    parentBreeds?: (number | Dogbreed)[] | null;
+    /**
+     * Aktivieren, wenn dies eine Variante einer bestehenden Hunderasse ist.
+     */
+    isVariant?: boolean | null;
+    /**
+     * Wähle die Hauptrasse, von der diese Variante abstammt.
+     */
+    mainBreeds?: (number | null) | Dogbreed;
+    /**
+     * Wähle die bekannten Varianten dieser Hunderasse, falls vorhanden.
+     */
+    variantBreeds?: (number | Dogbreed)[] | null;
+  };
+  images?:
+    | {
+        /**
+         * Wähle ein Bild aus der Media-Collection.
+         */
+        media: number | Media;
+        /**
+         * Wähle aus, ob das Bild als Thumbnail oder in der Galerie angezeigt werden soll.
+         */
+        type: 'thumbnail' | 'gallery';
+        id?: string | null;
+      }[]
+    | null;
+  fci?: {
+    /**
+     * Wähle den FCI-Status der Rasse. Wenn "Nicht anerkannt" ausgewählt wird, bleiben die übrigen FCI-Felder ausgeblendet, da diese Informationen nur für anerkannte oder provisorisch anerkannte Rassen relevant sind.
+     */
+    fciStatus?: ('recognized' | 'provisional' | 'not_recognized') | null;
+    /**
+     * Die offizielle FCI-Gruppe, zu der die Rasse gehört.
+     */
+    fciGroup?: (number | null) | FciGroup;
+    /**
+     * Die Sektion innerhalb der FCI-Gruppe, passend zur Rasse.
+     */
+    fciSection?: (number | null) | FciSection;
+    /**
+     * Trage hier das Datum ein, andem die Rasse durch FCI anerkannt wurde
+     */
+    fciAcceptanceDate?: string | null;
+    /**
+     * Trage hier das Datum ein, von der Publikation des gültigen offiziellen Standards
+     */
+    fciPublicationDate?: string | null;
+    /**
+     * Trage hier den Link zur Rasse ein.
+     */
+    fciSource?: string | null;
+    /**
+     * Trage hier den Link zum PDF des offiziellen Standard ein.
+     */
+    fciSourcePDF?: string | null;
+  };
+  details?: {
+    /**
+     * Durchschnittliches Gewicht einer Hündin in kg.
+     */
+    'weight-female'?: number | null;
+    /**
+     * Durchschnittliches Gewicht eines Rüden in kg.
+     */
+    'weight-male'?: number | null;
+    /**
+     * Durchschnittliche Widerristhöhe einer Hündin in cm.
+     */
+    'height-female'?: number | null;
+    /**
+     * Durchschnittliche Widerristhöhe eines Rüden in cm.
+     */
+    'height-male'?: number | null;
+    /**
+     * Durchschnittliche Lebenserwartung einer Hündin in Jahren (von - bis).
+     */
+    'age-female'?: string | null;
+    /**
+     * Durchschnittliche Lebenserwartung eines Rüden in Jahren (von - bis).
+     */
+    'age-male'?: string | null;
+    /**
+     * Typische Fellfarben der Rasse. Mehrfachauswahl möglich.
+     */
+    coatColors?: (number | CoatColor)[] | null;
+    /**
+     * Kurz, mittellang oder lang – charakteristisch für die Rasse.
+     */
+    coatTypes?: (number | null) | CoatType;
+    /**
+     * Z. B. Jagdhund, Rettungshund, Therapiehund. Mehrfachauswahl möglich.
+     */
+    roles?: (number | Role)[] | null;
+    /**
+     * Land oder Region, aus der die Rasse ursprünglich stammt.
+     */
+    origin?: (number | null) | Country;
+  };
+  descriptions?: {
+    /**
+     * Allgemeine Informationen über Rasse, Herkunft und Besonderheiten.
+     */
+    general?: string | null;
+    /**
+     * Größe, Gewicht, Felltyp, Farben, körperliche Merkmale.
+     */
+    appearance?: string | null;
+    /**
+     * Sozialverhalten, typische Eigenschaften, Temperament.
+     */
+    character?: string | null;
+    /**
+     * Lernfähigkeit, Eignung für Anfänger, Gehorsam.
+     */
+    training?: string | null;
+    /**
+     * Typische Einsatzbereiche: Begleithund, Wachhund, Jagd, Assistenz etc.
+     */
+    roles?: string | null;
+    /**
+     * Gesundheit, Lebenserwartung, Fellpflege, Bewegung.
+     */
+    health?: string | null;
+    /**
+     * Interessante Anekdoten oder historische Fakten zur Rasse.
+     */
+    funFacts?: string | null;
+  };
+  breeders?:
+    | {
+        name: string;
+        location?: string | null;
+        website?: string | null;
+        contact?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  influencers?:
+    | {
+        name: string;
+        platform?: ('instagram' | 'tiktok' | 'youtube' | 'other') | null;
+        link?: string | null;
+        notes?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags".
+ */
+export interface Tag {
+  id: number;
+  name: string;
+  category?: ('size' | 'training' | 'character' | 'social' | 'health' | 'roles' | 'behavior') | null;
+  dogbreeds?: (number | Dogbreed)[] | null;
+  linkedDogbreeds?: {
+    docs?: (number | Dogbreed)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -200,6 +431,84 @@ export interface FciSection {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "coatColors".
+ */
+export interface CoatColor {
+  id: number;
+  name: string;
+  colorCode?: string[] | null;
+  group?: ('solid' | 'multi' | 'pattern') | null;
+  dogbreeds?: (number | Dogbreed)[] | null;
+  linkedDogbreeds?: {
+    docs?: (number | Dogbreed)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "coatTypes".
+ */
+export interface CoatType {
+  id: number;
+  name: string;
+  value: string;
+  description?: string | null;
+  dogbreeds?: (number | Dogbreed)[] | null;
+  linkedDogbreeds?: {
+    docs?: (number | Dogbreed)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "roles".
+ */
+export interface Role {
+  id: number;
+  name: string;
+  value: string;
+  description?: string | null;
+  trainingRequirements?:
+    | {
+        requirement: string;
+        importance?: ('low' | 'medium' | 'high') | null;
+        id?: string | null;
+      }[]
+    | null;
+  dogbreeds?: (number | Dogbreed)[] | null;
+  linkedDogbreeds?: {
+    docs?: (number | Dogbreed)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "countries".
+ */
+export interface Country {
+  id: number;
+  name: string;
+  continent?: ('europe' | 'asia' | 'africa' | 'north_america' | 'south_america' | 'oceania') | null;
+  dogbreeds?: (number | Dogbreed)[] | null;
+  linkedDogbreeds?: {
+    docs?: (number | Dogbreed)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -216,6 +525,26 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'dogbreeds';
         value: number | Dogbreed;
+      } | null)
+    | ({
+        relationTo: 'coatColors';
+        value: number | CoatColor;
+      } | null)
+    | ({
+        relationTo: 'coatTypes';
+        value: number | CoatType;
+      } | null)
+    | ({
+        relationTo: 'tags';
+        value: number | Tag;
+      } | null)
+    | ({
+        relationTo: 'countries';
+        value: number | Country;
+      } | null)
+    | ({
+        relationTo: 'roles';
+        value: number | Role;
       } | null)
     | ({
         relationTo: 'fciGroups';
@@ -295,6 +624,8 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  dogbreeds?: T;
+  linkedDogbreeds?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -313,9 +644,157 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface DogbreedsSelect<T extends boolean = true> {
   breed?: T;
-  image?: T;
-  fciGroup?: T;
-  fciSection?: T;
+  slug?: T;
+  status?: T;
+  general?:
+    | T
+    | {
+        'Weitere Namen'?: T;
+        tags?: T;
+        isHybrid?: T;
+        parentBreeds?: T;
+        isVariant?: T;
+        mainBreeds?: T;
+        variantBreeds?: T;
+      };
+  images?:
+    | T
+    | {
+        media?: T;
+        type?: T;
+        id?: T;
+      };
+  fci?:
+    | T
+    | {
+        fciStatus?: T;
+        fciGroup?: T;
+        fciSection?: T;
+        fciAcceptanceDate?: T;
+        fciPublicationDate?: T;
+        fciSource?: T;
+        fciSourcePDF?: T;
+      };
+  details?:
+    | T
+    | {
+        'weight-female'?: T;
+        'weight-male'?: T;
+        'height-female'?: T;
+        'height-male'?: T;
+        'age-female'?: T;
+        'age-male'?: T;
+        coatColors?: T;
+        coatTypes?: T;
+        roles?: T;
+        origin?: T;
+      };
+  descriptions?:
+    | T
+    | {
+        general?: T;
+        appearance?: T;
+        character?: T;
+        training?: T;
+        roles?: T;
+        health?: T;
+        funFacts?: T;
+      };
+  breeders?:
+    | T
+    | {
+        name?: T;
+        location?: T;
+        website?: T;
+        contact?: T;
+        id?: T;
+      };
+  influencers?:
+    | T
+    | {
+        name?: T;
+        platform?: T;
+        link?: T;
+        notes?: T;
+        id?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "coatColors_select".
+ */
+export interface CoatColorsSelect<T extends boolean = true> {
+  name?: T;
+  colorCode?: T;
+  group?: T;
+  dogbreeds?: T;
+  linkedDogbreeds?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "coatTypes_select".
+ */
+export interface CoatTypesSelect<T extends boolean = true> {
+  name?: T;
+  value?: T;
+  description?: T;
+  dogbreeds?: T;
+  linkedDogbreeds?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags_select".
+ */
+export interface TagsSelect<T extends boolean = true> {
+  name?: T;
+  category?: T;
+  dogbreeds?: T;
+  linkedDogbreeds?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "countries_select".
+ */
+export interface CountriesSelect<T extends boolean = true> {
+  name?: T;
+  continent?: T;
+  dogbreeds?: T;
+  linkedDogbreeds?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "roles_select".
+ */
+export interface RolesSelect<T extends boolean = true> {
+  name?: T;
+  value?: T;
+  description?: T;
+  trainingRequirements?:
+    | T
+    | {
+        requirement?: T;
+        importance?: T;
+        id?: T;
+      };
+  dogbreeds?: T;
+  linkedDogbreeds?: T;
   updatedAt?: T;
   createdAt?: T;
 }
