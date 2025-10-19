@@ -1,10 +1,14 @@
 'use client'
 
 import { useState } from 'react'
+import { useAuth } from '@payloadcms/ui'
 
 export default function AdminSeedButton() {
+  const { user } = useAuth() // Client-side auth hook
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
+
+  if (!user) return null // Button nur anzeigen, wenn eingeloggt
 
   const runSeed = async () => {
     setLoading(true)
