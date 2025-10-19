@@ -1,38 +1,23 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
+import { runSeed } from '@/seeds/seed'
 import payload from 'payload'
 import config from '@/payload.config'
-import { runSeed } from '@/seeds/seed'
 
-export async function POST(req: NextRequest) {
+let payloadInitialized = false
+
+export async function POST() {
   try {
-    // Payload init, falls nötig
-    await payload.init({ config })
+    console.log('🌱 Running seed...')
 
-    // Optional: Admin-Check über Request-Body
-    const body = await req.json()
-    const userEmail = body.email
-    const user = await payload.find({
-      collection: 'users',
-      where: {
-        email: { equals: userEmail },
-        role: { equals: 'admin' },
-      },
-      limit: 1,
-    })
-
-    if (user.totalDocs === 0) {
-      return NextResponse.json(
-        { error: 'Forbidden: Only admins can run the seed' },
-        { status: 403 },
-      )
+    if (!payloadInitialized) {
+      await payload.init({ config })
+      payloadInitialized = true
     }
 
-    console.log(`🌱 Admin ${userEmail} running seed...`)
     await runSeed()
-
     return NextResponse.json({ success: true })
   } catch (err) {
-    console.error(err)
-    return NextResponse.json({ error: 'Seed failed' }, { status: 500 })
+    console.error('Seed failed:', err)
+    return NextResponse.json({ error: 'Seed failed', details: err }, { status: 500 })
   }
 }
