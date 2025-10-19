@@ -1,3 +1,4 @@
+// src/components/AminSeedButton.tsx
 'use client'
 
 import { useState } from 'react'

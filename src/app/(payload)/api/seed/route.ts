@@ -1,3 +1,5 @@
+// src/app/(payload)/api/seed/route.ts
+
 import { NextResponse } from 'next/server'
 import { runSeed } from '@/seeds/seed'
 import payload from 'payload'
