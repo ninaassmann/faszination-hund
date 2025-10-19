@@ -5,12 +5,14 @@ type TrainingRequirement = {
   importance?: 'high' | 'medium' | 'low' | null
 }
 
-const rolesSeed: {
+type RoleSeed = {
   name: string
   value: string
   description: string
   trainingRequirements: TrainingRequirement[]
-}[] = [
+}
+
+const rolesSeed: RoleSeed[] = [
   {
     name: 'Jagdhund',
     value: 'jagdhund',
@@ -85,6 +87,11 @@ export async function seedRoles(payload: Payload) {
         collection: 'roles',
         data: role,
       })
+      console.log(`✅ Added: ${role.name}`)
+    } else {
+      console.log(`⚪ Skipped (exists): ${role.name}`)
     }
   }
+
+  console.log('✅ Finished seeding Roles.')
 }
