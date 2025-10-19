@@ -31,7 +31,7 @@ const Layout = ({ children }: Args) => {
   return (
     <RootLayout config={config} importMap={importMap} serverFunction={serverFunction}>
       {children}
-      {user && <AdminSeedButton />}
+      {typeof window !== 'undefined' && user && <AdminSeedButton />}
     </RootLayout>
   )
 }
