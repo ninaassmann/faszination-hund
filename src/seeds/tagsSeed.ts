@@ -1,9 +1,11 @@
 import type { Payload } from 'payload'
 
-const tagsSeed: {
+type TagSeed = {
   name: string
   category: 'size' | 'roles' | 'character' | 'health' | 'training' | 'social' | 'behavior'
-}[] = [
+}
+
+const tagsSeed: TagSeed[] = [
   // Size
   { name: 'Klein', category: 'size' },
   { name: 'Mittelgroß', category: 'size' },
@@ -59,7 +61,11 @@ export async function seedTags(payload: Payload) {
   for (const tag of tagsSeed) {
     const existing = await payload.find({
       collection: 'tags',
-      where: { name: { equals: tag.name } },
+      where: {
+        name: {
+          equals: tag.name,
+        },
+      },
       limit: 1,
     })
 
@@ -68,6 +74,11 @@ export async function seedTags(payload: Payload) {
         collection: 'tags',
         data: tag,
       })
+      console.log(`✅ Added: ${tag.name}`)
+    } else {
+      console.log(`⚪ Skipped (exists): ${tag.name}`)
     }
   }
+
+  console.log('✅ Finished seeding tags.')
 }

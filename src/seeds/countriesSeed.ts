@@ -1,9 +1,11 @@
 import { Payload } from 'payload'
 
-const countriesSeed: {
+type CountrySeed = {
   name: string
   continent: 'europe' | 'asia' | 'north_america' | 'south_america' | 'oceania' | 'africa'
-}[] = [
+}
+
+const countriesSeed: CountrySeed[] = [
   { name: 'Deutschland', continent: 'europe' },
   { name: 'Frankreich', continent: 'europe' },
   { name: 'Italien', continent: 'europe' },
@@ -32,6 +34,7 @@ export async function seedCountries(payload: Payload) {
           equals: country.name,
         },
       },
+      limit: 1,
     })
 
     if (existing.totalDocs === 0) {
@@ -39,6 +42,11 @@ export async function seedCountries(payload: Payload) {
         collection: 'countries',
         data: country,
       })
+      console.log(`✅ Added: ${country.name}`)
+    } else {
+      console.log(`⚪ Skipped (exists): ${country.name}`)
     }
   }
+
+  console.log('✅ Finished seeding countries.')
 }
