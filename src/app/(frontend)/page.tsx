@@ -53,7 +53,7 @@ export default async function HomePage() {
         <a className="codeLink" href={fileURL}>
           <code>app/(frontend)/page.tsx</code>
         </a>
-        <p>Test</p>
+        <p>Test 2.0</p>
       </div>
     </div>
   )
