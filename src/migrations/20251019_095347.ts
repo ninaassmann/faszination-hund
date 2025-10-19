@@ -10,6 +10,43 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TYPE "public"."enum_tags_category" AS ENUM('size', 'training', 'character', 'social', 'health', 'roles', 'behavior');
   CREATE TYPE "public"."enum_countries_continent" AS ENUM('europe', 'asia', 'africa', 'north_america', 'south_america', 'oceania');
   CREATE TYPE "public"."enum_roles_training_requirements_importance" AS ENUM('low', 'medium', 'high');
+  CREATE TABLE "users_sessions" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" integer NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"created_at" timestamp(3) with time zone,
+  	"expires_at" timestamp(3) with time zone NOT NULL
+  );
+  
+  CREATE TABLE "users" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"email" varchar NOT NULL,
+  	"reset_password_token" varchar,
+  	"reset_password_expiration" timestamp(3) with time zone,
+  	"salt" varchar,
+  	"hash" varchar,
+  	"login_attempts" numeric DEFAULT 0,
+  	"lock_until" timestamp(3) with time zone
+  );
+  
+  CREATE TABLE "media" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"alt" varchar NOT NULL,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"url" varchar,
+  	"thumbnail_u_r_l" varchar,
+  	"filename" varchar,
+  	"mime_type" varchar,
+  	"filesize" numeric,
+  	"width" numeric,
+  	"height" numeric,
+  	"focal_x" numeric,
+  	"focal_y" numeric
+  );
+  
   CREATE TABLE "media_rels" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"order" integer,
@@ -217,14 +254,55 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );
   
-  ALTER TABLE "payload_locked_documents_rels" ADD COLUMN "dogbreeds_id" integer;
-  ALTER TABLE "payload_locked_documents_rels" ADD COLUMN "coat_colors_id" integer;
-  ALTER TABLE "payload_locked_documents_rels" ADD COLUMN "coat_types_id" integer;
-  ALTER TABLE "payload_locked_documents_rels" ADD COLUMN "tags_id" integer;
-  ALTER TABLE "payload_locked_documents_rels" ADD COLUMN "countries_id" integer;
-  ALTER TABLE "payload_locked_documents_rels" ADD COLUMN "roles_id" integer;
-  ALTER TABLE "payload_locked_documents_rels" ADD COLUMN "fci_groups_id" integer;
-  ALTER TABLE "payload_locked_documents_rels" ADD COLUMN "fci_sections_id" integer;
+  CREATE TABLE "payload_locked_documents" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"global_slug" varchar,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  );
+  
+  CREATE TABLE "payload_locked_documents_rels" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"order" integer,
+  	"parent_id" integer NOT NULL,
+  	"path" varchar NOT NULL,
+  	"users_id" integer,
+  	"media_id" integer,
+  	"dogbreeds_id" integer,
+  	"coat_colors_id" integer,
+  	"coat_types_id" integer,
+  	"tags_id" integer,
+  	"countries_id" integer,
+  	"roles_id" integer,
+  	"fci_groups_id" integer,
+  	"fci_sections_id" integer
+  );
+  
+  CREATE TABLE "payload_preferences" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"key" varchar,
+  	"value" jsonb,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  );
+  
+  CREATE TABLE "payload_preferences_rels" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"order" integer,
+  	"parent_id" integer NOT NULL,
+  	"path" varchar NOT NULL,
+  	"users_id" integer
+  );
+  
+  CREATE TABLE "payload_migrations" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"name" varchar,
+  	"batch" numeric,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  );
+  
+  ALTER TABLE "users_sessions" ADD CONSTRAINT "users_sessions_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "media_rels" ADD CONSTRAINT "media_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."media"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "media_rels" ADD CONSTRAINT "media_rels_dogbreeds_fk" FOREIGN KEY ("dogbreeds_id") REFERENCES "public"."dogbreeds"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "dogbreeds_images" ADD CONSTRAINT "dogbreeds_images_media_id_media_id_fk" FOREIGN KEY ("media_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
@@ -256,6 +334,27 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   ALTER TABLE "roles_rels" ADD CONSTRAINT "roles_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."roles"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "roles_rels" ADD CONSTRAINT "roles_rels_dogbreeds_fk" FOREIGN KEY ("dogbreeds_id") REFERENCES "public"."dogbreeds"("id") ON DELETE cascade ON UPDATE no action;
   ALTER TABLE "fci_sections" ADD CONSTRAINT "fci_sections_group_id_fci_groups_id_fk" FOREIGN KEY ("group_id") REFERENCES "public"."fci_groups"("id") ON DELETE set null ON UPDATE no action;
+  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."payload_locked_documents"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_users_fk" FOREIGN KEY ("users_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_media_fk" FOREIGN KEY ("media_id") REFERENCES "public"."media"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_dogbreeds_fk" FOREIGN KEY ("dogbreeds_id") REFERENCES "public"."dogbreeds"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_coat_colors_fk" FOREIGN KEY ("coat_colors_id") REFERENCES "public"."coat_colors"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_coat_types_fk" FOREIGN KEY ("coat_types_id") REFERENCES "public"."coat_types"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_tags_fk" FOREIGN KEY ("tags_id") REFERENCES "public"."tags"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_countries_fk" FOREIGN KEY ("countries_id") REFERENCES "public"."countries"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_roles_fk" FOREIGN KEY ("roles_id") REFERENCES "public"."roles"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_fci_groups_fk" FOREIGN KEY ("fci_groups_id") REFERENCES "public"."fci_groups"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_fci_sections_fk" FOREIGN KEY ("fci_sections_id") REFERENCES "public"."fci_sections"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "payload_preferences_rels" ADD CONSTRAINT "payload_preferences_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."payload_preferences"("id") ON DELETE cascade ON UPDATE no action;
+  ALTER TABLE "payload_preferences_rels" ADD CONSTRAINT "payload_preferences_rels_users_fk" FOREIGN KEY ("users_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
+  CREATE INDEX "users_sessions_order_idx" ON "users_sessions" USING btree ("_order");
+  CREATE INDEX "users_sessions_parent_id_idx" ON "users_sessions" USING btree ("_parent_id");
+  CREATE INDEX "users_updated_at_idx" ON "users" USING btree ("updated_at");
+  CREATE INDEX "users_created_at_idx" ON "users" USING btree ("created_at");
+  CREATE UNIQUE INDEX "users_email_idx" ON "users" USING btree ("email");
+  CREATE INDEX "media_updated_at_idx" ON "media" USING btree ("updated_at");
+  CREATE INDEX "media_created_at_idx" ON "media" USING btree ("created_at");
+  CREATE UNIQUE INDEX "media_filename_idx" ON "media" USING btree ("filename");
   CREATE INDEX "media_rels_order_idx" ON "media_rels" USING btree ("order");
   CREATE INDEX "media_rels_parent_idx" ON "media_rels" USING btree ("parent_id");
   CREATE INDEX "media_rels_path_idx" ON "media_rels" USING btree ("path");
@@ -323,14 +422,14 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "fci_sections_group_idx" ON "fci_sections" USING btree ("group_id");
   CREATE INDEX "fci_sections_updated_at_idx" ON "fci_sections" USING btree ("updated_at");
   CREATE INDEX "fci_sections_created_at_idx" ON "fci_sections" USING btree ("created_at");
-  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_dogbreeds_fk" FOREIGN KEY ("dogbreeds_id") REFERENCES "public"."dogbreeds"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_coat_colors_fk" FOREIGN KEY ("coat_colors_id") REFERENCES "public"."coat_colors"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_coat_types_fk" FOREIGN KEY ("coat_types_id") REFERENCES "public"."coat_types"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_tags_fk" FOREIGN KEY ("tags_id") REFERENCES "public"."tags"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_countries_fk" FOREIGN KEY ("countries_id") REFERENCES "public"."countries"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_roles_fk" FOREIGN KEY ("roles_id") REFERENCES "public"."roles"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_fci_groups_fk" FOREIGN KEY ("fci_groups_id") REFERENCES "public"."fci_groups"("id") ON DELETE cascade ON UPDATE no action;
-  ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_fci_sections_fk" FOREIGN KEY ("fci_sections_id") REFERENCES "public"."fci_sections"("id") ON DELETE cascade ON UPDATE no action;
+  CREATE INDEX "payload_locked_documents_global_slug_idx" ON "payload_locked_documents" USING btree ("global_slug");
+  CREATE INDEX "payload_locked_documents_updated_at_idx" ON "payload_locked_documents" USING btree ("updated_at");
+  CREATE INDEX "payload_locked_documents_created_at_idx" ON "payload_locked_documents" USING btree ("created_at");
+  CREATE INDEX "payload_locked_documents_rels_order_idx" ON "payload_locked_documents_rels" USING btree ("order");
+  CREATE INDEX "payload_locked_documents_rels_parent_idx" ON "payload_locked_documents_rels" USING btree ("parent_id");
+  CREATE INDEX "payload_locked_documents_rels_path_idx" ON "payload_locked_documents_rels" USING btree ("path");
+  CREATE INDEX "payload_locked_documents_rels_users_id_idx" ON "payload_locked_documents_rels" USING btree ("users_id");
+  CREATE INDEX "payload_locked_documents_rels_media_id_idx" ON "payload_locked_documents_rels" USING btree ("media_id");
   CREATE INDEX "payload_locked_documents_rels_dogbreeds_id_idx" ON "payload_locked_documents_rels" USING btree ("dogbreeds_id");
   CREATE INDEX "payload_locked_documents_rels_coat_colors_id_idx" ON "payload_locked_documents_rels" USING btree ("coat_colors_id");
   CREATE INDEX "payload_locked_documents_rels_coat_types_id_idx" ON "payload_locked_documents_rels" USING btree ("coat_types_id");
@@ -338,32 +437,23 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "payload_locked_documents_rels_countries_id_idx" ON "payload_locked_documents_rels" USING btree ("countries_id");
   CREATE INDEX "payload_locked_documents_rels_roles_id_idx" ON "payload_locked_documents_rels" USING btree ("roles_id");
   CREATE INDEX "payload_locked_documents_rels_fci_groups_id_idx" ON "payload_locked_documents_rels" USING btree ("fci_groups_id");
-  CREATE INDEX "payload_locked_documents_rels_fci_sections_id_idx" ON "payload_locked_documents_rels" USING btree ("fci_sections_id");`)
+  CREATE INDEX "payload_locked_documents_rels_fci_sections_id_idx" ON "payload_locked_documents_rels" USING btree ("fci_sections_id");
+  CREATE INDEX "payload_preferences_key_idx" ON "payload_preferences" USING btree ("key");
+  CREATE INDEX "payload_preferences_updated_at_idx" ON "payload_preferences" USING btree ("updated_at");
+  CREATE INDEX "payload_preferences_created_at_idx" ON "payload_preferences" USING btree ("created_at");
+  CREATE INDEX "payload_preferences_rels_order_idx" ON "payload_preferences_rels" USING btree ("order");
+  CREATE INDEX "payload_preferences_rels_parent_idx" ON "payload_preferences_rels" USING btree ("parent_id");
+  CREATE INDEX "payload_preferences_rels_path_idx" ON "payload_preferences_rels" USING btree ("path");
+  CREATE INDEX "payload_preferences_rels_users_id_idx" ON "payload_preferences_rels" USING btree ("users_id");
+  CREATE INDEX "payload_migrations_updated_at_idx" ON "payload_migrations" USING btree ("updated_at");
+  CREATE INDEX "payload_migrations_created_at_idx" ON "payload_migrations" USING btree ("created_at");`)
 }
 
 export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
   await db.execute(sql`
-   ALTER TABLE "media_rels" DISABLE ROW LEVEL SECURITY;
-  ALTER TABLE "dogbreeds_images" DISABLE ROW LEVEL SECURITY;
-  ALTER TABLE "dogbreeds_breeders" DISABLE ROW LEVEL SECURITY;
-  ALTER TABLE "dogbreeds_influencers" DISABLE ROW LEVEL SECURITY;
-  ALTER TABLE "dogbreeds" DISABLE ROW LEVEL SECURITY;
-  ALTER TABLE "dogbreeds_texts" DISABLE ROW LEVEL SECURITY;
-  ALTER TABLE "dogbreeds_rels" DISABLE ROW LEVEL SECURITY;
-  ALTER TABLE "coat_colors" DISABLE ROW LEVEL SECURITY;
-  ALTER TABLE "coat_colors_texts" DISABLE ROW LEVEL SECURITY;
-  ALTER TABLE "coat_colors_rels" DISABLE ROW LEVEL SECURITY;
-  ALTER TABLE "coat_types" DISABLE ROW LEVEL SECURITY;
-  ALTER TABLE "coat_types_rels" DISABLE ROW LEVEL SECURITY;
-  ALTER TABLE "tags" DISABLE ROW LEVEL SECURITY;
-  ALTER TABLE "tags_rels" DISABLE ROW LEVEL SECURITY;
-  ALTER TABLE "countries" DISABLE ROW LEVEL SECURITY;
-  ALTER TABLE "countries_rels" DISABLE ROW LEVEL SECURITY;
-  ALTER TABLE "roles_training_requirements" DISABLE ROW LEVEL SECURITY;
-  ALTER TABLE "roles" DISABLE ROW LEVEL SECURITY;
-  ALTER TABLE "roles_rels" DISABLE ROW LEVEL SECURITY;
-  ALTER TABLE "fci_groups" DISABLE ROW LEVEL SECURITY;
-  ALTER TABLE "fci_sections" DISABLE ROW LEVEL SECURITY;
+   DROP TABLE "users_sessions" CASCADE;
+  DROP TABLE "users" CASCADE;
+  DROP TABLE "media" CASCADE;
   DROP TABLE "media_rels" CASCADE;
   DROP TABLE "dogbreeds_images" CASCADE;
   DROP TABLE "dogbreeds_breeders" CASCADE;
@@ -385,38 +475,11 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TABLE "roles_rels" CASCADE;
   DROP TABLE "fci_groups" CASCADE;
   DROP TABLE "fci_sections" CASCADE;
-  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_dogbreeds_fk";
-  
-  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_coat_colors_fk";
-  
-  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_coat_types_fk";
-  
-  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_tags_fk";
-  
-  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_countries_fk";
-  
-  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_roles_fk";
-  
-  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_fci_groups_fk";
-  
-  ALTER TABLE "payload_locked_documents_rels" DROP CONSTRAINT "payload_locked_documents_rels_fci_sections_fk";
-  
-  DROP INDEX "payload_locked_documents_rels_dogbreeds_id_idx";
-  DROP INDEX "payload_locked_documents_rels_coat_colors_id_idx";
-  DROP INDEX "payload_locked_documents_rels_coat_types_id_idx";
-  DROP INDEX "payload_locked_documents_rels_tags_id_idx";
-  DROP INDEX "payload_locked_documents_rels_countries_id_idx";
-  DROP INDEX "payload_locked_documents_rels_roles_id_idx";
-  DROP INDEX "payload_locked_documents_rels_fci_groups_id_idx";
-  DROP INDEX "payload_locked_documents_rels_fci_sections_id_idx";
-  ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "dogbreeds_id";
-  ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "coat_colors_id";
-  ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "coat_types_id";
-  ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "tags_id";
-  ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "countries_id";
-  ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "roles_id";
-  ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "fci_groups_id";
-  ALTER TABLE "payload_locked_documents_rels" DROP COLUMN "fci_sections_id";
+  DROP TABLE "payload_locked_documents" CASCADE;
+  DROP TABLE "payload_locked_documents_rels" CASCADE;
+  DROP TABLE "payload_preferences" CASCADE;
+  DROP TABLE "payload_preferences_rels" CASCADE;
+  DROP TABLE "payload_migrations" CASCADE;
   DROP TYPE "public"."enum_dogbreeds_images_type";
   DROP TYPE "public"."enum_dogbreeds_influencers_platform";
   DROP TYPE "public"."enum_dogbreeds_status";
