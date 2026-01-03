@@ -87,6 +87,30 @@ export const Dogbreeds: CollectionConfig = {
             placeholder: 'weitere bekannte Namen',
             description: 'Trage hier zusätzliche Namen ein, unter denen die Rasse bekannt ist.',
           },
+          hooks: {
+            beforeValidate: [
+              ({ value }) => {
+                if (!value || !Array.isArray(value)) return value
+                const trimmedNames = value.map((name) => name.trim())
+                const nonEmptyNames = trimmedNames.filter((name) => name.length > 0)
+
+                const namesWithSlugs = nonEmptyNames.map((name) => ({
+                  name,
+                  slug: name
+                    .toLowerCase()
+                    .trim()
+                    .replace(/ä/g, 'ae')
+                    .replace(/ö/g, 'oe')
+                    .replace(/ü/g, 'ue')
+                    .replace(/ß/g, 'ss')
+                    .replace(/[^\w\s-]/g, '')
+                    .replace(/\s+/g, '-'),
+                }))
+
+                return namesWithSlugs
+              },
+            ],
+          },
         },
         {
           name: 'tags',
@@ -289,7 +313,6 @@ export const Dogbreeds: CollectionConfig = {
             placeholder: 'Wähle eine FCI-Sektion',
             description: 'Die Sektion innerhalb der FCI-Gruppe, passend zur Rasse.',
             condition: (data) => {
-              // ✅ richtiger Pfad
               return !!data.fci?.fciGroup
             },
           },
@@ -299,7 +322,6 @@ export const Dogbreeds: CollectionConfig = {
             if (!group) return true
 
             return {
-              // ⚠️ wichtig: Relationship = ID oder Objekt
               group: {
                 equals: typeof group === 'object' ? group.id : group,
               },
@@ -381,14 +403,56 @@ export const Dogbreeds: CollectionConfig = {
             {
               name: 'weight-female',
               label: 'Gewicht Hündin',
-              type: 'number',
+              type: 'text',
               admin: { description: 'Durchschnittliches Gewicht einer Hündin in kg.' },
+              hooks: {
+                beforeValidate: [
+                  ({ value }) => {
+                    if (!value) return value
+                    let trimmed = value.trim()
+
+                    const regex = /^\d+(\s*-\s*\d+)?$/
+                    if (!regex.test(trimmed)) {
+                      console.warn(
+                        `Gewicht "${trimmed}" entspricht nicht dem Format "25" oder "25-30".`,
+                      )
+                    }
+
+                    if (!trimmed.toLowerCase().endsWith('kg')) {
+                      trimmed = `${trimmed} kg`
+                    }
+
+                    return trimmed
+                  },
+                ],
+              },
             },
             {
               name: 'weight-male',
               label: 'Gewicht Rüde',
-              type: 'number',
+              type: 'text',
               admin: { description: 'Durchschnittliches Gewicht eines Rüden in kg.' },
+              hooks: {
+                beforeValidate: [
+                  ({ value }) => {
+                    if (!value) return value
+                    let trimmed = value.trim()
+
+                    const regex = /^\d+(\s*-\s*\d+)?$/
+                    if (!regex.test(trimmed)) {
+                      console.warn(
+                        `Gewicht "${trimmed}" entspricht nicht dem Format "25" oder "25-30".`,
+                      )
+                    }
+
+                    if (!trimmed.toLowerCase().endsWith('kg')) {
+                      trimmed = `${trimmed} kg`
+                    }
+
+                    return trimmed
+                  },
+                ],
+              },
             },
           ],
         },
@@ -398,14 +462,50 @@ export const Dogbreeds: CollectionConfig = {
             {
               name: 'height-female',
               label: 'Widerristhöhe Hündin',
-              type: 'number',
+              type: 'text',
               admin: { description: 'Durchschnittliche Widerristhöhe einer Hündin in cm.' },
+              hooks: {
+                beforeValidate: [
+                  ({ value }) => {
+                    if (!value) return value
+                    let trimmed = value.trim()
+                    const regex = /^\d+(\s*-\s*\d+)?$/
+                    if (!regex.test(trimmed)) {
+                      console.warn(
+                        `Widerristhöhe "${trimmed}" entspricht nicht dem Format "55" oder "55-60".`,
+                      )
+                    }
+                    if (!trimmed.toLowerCase().endsWith('cm')) {
+                      trimmed = `${trimmed} cm`
+                    }
+                    return trimmed
+                  },
+                ],
+              },
             },
             {
               name: 'height-male',
               label: 'Widerristhöhe Rüde',
-              type: 'number',
+              type: 'text',
               admin: { description: 'Durchschnittliche Widerristhöhe eines Rüden in cm.' },
+              hooks: {
+                beforeValidate: [
+                  ({ value }) => {
+                    if (!value) return value
+                    let trimmed = value.trim()
+                    const regex = /^\d+(\s*-\s*\d+)?$/
+                    if (!regex.test(trimmed)) {
+                      console.warn(
+                        `Widerristhöhe "${trimmed}" entspricht nicht dem Format "55" oder "55-60".`,
+                      )
+                    }
+                    if (!trimmed.toLowerCase().endsWith('cm')) {
+                      trimmed = `${trimmed} cm`
+                    }
+                    return trimmed
+                  },
+                ],
+              },
             },
           ],
         },
@@ -417,8 +517,28 @@ export const Dogbreeds: CollectionConfig = {
               label: 'Lebenserwartung Hündin',
               type: 'text',
               admin: {
-                description:
-                  'Durchschnittliche Lebenserwartung einer Hündin in Jahren (von - bis).',
+                description: 'Durchschnittliche Lebenserwartung einer Hündin in Jahren.',
+              },
+              hooks: {
+                beforeValidate: [
+                  ({ value }) => {
+                    if (!value) return value
+
+                    let trimmed = value.trim()
+                    const regex = /^\d+\s*-\s*\d+$/
+                    if (!regex.test(trimmed)) {
+                      console.warn(
+                        `Lebenserwartung "${trimmed}" entspricht nicht dem Format "6-8".`,
+                      )
+                    }
+
+                    if (!trimmed.toLowerCase().endsWith('jahre')) {
+                      trimmed = `${trimmed} Jahre`
+                    }
+
+                    return trimmed
+                  },
+                ],
               },
             },
             {
@@ -426,7 +546,28 @@ export const Dogbreeds: CollectionConfig = {
               label: 'Lebenserwartung Rüde',
               type: 'text',
               admin: {
-                description: 'Durchschnittliche Lebenserwartung eines Rüden in Jahren (von - bis).',
+                description: 'Durchschnittliche Lebenserwartung eines Rüden in Jahren.',
+              },
+              hooks: {
+                beforeValidate: [
+                  ({ value }) => {
+                    if (!value) return value
+
+                    let trimmed = value.trim()
+                    const regex = /^\d+\s*-\s*\d+$/
+                    if (!regex.test(trimmed)) {
+                      console.warn(
+                        `Lebenserwartung "${trimmed}" entspricht nicht dem Format "6-8".`,
+                      )
+                    }
+
+                    if (!trimmed.toLowerCase().endsWith('jahre')) {
+                      trimmed = `${trimmed} Jahre`
+                    }
+
+                    return trimmed
+                  },
+                ],
               },
             },
           ],
@@ -543,6 +684,15 @@ export const Dogbreeds: CollectionConfig = {
           label: 'Webseite',
           type: 'text',
           admin: { placeholder: 'URL der Webseite' },
+          validate: (value: string | null | undefined) => {
+            if (!value) return true
+            try {
+              new URL(value)
+              return true
+            } catch {
+              return 'Bitte eine gültige URL eingeben'
+            }
+          },
         },
         {
           name: 'contact',
@@ -591,6 +741,15 @@ export const Dogbreeds: CollectionConfig = {
           label: 'Link / Profil',
           type: 'text',
           admin: { placeholder: 'URL zum Profil oder zur Seite' },
+          validate: (value: string | null | undefined) => {
+            if (!value) return true
+            try {
+              new URL(value)
+              return true
+            } catch {
+              return 'Bitte eine gültige URL eingeben'
+            }
+          },
         },
         {
           name: 'notes',
