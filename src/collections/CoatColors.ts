@@ -2,11 +2,15 @@ import type { CollectionConfig } from 'payload'
 
 export const CoatColors: CollectionConfig = {
   slug: 'coatColors',
+  access: {
+    read: () => true,
+  },
   labels: {
     singular: 'Fellfarbe',
     plural: 'Fellfarben',
   },
   admin: {
+    hidden: true,
     useAsTitle: 'name',
     defaultColumns: ['name', 'group', 'linkedDogbreeds'],
     group: 'Hunde',

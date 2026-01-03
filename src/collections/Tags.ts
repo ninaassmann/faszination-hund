@@ -2,11 +2,15 @@ import type { CollectionConfig } from 'payload'
 
 export const Tags: CollectionConfig = {
   slug: 'tags',
+  access: {
+    read: () => true,
+  },
   labels: {
     singular: 'Tag',
     plural: 'Tags',
   },
   admin: {
+    hidden: true,
     useAsTitle: 'name',
     defaultColumns: ['name', 'group', 'linkedDogbreeds'],
     group: 'Hunde',
