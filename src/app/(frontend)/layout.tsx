@@ -1,4 +1,3 @@
-import React from 'react'
 import './styles.css'
 
 import { Faustina } from 'next/font/google'
@@ -20,7 +19,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
 
   return (
     <html lang="en">
-      <body className={`${serif.variable} antialiased`}>
+      <body className={`${serif.variable}`}>
         <Header />
         <main>{children}</main>
       </body>
