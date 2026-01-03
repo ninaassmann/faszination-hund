@@ -10,6 +10,7 @@ export const FciSections: CollectionConfig = {
     plural: 'FCI Sektionen',
   },
   admin: {
+    hidden: true,
     useAsTitle: 'name',
     defaultColumns: ['number', 'name'],
     group: 'Hunde',

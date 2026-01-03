@@ -2,11 +2,15 @@ import type { CollectionConfig } from 'payload'
 
 export const Countries: CollectionConfig = {
   slug: 'countries',
+  access: {
+    read: () => true,
+  },
   labels: {
     singular: 'Herkunftsland',
     plural: 'Herkunftsländer',
   },
   admin: {
+    hidden: true,
     useAsTitle: 'name',
     defaultColumns: ['name', 'continent', 'linkedDogbreeds'],
     group: 'Hunde',
