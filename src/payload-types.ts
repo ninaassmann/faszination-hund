@@ -292,25 +292,25 @@ export interface Dogbreed {
     /**
      * Durchschnittliches Gewicht einer Hündin in kg.
      */
-    'weight-female'?: number | null;
+    'weight-female'?: string | null;
     /**
      * Durchschnittliches Gewicht eines Rüden in kg.
      */
-    'weight-male'?: number | null;
+    'weight-male'?: string | null;
     /**
      * Durchschnittliche Widerristhöhe einer Hündin in cm.
      */
-    'height-female'?: number | null;
+    'height-female'?: string | null;
     /**
      * Durchschnittliche Widerristhöhe eines Rüden in cm.
      */
-    'height-male'?: number | null;
+    'height-male'?: string | null;
     /**
-     * Durchschnittliche Lebenserwartung einer Hündin in Jahren (von - bis).
+     * Durchschnittliche Lebenserwartung einer Hündin in Jahren.
      */
     'age-female'?: string | null;
     /**
-     * Durchschnittliche Lebenserwartung eines Rüden in Jahren (von - bis).
+     * Durchschnittliche Lebenserwartung eines Rüden in Jahren.
      */
     'age-male'?: string | null;
     /**
