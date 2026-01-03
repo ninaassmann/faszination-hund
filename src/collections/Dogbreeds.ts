@@ -1,5 +1,17 @@
 import type { CollectionConfig } from 'payload'
 
+function slugify(str: string) {
+  return str
+    .toLowerCase()
+    .trim()
+    .replace(/ä/g, 'ae')
+    .replace(/ö/g, 'oe')
+    .replace(/ü/g, 'ue')
+    .replace(/ß/g, 'ss')
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
+}
+
 export const Dogbreeds: CollectionConfig = {
   slug: 'dogbreeds',
   access: {
@@ -39,11 +51,7 @@ export const Dogbreeds: CollectionConfig = {
         beforeValidate: [
           ({ data, operation, value }) => {
             if (data?.breed && (!value || operation === 'create')) {
-              return data.breed
-                .toLowerCase()
-                .trim()
-                .replace(/[^\w\s-]/g, '')
-                .replace(/\s+/g, '-')
+              return slugify(data.breed)
             }
             return value
           },
@@ -281,7 +289,6 @@ export const Dogbreeds: CollectionConfig = {
             placeholder: 'Wähle eine FCI-Sektion',
             description: 'Die Sektion innerhalb der FCI-Gruppe, passend zur Rasse.',
             condition: (data) => {
-<<<<<<< HEAD
               // ✅ richtiger Pfad
               return !!data.fci?.fciGroup
             },
@@ -295,17 +302,6 @@ export const Dogbreeds: CollectionConfig = {
               // ⚠️ wichtig: Relationship = ID oder Objekt
               group: {
                 equals: typeof group === 'object' ? group.id : group,
-=======
-              // zeigt das Feld nur an, wenn fciGroup gesetzt ist
-              return !!data.fciGroup
-            },
-          },
-          filterOptions: ({ data }) => {
-            if (!data?.fciGroup) return true
-            return {
-              group: {
-                equals: data.fciGroup,
->>>>>>> 91c3cbfb5bbbb516e8a5f3235cfb340a4dda6c6d
               },
             }
           },
@@ -483,69 +479,37 @@ export const Dogbreeds: CollectionConfig = {
     {
       name: 'descriptions',
       label: 'Beschreibungen',
-      type: 'group',
+      labels: {
+        singular: 'Beschreibung',
+        plural: 'Beschreibungen',
+      },
+      type: 'array',
+      minRows: 0,
       fields: [
         {
-          name: 'general',
-          label: 'Allgemein',
+          name: 'title',
+          label: 'Überschrift',
+          type: 'text',
+          required: true,
+          admin: { placeholder: 'z.B. Allgemein, Aussehen, Charakter, Fun Facts...' },
+        },
+        {
+          name: 'content',
+          label: 'Text',
           type: 'textarea',
+          required: true,
           admin: {
-            description: 'Allgemeine Informationen über Rasse, Herkunft und Besonderheiten.',
+            placeholder: 'Hier den Text eingeben',
             rows: 4,
           },
         },
         {
-          name: 'appearance',
-          label: 'Aussehen',
-          type: 'textarea',
+          name: 'source',
+          label: 'Quelle',
+          type: 'text',
           admin: {
-            description: 'Größe, Gewicht, Felltyp, Farben, körperliche Merkmale.',
-            rows: 4,
-          },
-        },
-        {
-          name: 'character',
-          label: 'Charakter / Verhalten',
-          type: 'textarea',
-          admin: {
-            description: 'Sozialverhalten, typische Eigenschaften, Temperament.',
-            rows: 4,
-          },
-        },
-        {
-          name: 'training',
-          label: 'Erziehung / Trainierbarkeit',
-          type: 'textarea',
-          admin: {
-            description: 'Lernfähigkeit, Eignung für Anfänger, Gehorsam.',
-            rows: 4,
-          },
-        },
-        {
-          name: 'roles',
-          label: 'Einsatzbereiche',
-          type: 'textarea',
-          admin: {
-            description: 'Typische Einsatzbereiche: Begleithund, Wachhund, Jagd, Assistenz etc.',
-            rows: 4,
-          },
-        },
-        {
-          name: 'health',
-          label: 'Gesundheit / Pflege',
-          type: 'textarea',
-          admin: {
-            description: 'Gesundheit, Lebenserwartung, Fellpflege, Bewegung.',
-            rows: 4,
-          },
-        },
-        {
-          name: 'funFacts',
-          label: 'Besonderheiten / Fun Facts',
-          type: 'textarea',
-          admin: {
-            description: 'Interessante Anekdoten oder historische Fakten zur Rasse.',
-            rows: 3,
+            placeholder: 'Link oder Referenz zur Quelle',
+            description: 'Optional: Quelle angeben, z. B. FCI PDF, Wikipedia, Zuchtverein',
           },
         },
       ],
