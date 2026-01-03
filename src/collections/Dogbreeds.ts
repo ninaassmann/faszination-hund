@@ -281,6 +281,7 @@ export const Dogbreeds: CollectionConfig = {
             placeholder: 'Wähle eine FCI-Sektion',
             description: 'Die Sektion innerhalb der FCI-Gruppe, passend zur Rasse.',
             condition: (data) => {
+<<<<<<< HEAD
               // ✅ richtiger Pfad
               return !!data.fci?.fciGroup
             },
@@ -294,6 +295,17 @@ export const Dogbreeds: CollectionConfig = {
               // ⚠️ wichtig: Relationship = ID oder Objekt
               group: {
                 equals: typeof group === 'object' ? group.id : group,
+=======
+              // zeigt das Feld nur an, wenn fciGroup gesetzt ist
+              return !!data.fciGroup
+            },
+          },
+          filterOptions: ({ data }) => {
+            if (!data?.fciGroup) return true
+            return {
+              group: {
+                equals: data.fciGroup,
+>>>>>>> 91c3cbfb5bbbb516e8a5f3235cfb340a4dda6c6d
               },
             }
           },
