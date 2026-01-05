@@ -2,11 +2,15 @@ import type { CollectionConfig } from 'payload'
 
 export const Roles: CollectionConfig = {
   slug: 'roles',
+  access: {
+    read: () => true,
+  },
   labels: {
     singular: 'Einsatzgebiet',
     plural: 'Einsatzgebiete',
   },
   admin: {
+    hidden: true,
     useAsTitle: 'name',
     defaultColumns: ['name', 'linkedDogbreeds'],
     group: 'Hunde',
