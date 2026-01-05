@@ -505,28 +505,7 @@ export interface Post {
   status: 'draft' | 'published';
   publishedAt?: string | null;
   heroImage?: (number | null) | Media;
-  content?:
-    | {
-        content?: {
-          root: {
-            type: string;
-            children: {
-              type: string;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        } | null;
-        id?: string | null;
-        blockName?: string | null;
-        blockType: 'content';
-      }[]
-    | null;
+  content?: Content[] | null;
   relatedBreeds?: (number | Dogbreed)[] | null;
   sources?:
     | {
@@ -537,6 +516,30 @@ export interface Post {
     | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Content".
+ */
+export interface Content {
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'content';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -773,13 +776,7 @@ export interface PostsSelect<T extends boolean = true> {
   content?:
     | T
     | {
-        content?:
-          | T
-          | {
-              content?: T;
-              id?: T;
-              blockName?: T;
-            };
+        content?: T | ContentSelect<T>;
       };
   relatedBreeds?: T;
   sources?:
@@ -791,6 +788,15 @@ export interface PostsSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Content_select".
+ */
+export interface ContentSelect<T extends boolean = true> {
+  content?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
