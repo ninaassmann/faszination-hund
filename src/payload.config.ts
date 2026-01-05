@@ -20,9 +20,13 @@ import { CoatColors } from './collections/CoatColors'
 import { CoatTypes } from './collections/CoatTypes'
 import { Countries } from './collections/Countries'
 import { Roles } from './collections/Roles'
+import { Settings } from './globals/config'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+const iconUrl = 'http://localhost:3000/api/media/file/icon.svg'
+const darkIconUrl = 'http://localhost:3000/api/media/file/icon-dark.svg'
+const openGraphImageUrl = 'http://localhost:3000/api/media/file/og-image.png'
 
 export default buildConfig({
   /* onInit: async (payload) => {
@@ -33,6 +37,44 @@ export default buildConfig({
     user: Users.slug,
     importMap: {
       baseDir: path.resolve(dirname),
+    },
+    components: {
+      graphics: {
+        Logo: '/graphics/Logo/index.tsx#Logos',
+        Icon: '/graphics/Icon/index.tsx#Icons',
+      },
+    },
+    meta: {
+      icons: [
+        {
+          fetchPriority: 'high',
+          sizes: '32x32',
+          type: 'image/svg',
+          rel: 'icon',
+          url: iconUrl,
+        },
+        {
+          fetchPriority: 'high',
+          sizes: '32x32',
+          type: 'image/svg',
+          rel: 'icon',
+          url: darkIconUrl,
+          media: '(prefers-color-scheme: dark)',
+        },
+      ],
+      title: 'Dashboard',
+      titleSuffix: '- Faszination Hund',
+      description: 'Hunderassen, News und Tiervermittlung',
+      applicationName: 'Faszination Hund',
+      openGraph: {
+        title: 'Dashboard',
+        description: 'Hunderassen, News und Tiervermittlung',
+        images: [
+          {
+            url: openGraphImageUrl,
+          },
+        ],
+      },
     },
   },
   collections: [
@@ -47,6 +89,7 @@ export default buildConfig({
     FciGroups,
     FciSections,
   ],
+  globals: [Settings],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

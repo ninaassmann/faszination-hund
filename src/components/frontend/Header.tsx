@@ -13,7 +13,7 @@ export async function Header() {
         rel="noopener noreferrer"
         target="_blank"
       >
-        Go to admin panel
+        Login
       </Link>
     </header>
   )
