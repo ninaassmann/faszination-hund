@@ -70,6 +70,7 @@ export interface Config {
     users: User;
     media: Media;
     dogbreeds: Dogbreed;
+    posts: Post;
     coatColors: CoatColor;
     coatTypes: CoatType;
     tags: Tag;
@@ -105,6 +106,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     dogbreeds: DogbreedsSelect<false> | DogbreedsSelect<true>;
+    posts: PostsSelect<false> | PostsSelect<true>;
     coatColors: CoatColorsSelect<false> | CoatColorsSelect<true>;
     coatTypes: CoatTypesSelect<false> | CoatTypesSelect<true>;
     tags: TagsSelect<false> | TagsSelect<true>;
@@ -494,6 +496,53 @@ export interface Country {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: number;
+  title: string;
+  slug?: string | null;
+  status: 'draft' | 'published';
+  publishedAt?: string | null;
+  heroImage?: (number | null) | Media;
+  content?: Content[] | null;
+  relatedBreeds?: (number | Dogbreed)[] | null;
+  sources?:
+    | {
+        label: string;
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Content".
+ */
+export interface Content {
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'content';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -510,6 +559,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'dogbreeds';
         value: number | Dogbreed;
+      } | null)
+    | ({
+        relationTo: 'posts';
+        value: number | Post;
       } | null)
     | ({
         relationTo: 'coatColors';
@@ -709,6 +762,41 @@ export interface DogbreedsSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts_select".
+ */
+export interface PostsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  status?: T;
+  publishedAt?: T;
+  heroImage?: T;
+  content?:
+    | T
+    | {
+        content?: T | ContentSelect<T>;
+      };
+  relatedBreeds?: T;
+  sources?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Content_select".
+ */
+export interface ContentSelect<T extends boolean = true> {
+  content?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
