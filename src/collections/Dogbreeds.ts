@@ -1,16 +1,5 @@
 import type { CollectionConfig } from 'payload'
-
-function slugify(str: string) {
-  return str
-    .toLowerCase()
-    .trim()
-    .replace(/ä/g, 'ae')
-    .replace(/ö/g, 'oe')
-    .replace(/ü/g, 'ue')
-    .replace(/ß/g, 'ss')
-    .replace(/[^\w\s-]/g, '')
-    .replace(/\s+/g, '-')
-}
+import { slugify } from '@/utils/slugify'
 
 export const Dogbreeds: CollectionConfig = {
   slug: 'dogbreeds',
