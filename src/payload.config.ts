@@ -21,6 +21,7 @@ import { CoatTypes } from './collections/CoatTypes'
 import { Countries } from './collections/Countries'
 import { Roles } from './collections/Roles'
 import { Settings } from './globals/config'
+import { Posts } from './collections/Posts'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -44,6 +45,13 @@ export default buildConfig({
         Icon: '/graphics/Icon/index.tsx#Icons',
       },
     },
+    autoLogin:
+      process.env.NODE_ENV === 'development'
+        ? {
+            email: 'hallo@ninaassmann.de',
+            password: 'Pass1107',
+          }
+        : false,
     meta: {
       icons: [
         {
@@ -77,10 +85,12 @@ export default buildConfig({
       },
     },
   },
+  editor: lexicalEditor(),
   collections: [
     Users,
     Media,
     Dogbreeds,
+    Posts,
     CoatColors,
     CoatTypes,
     Tags,
@@ -90,7 +100,6 @@ export default buildConfig({
     FciSections,
   ],
   globals: [Settings],
-  editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
