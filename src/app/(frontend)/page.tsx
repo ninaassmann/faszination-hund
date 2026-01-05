@@ -18,7 +18,7 @@ export default async function HomePage() {
   })
 
   return (
-    <div className="container">
+    <section className="container">
       {breeds.docs.map((breed) => (
         <div key={breed.id} className="card card-border bg-base-100">
           <div className="card-body">
@@ -31,6 +31,6 @@ export default async function HomePage() {
           </div>
         </div>
       ))}
-    </div>
+    </section>
   )
 }
