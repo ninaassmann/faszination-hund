@@ -3,8 +3,8 @@ import type { Media, Dogbreed, Tag } from '@/payload-types'
 import configPromise from '@payload-config'
 
 import Image from 'next/image'
-import Link from 'next/link'
 import { ImageIcon } from 'lucide-react'
+import Link from 'next/link'
 
 export default async function HomePage() {
   const payload = await getPayload({ config: configPromise })

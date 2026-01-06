@@ -1,3 +1,4 @@
+import { validateUrl } from '@/utils/validateUrl'
 import type { CollectionConfig } from 'payload'
 
 export const Media: CollectionConfig = {
@@ -18,6 +19,12 @@ export const Media: CollectionConfig = {
       name: 'alt',
       type: 'text',
       required: true,
+    },
+    {
+      name: 'source',
+      label: 'Quelle',
+      type: 'text',
+      validate: validateUrl,
     },
     {
       name: 'dogbreeds',
