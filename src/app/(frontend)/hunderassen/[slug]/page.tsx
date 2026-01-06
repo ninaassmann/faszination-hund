@@ -22,10 +22,14 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     (img): img is { media: Media; type: 'gallery' } =>
       img.type === 'gallery' && typeof img.media !== 'number',
   )
+  const thumbnail = breed.images?.find(
+    (img): img is { media: Media; type: 'thumbnail' } =>
+      img.type === 'thumbnail' && typeof img.media !== 'number',
+  )
 
   return (
     <section className="container my-10">
-      <BreedHero breed={breed} heroImage={heroImage?.media} />
+      <BreedHero breed={breed} heroImage={heroImage?.media} thumbnail={thumbnail?.media} />
     </section>
   )
 }
