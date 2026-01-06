@@ -10,6 +10,7 @@ export async function Header() {
         <span className="font-serif text-2xl text-primary">Faszination Hund</span>
       </Link>
       <div className="flex gap-10">
+        <Link href="/hunderassen">Hunderassen</Link>
         <Link href="/blog">Blog</Link>
         <Link href={payloadConfig.routes.admin} rel="noopener noreferrer" target="_blank">
           Login
