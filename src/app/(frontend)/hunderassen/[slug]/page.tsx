@@ -2,6 +2,7 @@ import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { BreedHero } from './components/BreedHero'
 import { Media } from '@/payload-types'
+import { FCI } from './components/FCI'
 
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -10,6 +11,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   const dogbreeds = await payload.find({
     collection: 'dogbreeds',
     limit: 1,
+    depth: 2,
     where: {
       slug: {
         equals: slug,
@@ -30,6 +32,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   return (
     <section className="container my-10">
       <BreedHero breed={breed} heroImage={heroImage?.media} thumbnail={thumbnail?.media} />
+      {breed.fci && <FCI fci={breed.fci} />}
     </section>
   )
 }
