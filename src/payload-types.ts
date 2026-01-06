@@ -185,6 +185,7 @@ export interface User {
 export interface Media {
   id: number;
   alt: string;
+  source?: string | null;
   dogbreeds?: (number | Dogbreed)[] | null;
   linkedDogbreeds?: {
     docs?: (number | Dogbreed)[];
@@ -223,9 +224,9 @@ export interface Dogbreed {
   status: 'draft' | 'published' | 'partial';
   general?: {
     /**
-     * Trage hier zusätzliche Namen ein, unter denen die Rasse bekannt ist.
+     * Trage hier zusätzliche Namen ein, unter denen die Rasse bekannt ist. Bestätige einen Namen mit Enter.
      */
-    'Weitere Namen'?: string[] | null;
+    otherNames?: string[] | null;
     /**
      * Schlagworte, z. B. Eigenschaften oder typische Nutzung.
      */
@@ -662,6 +663,7 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  source?: T;
   dogbreeds?: T;
   linkedDogbreeds?: T;
   updatedAt?: T;
@@ -687,7 +689,7 @@ export interface DogbreedsSelect<T extends boolean = true> {
   general?:
     | T
     | {
-        'Weitere Namen'?: T;
+        otherNames?: T;
         tags?: T;
         isHybrid?: T;
         parentBreeds?: T;

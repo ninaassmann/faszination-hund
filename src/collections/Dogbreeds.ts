@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { slugify } from '@/utils/slugify'
+import { validateUrl } from '@/utils/validateUrl'
 
 export const Dogbreeds: CollectionConfig = {
   slug: 'dogbreeds',
@@ -69,36 +70,14 @@ export const Dogbreeds: CollectionConfig = {
       type: 'group',
       fields: [
         {
-          name: 'Weitere Namen',
+          name: 'otherNames',
+          label: 'Weitere Namen',
           type: 'text',
           hasMany: true,
           admin: {
             placeholder: 'weitere bekannte Namen',
-            description: 'Trage hier zusätzliche Namen ein, unter denen die Rasse bekannt ist.',
-          },
-          hooks: {
-            beforeValidate: [
-              ({ value }) => {
-                if (!value || !Array.isArray(value)) return value
-                const trimmedNames = value.map((name) => name.trim())
-                const nonEmptyNames = trimmedNames.filter((name) => name.length > 0)
-
-                const namesWithSlugs = nonEmptyNames.map((name) => ({
-                  name,
-                  slug: name
-                    .toLowerCase()
-                    .trim()
-                    .replace(/ä/g, 'ae')
-                    .replace(/ö/g, 'oe')
-                    .replace(/ü/g, 'ue')
-                    .replace(/ß/g, 'ss')
-                    .replace(/[^\w\s-]/g, '')
-                    .replace(/\s+/g, '-'),
-                }))
-
-                return namesWithSlugs
-              },
-            ],
+            description:
+              'Trage hier zusätzliche Namen ein, unter denen die Rasse bekannt ist. Bestätige einen Namen mit Enter.',
           },
         },
         {
@@ -368,16 +347,7 @@ export const Dogbreeds: CollectionConfig = {
             description: 'Trage hier den Link zum PDF des offiziellen Standard ein.',
             condition: (data) => data.fci?.fciStatus !== 'not_recognized', // wird ausgeblendet, wenn der FCI Status "Nicht anerkannt" ist
           },
-          validate: (value: string | null | undefined) => {
-            if (!value) return true
-
-            try {
-              new URL(value)
-              return true
-            } catch {
-              return 'Bitte eine gültige URL eingeben'
-            }
-          },
+          validate: validateUrl,
         },
       ],
     },
@@ -673,15 +643,7 @@ export const Dogbreeds: CollectionConfig = {
           label: 'Webseite',
           type: 'text',
           admin: { placeholder: 'URL der Webseite' },
-          validate: (value: string | null | undefined) => {
-            if (!value) return true
-            try {
-              new URL(value)
-              return true
-            } catch {
-              return 'Bitte eine gültige URL eingeben'
-            }
-          },
+          validate: validateUrl,
         },
         {
           name: 'contact',
