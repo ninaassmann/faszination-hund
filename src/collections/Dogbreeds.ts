@@ -34,7 +34,8 @@ export const Dogbreeds: CollectionConfig = {
       type: 'text',
       localized: false,
       admin: {
-        description: 'Gib hier einen Slug ein, der später für die Detailseite benutzt wird.',
+        placeholder: 'z.B. labrador-retriever',
+        description: 'Der Slug wird automatisch aus dem Namen der Hunderasse generiert.',
       },
       hooks: {
         beforeValidate: [

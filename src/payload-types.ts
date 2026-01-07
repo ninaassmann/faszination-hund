@@ -217,7 +217,7 @@ export interface Dogbreed {
    */
   breed: string;
   /**
-   * Gib hier einen Slug ein, der später für die Detailseite benutzt wird.
+   * Der Slug wird automatisch aus dem Namen der Hunderasse generiert.
    */
   slug?: string | null;
   /**
@@ -504,6 +504,9 @@ export interface Country {
 export interface Dog {
   id: number;
   name: string;
+  /**
+   * Der Slug wird automatisch aus dem Namen des Hundes generiert.
+   */
   slug?: string | null;
   images?:
     | {

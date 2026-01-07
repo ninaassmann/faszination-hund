@@ -27,6 +27,9 @@ export const Dogs: CollectionConfig = {
       label: 'Slug',
       type: 'text',
       localized: false,
+      admin: {
+        description: 'Der Slug wird automatisch aus dem Namen des Hundes generiert.',
+      },
       hooks: {
         beforeValidate: [
           ({ data, operation, value }) => {
