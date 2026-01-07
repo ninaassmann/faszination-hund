@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    dogs: Dog;
     dogbreeds: Dogbreed;
     posts: Post;
     coatColors: CoatColor;
@@ -105,6 +106,7 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    dogs: DogsSelect<false> | DogsSelect<true>;
     dogbreeds: DogbreedsSelect<false> | DogbreedsSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     coatColors: CoatColorsSelect<false> | CoatColorsSelect<true>;
@@ -497,6 +499,21 @@ export interface Country {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "dogs".
+ */
+export interface Dog {
+  id: number;
+  name: string;
+  slug?: string | null;
+  adoptionStatus?: ('available' | 'reserved' | 'adopted') | null;
+  birthDate?: string | null;
+  birthDateType?: ('exact' | 'estimated' | 'unknown') | null;
+  breeds?: (number | Dogbreed)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts".
  */
 export interface Post {
@@ -556,6 +573,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'dogs';
+        value: number | Dog;
       } | null)
     | ({
         relationTo: 'dogbreeds';
@@ -677,6 +698,20 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "dogs_select".
+ */
+export interface DogsSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  adoptionStatus?: T;
+  birthDate?: T;
+  birthDateType?: T;
+  breeds?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
