@@ -34,7 +34,6 @@ export const Dogbreeds: CollectionConfig = {
       type: 'text',
       localized: false,
       admin: {
-        placeholder: 'z.B. labrador-retriever',
         description: 'Gib hier einen Slug ein, der später für die Detailseite benutzt wird.',
       },
       hooks: {
