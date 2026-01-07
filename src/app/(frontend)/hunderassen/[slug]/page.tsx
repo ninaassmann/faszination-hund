@@ -4,6 +4,7 @@ import { BreedHero } from './components/BreedHero'
 import { CoatColor, CoatType, Country, Dogbreed, Media } from '@/payload-types'
 import { FCI } from './components/FCI'
 import { BreedDetails } from './components/BreedDetails'
+import { BreedDesc } from './components/BreedDesc'
 
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -39,6 +40,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     <section className="container my-10">
       <BreedHero breed={breed} heroImage={heroImage} thumbnail={thumbnail} />
       <BreedDetails breed={breed} origin={origin} coatColors={coatColors} coatTypes={coatTypes} />
+      {breed.descriptions && <BreedDesc breed={breed} />}
       {breed.fci && <FCI fci={breed.fci} />}
     </section>
   )

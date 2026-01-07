@@ -59,7 +59,7 @@ h4 {
 }
 
 p {
-  @apply font-sans max-w-xl mb-6;
+  @apply font-sans mb-6;
 }
 
 p + h2 {
