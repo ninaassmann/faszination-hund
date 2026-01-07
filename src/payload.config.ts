@@ -112,7 +112,7 @@ export default buildConfig({
       token: process.env.BLOB_READ_WRITE_TOKEN || '',
     }),
     seoPlugin({
-      collections: ['dogbreeds'],
+      collections: ['dogbreeds', 'dogs'],
       uploadsCollection: 'media',
       generateTitle: ({ doc }) => `${doc.title} | Faszination Hund`,
       generateDescription: ({ doc }) => doc.descriptions.general,

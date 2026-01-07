@@ -1,3 +1,4 @@
+import { Content } from '@/blocks/Content/config'
 import { slugify } from '@/utils/slugify'
 import { CollectionConfig } from 'payload'
 
@@ -37,6 +38,88 @@ export const Dogs: CollectionConfig = {
         ],
       },
     },
+    {
+      name: 'images',
+      label: 'Bilder',
+      labels: {
+        singular: 'Bild',
+        plural: 'Bilder',
+      },
+      type: 'array',
+      minRows: 0,
+      maxRows: 20,
+      validate: (value) => {
+        const items = value as { media: string; type: 'thumbnail' | 'gallery' }[] | undefined
+        if (!items) return true
+
+        const thumbnails = items.filter((item) => item.type === 'thumbnail')
+        if (thumbnails.length > 1) {
+          return 'Es darf nur ein Thumbnail ausgewählt werden.'
+        }
+        return true
+      },
+      fields: [
+        {
+          name: 'media',
+          label: 'Bild',
+          type: 'relationship',
+          relationTo: 'media',
+          required: true,
+          admin: {
+            description: 'Wähle ein Bild aus der Media-Collection.',
+          },
+        },
+        {
+          name: 'type',
+          label: 'Typ',
+          type: 'select',
+          required: true,
+          options: [
+            { label: 'Thumbnail', value: 'thumbnail' },
+            { label: 'Galerie', value: 'gallery' },
+          ],
+          admin: {
+            description:
+              'Wähle aus, ob das Bild als Thumbnail oder in der Galerie angezeigt werden soll.',
+          },
+        },
+      ],
+    },
+
+    // Infos zum Geschelcht
+    {
+      label: 'Geschlecht',
+      type: 'group',
+      fields: [
+        {
+          name: 'gender',
+          label: 'Geschlecht',
+          type: 'radio',
+          options: [
+            { label: 'Weiblich', value: 'female' },
+            { label: 'Männlich', value: 'male' },
+          ],
+        },
+        {
+          name: 'castration',
+          label: 'Kastration',
+          type: 'radio',
+          options: [
+            { label: 'Ja', value: 'yes' },
+            { label: 'Nein, zu jung', value: 'tooYoung' },
+            { label: 'Nein', value: 'no' },
+          ],
+        },
+        {
+          name: 'castrationInfo',
+          label: 'Infos zur Kastration',
+          type: 'text',
+          admin: {
+            description: 'Trage hier weitere Infos zur Kastration.',
+          },
+        },
+      ],
+    },
 
     // Infos zum Adoptionsstatus
     {
@@ -61,14 +144,6 @@ export const Dogs: CollectionConfig = {
             condition: (data) => data.adoptionStatus == 'adopted',
           },
         },
-        {
-          name: 'adoptionDate',
-          label: 'Datum der Adoption',
-          type: 'date',
-          admin: {
-            condition: (data) => data.adoptionStatus == 'adopted',
-          },
-        },
       ],
     },
 
@@ -79,16 +154,29 @@ export const Dogs: CollectionConfig = {
       fields: [
         {
           name: 'location',
+          label: 'Aktueller Aufenthalt',
           type: 'text',
           required: true,
         },
         {
           name: 'locationType',
+          label: 'Aufenthaltstyp',
           type: 'select',
           options: [
             { label: 'Pflegestelle', value: 'fosterHome' },
             { label: 'Tierheim', value: 'shelter' },
-            { label: 'Tötungsstaion', value: 'euthanasiaCenter' },
+            { label: 'Tötungsstation', value: 'euthanasiaCenter' },
+          ],
+        },
+        {
+          name: 'earliestArrivalType',
+          label: 'Angabe zur Ausreise',
+          type: 'select',
+          defaultValue: 'unknown',
+          options: [
+            { label: 'Termin festgelegt', value: 'fixed' },
+            { label: 'Voraussichtlich möglich', value: 'estimated' },
+            { label: 'Noch nicht absehbar', value: 'unknown' },
           ],
         },
         {
@@ -97,18 +185,8 @@ export const Dogs: CollectionConfig = {
           label: 'Frühestmögliche Ausreise',
           admin: {
             description: 'Ab diesem Datum ist eine Ausreise nach Deutschland frühestens möglich.',
+            condition: (data) => data.earliestArrivalType != 'unknown',
           },
-        },
-        {
-          name: 'earliestArrivalType',
-          type: 'select',
-          label: 'Angabe zur Ausreise',
-          defaultValue: 'unknown',
-          options: [
-            { label: 'Termin festgelegt', value: 'fixed' },
-            { label: 'Voraussichtlich möglich', value: 'estimated' },
-            { label: 'Noch nicht absehbar', value: 'unknown' },
-          ],
         },
       ],
     },
@@ -148,6 +226,9 @@ export const Dogs: CollectionConfig = {
           type: 'relationship',
           relationTo: 'dogbreeds',
           hasMany: true,
+          admin: {
+            description: 'Wähle mehrere Rassen, wenn nötig.',
+          },
         },
         {
           name: 'breedType',
@@ -161,6 +242,18 @@ export const Dogs: CollectionConfig = {
           defaultValue: 'unknown',
         },
       ],
+    },
+
+    // Beschreibungstext
+    {
+      name: 'description',
+      label: 'Beschreibung',
+      labels: {
+        singular: 'Beschreibung',
+        plural: 'Beschreibungen',
+      },
+      type: 'blocks',
+      blocks: [Content],
     },
   ],
 }

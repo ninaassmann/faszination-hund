@@ -505,33 +505,50 @@ export interface Dog {
   id: number;
   name: string;
   slug?: string | null;
-  adoptionStatus?: ('available' | 'reserved' | 'adopted') | null;
-  birthDate?: string | null;
-  birthDateType?: ('exact' | 'estimated' | 'unknown') | null;
-  breeds?: (number | Dogbreed)[] | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts".
- */
-export interface Post {
-  id: number;
-  title: string;
-  slug?: string | null;
-  status: 'draft' | 'published';
-  publishedAt?: string | null;
-  heroImage?: (number | null) | Media;
-  content?: Content[] | null;
-  relatedBreeds?: (number | Dogbreed)[] | null;
-  sources?:
+  images?:
     | {
-        label: string;
-        url?: string | null;
+        /**
+         * Wähle ein Bild aus der Media-Collection.
+         */
+        media: number | Media;
+        /**
+         * Wähle aus, ob das Bild als Thumbnail oder in der Galerie angezeigt werden soll.
+         */
+        type: 'thumbnail' | 'gallery';
         id?: string | null;
       }[]
     | null;
+  gender?: ('female' | 'male') | null;
+  castration?: ('yes' | 'tooYoung' | 'no') | null;
+  /**
+   * Trage hier weitere Infos zur Kastration.
+   */
+  castrationInfo?: string | null;
+  adoptionStatus?: ('available' | 'reserved' | 'adopted') | null;
+  adoptionDate?: string | null;
+  location: string;
+  locationType?: ('fosterHome' | 'shelter' | 'euthanasiaCenter') | null;
+  earliestArrivalType?: ('fixed' | 'estimated' | 'unknown') | null;
+  /**
+   * Ab diesem Datum ist eine Ausreise nach Deutschland frühestens möglich.
+   */
+  earliestArrivalDate?: string | null;
+  birthDate?: string | null;
+  birthDateType?: ('exact' | 'estimated' | 'unknown') | null;
+  /**
+   * Wähle mehrere Rassen, wenn nötig.
+   */
+  breeds?: (number | Dogbreed)[] | null;
+  breedType?: ('known' | 'estimated' | 'unknown') | null;
+  description?: Content[] | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -558,6 +575,29 @@ export interface Content {
   id?: string | null;
   blockName?: string | null;
   blockType: 'content';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: number;
+  title: string;
+  slug?: string | null;
+  status: 'draft' | 'published';
+  publishedAt?: string | null;
+  heroImage?: (number | null) | Media;
+  content?: Content[] | null;
+  relatedBreeds?: (number | Dogbreed)[] | null;
+  sources?:
+    | {
+        label: string;
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -706,12 +746,49 @@ export interface MediaSelect<T extends boolean = true> {
 export interface DogsSelect<T extends boolean = true> {
   name?: T;
   slug?: T;
+  images?:
+    | T
+    | {
+        media?: T;
+        type?: T;
+        id?: T;
+      };
+  gender?: T;
+  castration?: T;
+  castrationInfo?: T;
   adoptionStatus?: T;
+  adoptionDate?: T;
+  location?: T;
+  locationType?: T;
+  earliestArrivalType?: T;
+  earliestArrivalDate?: T;
   birthDate?: T;
   birthDateType?: T;
   breeds?: T;
+  breedType?: T;
+  description?:
+    | T
+    | {
+        content?: T | ContentSelect<T>;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Content_select".
+ */
+export interface ContentSelect<T extends boolean = true> {
+  content?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -825,15 +902,6 @@ export interface PostsSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "Content_select".
- */
-export interface ContentSelect<T extends boolean = true> {
-  content?: T;
-  id?: T;
-  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
