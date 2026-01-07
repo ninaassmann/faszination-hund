@@ -16,11 +16,9 @@ export function BreedHero({ breed, heroImage, thumbnail }: Props) {
         return <span key={index}>{name}</span>
       })}
       <div className="flex flex-wrap gap-2 my-10">
-        {breed.general?.tags?.map(
-          (tag): tag is Tag => typeof tag !== 'number', // Type Guard
-        ) &&
+        {breed.general?.tags?.map((tag): tag is Tag => typeof tag !== 'number') &&
           breed.general.tags
-            .filter((tag): tag is Tag => typeof tag !== 'number') // nur Tag-Objekte
+            .filter((tag): tag is Tag => typeof tag !== 'number')
             .map((tag) => (
               <span key={tag.id} className="badge badge-ghost">
                 {tag.name}
