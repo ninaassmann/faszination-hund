@@ -1,5 +1,6 @@
 import type { Dogbreed } from '@/payload-types'
 import { getFciStatusBadge } from '@/utils/fcibadges'
+import Link from 'next/link'
 
 type Props = {
   fci?: Dogbreed['fci'] // optional
@@ -37,24 +38,24 @@ export function FCI({ fci }: Props) {
         <div className="card-actions justify-end">
           <div className="flex flex-wrap gap-2">
             {fciSource && (
-              <a
+              <Link
                 href={fciSource}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-soft"
               >
                 FCI Website
-              </a>
+              </Link>
             )}
             {fciSourcePDF && (
-              <a
+              <Link
                 href={fciSourcePDF}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-soft"
               >
                 PDF
-              </a>
+              </Link>
             )}
           </div>
         </div>
