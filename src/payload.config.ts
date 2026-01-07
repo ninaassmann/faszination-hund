@@ -22,6 +22,7 @@ import { Countries } from './collections/Countries'
 import { Roles } from './collections/Roles'
 import { Settings } from './globals/config'
 import { Posts } from './collections/Posts'
+import { Dogs } from './collections/Dogs'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -82,6 +83,7 @@ export default buildConfig({
   collections: [
     Users,
     Media,
+    Dogs,
     Dogbreeds,
     Posts,
     CoatColors,
@@ -110,7 +112,7 @@ export default buildConfig({
       token: process.env.BLOB_READ_WRITE_TOKEN || '',
     }),
     seoPlugin({
-      collections: ['dogbreeds'],
+      collections: ['dogbreeds', 'dogs'],
       uploadsCollection: 'media',
       generateTitle: ({ doc }) => `${doc.title} | Faszination Hund`,
       generateDescription: ({ doc }) => doc.descriptions.general,

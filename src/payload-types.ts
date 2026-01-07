@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    dogs: Dog;
     dogbreeds: Dogbreed;
     posts: Post;
     coatColors: CoatColor;
@@ -105,6 +106,7 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    dogs: DogsSelect<false> | DogsSelect<true>;
     dogbreeds: DogbreedsSelect<false> | DogbreedsSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     coatColors: CoatColorsSelect<false> | CoatColorsSelect<true>;
@@ -215,7 +217,7 @@ export interface Dogbreed {
    */
   breed: string;
   /**
-   * Gib hier einen Slug ein, der später für die Detailseite benutzt wird.
+   * Der Slug wird automatisch aus dem Namen der Hunderasse generiert.
    */
   slug?: string | null;
   /**
@@ -497,24 +499,59 @@ export interface Country {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts".
+ * via the `definition` "dogs".
  */
-export interface Post {
+export interface Dog {
   id: number;
-  title: string;
+  name: string;
+  /**
+   * Der Slug wird automatisch aus dem Namen des Hundes generiert.
+   */
   slug?: string | null;
-  status: 'draft' | 'published';
-  publishedAt?: string | null;
-  heroImage?: (number | null) | Media;
-  content?: Content[] | null;
-  relatedBreeds?: (number | Dogbreed)[] | null;
-  sources?:
+  images?:
     | {
-        label: string;
-        url?: string | null;
+        /**
+         * Wähle ein Bild aus der Media-Collection.
+         */
+        media: number | Media;
+        /**
+         * Wähle aus, ob das Bild als Thumbnail oder in der Galerie angezeigt werden soll.
+         */
+        type: 'thumbnail' | 'gallery';
         id?: string | null;
       }[]
     | null;
+  gender?: ('female' | 'male') | null;
+  castration?: ('yes' | 'tooYoung' | 'no') | null;
+  /**
+   * Trage hier weitere Infos zur Kastration.
+   */
+  castrationInfo?: string | null;
+  adoptionStatus?: ('available' | 'reserved' | 'adopted') | null;
+  adoptionDate?: string | null;
+  location: string;
+  locationType?: ('fosterHome' | 'shelter' | 'euthanasiaCenter') | null;
+  earliestArrivalType?: ('fixed' | 'estimated' | 'unknown') | null;
+  /**
+   * Ab diesem Datum ist eine Ausreise nach Deutschland frühestens möglich.
+   */
+  earliestArrivalDate?: string | null;
+  birthDate?: string | null;
+  birthDateType?: ('exact' | 'estimated' | 'unknown') | null;
+  /**
+   * Wähle mehrere Rassen, wenn nötig.
+   */
+  breeds?: (number | Dogbreed)[] | null;
+  breedType?: ('known' | 'estimated' | 'unknown') | null;
+  description?: Content[] | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -544,6 +581,29 @@ export interface Content {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: number;
+  title: string;
+  slug?: string | null;
+  status: 'draft' | 'published';
+  publishedAt?: string | null;
+  heroImage?: (number | null) | Media;
+  content?: Content[] | null;
+  relatedBreeds?: (number | Dogbreed)[] | null;
+  sources?:
+    | {
+        label: string;
+        url?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -556,6 +616,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'dogs';
+        value: number | Dog;
       } | null)
     | ({
         relationTo: 'dogbreeds';
@@ -680,6 +744,57 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "dogs_select".
+ */
+export interface DogsSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  images?:
+    | T
+    | {
+        media?: T;
+        type?: T;
+        id?: T;
+      };
+  gender?: T;
+  castration?: T;
+  castrationInfo?: T;
+  adoptionStatus?: T;
+  adoptionDate?: T;
+  location?: T;
+  locationType?: T;
+  earliestArrivalType?: T;
+  earliestArrivalDate?: T;
+  birthDate?: T;
+  birthDateType?: T;
+  breeds?: T;
+  breedType?: T;
+  description?:
+    | T
+    | {
+        content?: T | ContentSelect<T>;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Content_select".
+ */
+export interface ContentSelect<T extends boolean = true> {
+  content?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "dogbreeds_select".
  */
 export interface DogbreedsSelect<T extends boolean = true> {
@@ -790,15 +905,6 @@ export interface PostsSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "Content_select".
- */
-export interface ContentSelect<T extends boolean = true> {
-  content?: T;
-  id?: T;
-  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

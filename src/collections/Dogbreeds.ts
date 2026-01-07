@@ -35,7 +35,7 @@ export const Dogbreeds: CollectionConfig = {
       localized: false,
       admin: {
         placeholder: 'z.B. labrador-retriever',
-        description: 'Gib hier einen Slug ein, der später für die Detailseite benutzt wird.',
+        description: 'Der Slug wird automatisch aus dem Namen der Hunderasse generiert.',
       },
       hooks: {
         beforeValidate: [
@@ -257,7 +257,7 @@ export const Dogbreeds: CollectionConfig = {
                 },
               },
             },
-            condition: (data) => data.fci?.fciStatus == 'not_recognized', // wird ausgeblendet, wenn der FCI Status "Nicht anerkannt" ist
+            condition: (data) => data.fci?.fciStatus == 'not_recognized', // wird nur angezeigt, wenn der FCI Status "Nicht anerkannt" ist
           },
         },
         {
