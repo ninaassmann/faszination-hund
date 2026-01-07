@@ -1,8 +1,9 @@
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { BreedHero } from './components/BreedHero'
-import { Media } from '@/payload-types'
+import { CoatColor, CoatType, Country, Dogbreed, Media } from '@/payload-types'
 import { FCI } from './components/FCI'
+import { BreedDetails } from './components/BreedDetails'
 
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -19,19 +20,25 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     },
   })
 
-  const breed = dogbreeds.docs[0]
-  const heroImage = breed.images?.find(
-    (img): img is { media: Media; type: 'gallery' } =>
-      img.type === 'gallery' && typeof img.media !== 'number',
+  const breed = dogbreeds.docs[0] as Dogbreed
+
+  const origin = breed.details?.origin as Country
+  const coatColors = (breed.details?.coatColors || []).filter(
+    (c): c is CoatColor => typeof c !== 'number',
   )
-  const thumbnail = breed.images?.find(
-    (img): img is { media: Media; type: 'thumbnail' } =>
-      img.type === 'thumbnail' && typeof img.media !== 'number',
+  const coatTypes = (breed.details?.coatTypes || []).filter(
+    (c): c is CoatType => typeof c !== 'number',
   )
+
+  const heroImage = breed.images?.find((img) => img.type === 'gallery')?.media as Media | undefined
+  const thumbnail = breed.images?.find((img) => img.type === 'thumbnail')?.media as
+    | Media
+    | undefined
 
   return (
     <section className="container my-10">
-      <BreedHero breed={breed} heroImage={heroImage?.media} thumbnail={thumbnail?.media} />
+      <BreedHero breed={breed} heroImage={heroImage} thumbnail={thumbnail} />
+      <BreedDetails breed={breed} origin={origin} coatColors={coatColors} coatTypes={coatTypes} />
       {breed.fci && <FCI fci={breed.fci} />}
     </section>
   )
