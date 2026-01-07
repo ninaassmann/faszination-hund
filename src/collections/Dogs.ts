@@ -40,13 +40,76 @@ export const Dogs: CollectionConfig = {
 
     // Infos zum Adoptionsstatus
     {
-      name: 'adoptionStatus',
-      label: 'Adoptionsstatus',
-      type: 'select',
-      options: [
-        { label: 'Vermittelbar', value: 'available' },
-        { label: 'Reserviert', value: 'reserved' },
-        { label: 'Vermittelt', value: 'adopted' },
+      label: 'Infos zur Adoption',
+      type: 'group',
+      fields: [
+        {
+          name: 'adoptionStatus',
+          label: 'Adoptionsstatus',
+          type: 'select',
+          options: [
+            { label: 'Vermittelbar', value: 'available' },
+            { label: 'Reserviert', value: 'reserved' },
+            { label: 'Vermittelt', value: 'adopted' },
+          ],
+        },
+        {
+          name: 'adoptionDate',
+          label: 'Datum der Adoption',
+          type: 'date',
+          admin: {
+            condition: (data) => data.adoptionStatus == 'adopted',
+          },
+        },
+        {
+          name: 'adoptionDate',
+          label: 'Datum der Adoption',
+          type: 'date',
+          admin: {
+            condition: (data) => data.adoptionStatus == 'adopted',
+          },
+        },
+      ],
+    },
+
+    // Infos zum Aufenthalt
+    {
+      label: 'Aufenthalt',
+      type: 'group',
+      fields: [
+        {
+          name: 'location',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'locationType',
+          type: 'select',
+          options: [
+            { label: 'Pflegestelle', value: 'fosterHome' },
+            { label: 'Tierheim', value: 'shelter' },
+            { label: 'Tötungsstaion', value: 'euthanasiaCenter' },
+          ],
+        },
+        {
+          name: 'earliestArrivalDate',
+          type: 'date',
+          label: 'Frühestmögliche Ausreise',
+          admin: {
+            description: 'Ab diesem Datum ist eine Ausreise nach Deutschland frühestens möglich.',
+          },
+        },
+        {
+          name: 'earliestArrivalType',
+          type: 'select',
+          label: 'Angabe zur Ausreise',
+          defaultValue: 'unknown',
+          options: [
+            { label: 'Termin festgelegt', value: 'fixed' },
+            { label: 'Voraussichtlich möglich', value: 'estimated' },
+            { label: 'Noch nicht absehbar', value: 'unknown' },
+          ],
+        },
       ],
     },
 

@@ -257,7 +257,7 @@ export const Dogbreeds: CollectionConfig = {
                 },
               },
             },
-            condition: (data) => data.fci?.fciStatus == 'not_recognized', // wird ausgeblendet, wenn der FCI Status "Nicht anerkannt" ist
+            condition: (data) => data.fci?.fciStatus == 'not_recognized', // wird nur angezeigt, wenn der FCI Status "Nicht anerkannt" ist
           },
         },
         {
