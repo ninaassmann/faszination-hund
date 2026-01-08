@@ -16,13 +16,17 @@ export const HeroCentered: Block = {
   },
   fields: [
     {
-      name: 'text',
+      name: 'content',
+      label: 'Textinhalt',
       type: 'richText',
+      admin: {
+        description: 'Überschrift und optionaler Text für den Hero-Bereich.',
+      },
       editor: lexicalEditor({
         features: ({ rootFeatures }) => {
           return [
             ...rootFeatures,
-            HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
+            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2'] }),
             FixedToolbarFeature(),
             InlineToolbarFeature(),
           ]
@@ -30,11 +34,22 @@ export const HeroCentered: Block = {
       }),
     },
     {
-      name: 'buttons',
+      name: 'cta',
       type: 'array',
+      labels: {
+        singular: 'Button',
+        plural: 'Buttons',
+      },
+      maxRows: 2,
       fields: [
         {
-          name: 'ctaType',
+          name: 'label',
+          label: 'Button-Text',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'type',
           type: 'select',
           options: [
             { label: 'Intern', value: 'intern' },
@@ -42,7 +57,7 @@ export const HeroCentered: Block = {
           ],
         },
         {
-          name: 'ctaIntern',
+          name: 'intern',
           type: 'relationship',
           relationTo: 'pages',
           admin: {
@@ -50,9 +65,22 @@ export const HeroCentered: Block = {
           },
         },
         {
-          name: 'ctaExtern',
+          name: 'extern',
           type: 'text',
           validate: validateUrl,
+          admin: {
+            condition: (data) => data.ctaType == 'extern',
+          },
+        },
+        {
+          name: 'style',
+          type: 'select',
+          options: [
+            { label: 'Primary', value: 'primary' },
+            { label: 'Secondary', value: 'secondary' },
+            { label: 'ghost', value: 'ghost' },
+          ],
+          defaultValue: 'primary',
         },
       ],
     },
