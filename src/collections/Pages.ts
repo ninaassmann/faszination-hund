@@ -56,6 +56,11 @@ export const Pages: CollectionConfig = {
       },
     },
     {
+      name: 'hideBreadcrumps',
+      label: 'Breadcrumps auf dieser Seite ausblenden',
+      type: 'checkbox',
+    },
+    {
       name: 'content',
       label: 'Inhalte',
       type: 'blocks',
