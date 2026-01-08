@@ -71,6 +71,7 @@ export interface Config {
     media: Media;
     dogs: Dog;
     dogbreeds: Dogbreed;
+    pages: Page;
     posts: Post;
     coatColors: CoatColor;
     coatTypes: CoatType;
@@ -108,6 +109,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     dogs: DogsSelect<false> | DogsSelect<true>;
     dogbreeds: DogbreedsSelect<false> | DogbreedsSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     coatColors: CoatColorsSelect<false> | CoatColorsSelect<true>;
     coatTypes: CoatTypesSelect<false> | CoatTypesSelect<true>;
@@ -581,6 +583,28 @@ export interface Content {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number;
+  title: string;
+  slug?: string | null;
+  status: 'draft' | 'published';
+  publishedAt?: string | null;
+  content?: Content[] | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts".
  */
 export interface Post {
@@ -624,6 +648,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'dogbreeds';
         value: number | Dogbreed;
+      } | null)
+    | ({
+        relationTo: 'pages';
+        value: number | Page;
       } | null)
     | ({
         relationTo: 'posts';
@@ -869,6 +897,30 @@ export interface DogbreedsSelect<T extends boolean = true> {
         link?: T;
         notes?: T;
         id?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  status?: T;
+  publishedAt?: T;
+  content?:
+    | T
+    | {
+        content?: T | ContentSelect<T>;
       };
   meta?:
     | T
