@@ -591,7 +591,8 @@ export interface Page {
   slug?: string | null;
   status: 'draft' | 'published';
   publishedAt?: string | null;
-  content?: Content[] | null;
+  hideBreadcrumps?: boolean | null;
+  content?: (Content | HeroCentered)[] | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -605,6 +606,44 @@ export interface Page {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroCentered".
+ */
+export interface HeroCentered {
+  /**
+   * Überschrift und optionaler Text für den Hero-Bereich.
+   */
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  cta?:
+    | {
+        label: string;
+        type?: ('intern' | 'extern') | null;
+        intern?: (number | null) | Page;
+        extern?: string | null;
+        style?: ('primary' | 'secondary' | 'ghost') | null;
+        id?: string | null;
+      }[]
+    | null;
+  image?: (number | null) | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'heroCentered';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts".
  */
 export interface Post {
@@ -614,7 +653,7 @@ export interface Post {
   status: 'draft' | 'published';
   publishedAt?: string | null;
   heroImage?: (number | null) | Media;
-  content?: Content[] | null;
+  content?: (HeroCentered | Content)[] | null;
   relatedBreeds?: (number | Dogbreed)[] | null;
   sources?:
     | {
@@ -917,10 +956,12 @@ export interface PagesSelect<T extends boolean = true> {
   slug?: T;
   status?: T;
   publishedAt?: T;
+  hideBreadcrumps?: T;
   content?:
     | T
     | {
         content?: T | ContentSelect<T>;
+        heroCentered?: T | HeroCenteredSelect<T>;
       };
   meta?:
     | T
@@ -931,6 +972,26 @@ export interface PagesSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroCentered_select".
+ */
+export interface HeroCenteredSelect<T extends boolean = true> {
+  content?: T;
+  cta?:
+    | T
+    | {
+        label?: T;
+        type?: T;
+        intern?: T;
+        extern?: T;
+        style?: T;
+        id?: T;
+      };
+  image?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -945,6 +1006,7 @@ export interface PostsSelect<T extends boolean = true> {
   content?:
     | T
     | {
+        heroCentered?: T | HeroCenteredSelect<T>;
         content?: T | ContentSelect<T>;
       };
   relatedBreeds?: T;

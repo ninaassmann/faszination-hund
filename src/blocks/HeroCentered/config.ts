@@ -35,6 +35,7 @@ export const HeroCentered: Block = {
     },
     {
       name: 'cta',
+      label: 'Buttons',
       type: 'array',
       labels: {
         singular: 'Button',
@@ -61,7 +62,9 @@ export const HeroCentered: Block = {
           type: 'relationship',
           relationTo: 'pages',
           admin: {
-            condition: (data) => data.ctaType == 'intern',
+            condition: (data, siblingData) => {
+              return siblingData?.type === 'intern'
+            },
           },
         },
         {
@@ -69,7 +72,9 @@ export const HeroCentered: Block = {
           type: 'text',
           validate: validateUrl,
           admin: {
-            condition: (data) => data.ctaType == 'extern',
+            condition: (data, siblingData) => {
+              return siblingData?.type === 'extern'
+            },
           },
         },
         {
