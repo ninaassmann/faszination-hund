@@ -1,11 +1,11 @@
 import type { Post, Page } from '@/payload-types'
 
 import { ContentBlock } from './Content/Component'
-import { HeroCenteredBlock } from './HeroCentered/Component'
+import { HeroBlock } from './Hero/Component'
 
 const blockComponents = {
   content: ContentBlock,
-  heroCentered: HeroCenteredBlock,
+  hero: HeroBlock,
 }
 
 export const RenderBlocks: React.FC<{

@@ -1,28 +1,22 @@
-import type { HeroCentered as HeroCenteredProps } from '@/payload-types'
-import { RichText } from '@/components/frontend/RichText'
+import type { Hero as HeroProps } from '@/payload-types'
 import Link from 'next/link'
 import Image from 'next/image'
 
 type Props = {
   className?: string
-} & HeroCenteredProps
+} & HeroProps
 
-export const HeroCenteredBlock: React.FC<Props> = ({ content, cta, image, className }) => {
-  if (!content) return null
+export const HeroBlock: React.FC<Props> = ({ text, ctas, image, className }) => {
+  if (!text) return null
 
   const mediaImage = typeof image === 'object' && image !== null ? image : undefined
 
   return (
     <section className={`my-28 ${className}`}>
       <div className="container flex flex-col items-center">
-        <RichText
-          data={content}
-          className="prose prose-neutral max-w-4/5 text-pretty text-center"
-        />
-
-        {Array.isArray(cta) && cta.length > 0 && (
+        {Array.isArray(ctas) && ctas.length > 0 && (
           <div className="flex gap-4">
-            {cta.map((button, index) => {
+            {ctas.map((button, index) => {
               let href: string = '#'
 
               if (button.type === 'intern') {

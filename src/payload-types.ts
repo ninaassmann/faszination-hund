@@ -592,7 +592,7 @@ export interface Page {
   status: 'draft' | 'published';
   publishedAt?: string | null;
   hideBreadcrumps?: boolean | null;
-  content?: (Content | HeroCentered)[] | null;
+  content?: (Content | Hero)[] | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -606,41 +606,38 @@ export interface Page {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "HeroCentered".
+ * via the `definition` "Hero".
  */
-export interface HeroCentered {
+export interface Hero {
+  variant: 'stacked' | 'split' | 'imageBackground';
   /**
-   * Überschrift und optionaler Text für den Hero-Bereich.
+   * Dieser Text wird oberhalb der Überschrift ausgegeben
    */
-  content?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  cta?:
+  eyebrow?: string | null;
+  /**
+   * Dies wird die H1 auf der Seite sein. Denk dran, es sollte immer nur eine H1 pro Seite geben
+   */
+  headline: string;
+  text?: string | null;
+  ctas?:
     | {
         label: string;
-        type?: ('intern' | 'extern') | null;
+        type: 'intern' | 'extern';
         intern?: (number | null) | Page;
         extern?: string | null;
         style?: ('primary' | 'secondary' | 'ghost') | null;
         id?: string | null;
       }[]
     | null;
+  /**
+   * Optional. Wird je nach Variante unterschiedlich dargestellt
+   */
   image?: (number | null) | Media;
+  backgroundColor?: ('primary' | 'secondary' | 'base-200' | 'neutral') | null;
+  textPosition?: ('left' | 'right' | 'center') | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'heroCentered';
+  blockType: 'hero';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -653,7 +650,7 @@ export interface Post {
   status: 'draft' | 'published';
   publishedAt?: string | null;
   heroImage?: (number | null) | Media;
-  content?: (HeroCentered | Content)[] | null;
+  content?: (Hero | Content)[] | null;
   relatedBreeds?: (number | Dogbreed)[] | null;
   sources?:
     | {
@@ -961,7 +958,7 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         content?: T | ContentSelect<T>;
-        heroCentered?: T | HeroCenteredSelect<T>;
+        hero?: T | HeroSelect<T>;
       };
   meta?:
     | T
@@ -975,11 +972,14 @@ export interface PagesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "HeroCentered_select".
+ * via the `definition` "Hero_select".
  */
-export interface HeroCenteredSelect<T extends boolean = true> {
-  content?: T;
-  cta?:
+export interface HeroSelect<T extends boolean = true> {
+  variant?: T;
+  eyebrow?: T;
+  headline?: T;
+  text?: T;
+  ctas?:
     | T
     | {
         label?: T;
@@ -990,6 +990,8 @@ export interface HeroCenteredSelect<T extends boolean = true> {
         id?: T;
       };
   image?: T;
+  backgroundColor?: T;
+  textPosition?: T;
   id?: T;
   blockName?: T;
 }
@@ -1006,7 +1008,7 @@ export interface PostsSelect<T extends boolean = true> {
   content?:
     | T
     | {
-        heroCentered?: T | HeroCenteredSelect<T>;
+        hero?: T | HeroSelect<T>;
         content?: T | ContentSelect<T>;
       };
   relatedBreeds?: T;

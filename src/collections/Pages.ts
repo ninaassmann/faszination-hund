@@ -1,5 +1,5 @@
 import { Content } from '@/blocks/Content/config'
-import { HeroCentered } from '@/blocks/HeroCentered/config'
+import { Hero } from '@/blocks/Hero/config'
 
 import { slugify } from '@/utils/slugify'
 
@@ -67,7 +67,7 @@ export const Pages: CollectionConfig = {
       name: 'content',
       label: 'Inhalte',
       type: 'blocks',
-      blocks: [Content, HeroCentered],
+      blocks: [Content, Hero],
     },
   ],
 }
