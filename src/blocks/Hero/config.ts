@@ -1,6 +1,5 @@
 import type { Block } from 'payload'
 import { validateUrl } from '@/utils/validateUrl'
-import { Hero as HeroProps } from '@/payload-types'
 
 export const Hero: Block = {
   slug: 'hero',
@@ -20,7 +19,6 @@ export const Hero: Block = {
               name: 'variant',
               type: 'select',
               required: true,
-              defaultValue: 'textOnly',
               options: [
                 { label: 'Stacked Layout', value: 'stacked' },
                 { label: 'Split Layout', value: 'split' },
@@ -40,7 +38,7 @@ export const Hero: Block = {
                     },
                   },
                 },
-                condition: (data) => data.variant == 'stacked',
+                condition: (data, siblingData) => siblingData?.variant == 'stacked',
               },
             },
             {
@@ -141,10 +139,10 @@ export const Hero: Block = {
               label: 'Hintergrundfarbe',
               type: 'select',
               options: [
-                { label: 'Primary', value: 'primary' },
-                { label: 'Secondary', value: 'secondary' },
-                { label: 'Hell', value: 'base-200' },
-                { label: 'Dunkel', value: 'neutral' },
+                { label: 'Primary', value: 'var(--frontend-primary)' },
+                { label: 'Secondary', value: 'var(--frontend-secondary)' },
+                { label: 'Hell', value: 'var(--frontend-base-200)' },
+                { label: 'Dunkel', value: 'var(--frontend-neutral)' },
               ],
             },
             {
@@ -154,9 +152,6 @@ export const Hero: Block = {
                 components: {
                   Field: {
                     path: '@/components/fields/colorBox#ColorBox',
-                    clientProps: (data: HeroProps) => ({
-                      color: data?.backgroundColor || 'base-200',
-                    }),
                   },
                 },
               },

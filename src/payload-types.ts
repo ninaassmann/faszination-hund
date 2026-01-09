@@ -633,7 +633,9 @@ export interface Hero {
    * Optional. Wird je nach Variante unterschiedlich dargestellt
    */
   image?: (number | null) | Media;
-  backgroundColor?: ('primary' | 'secondary' | 'base-200' | 'neutral') | null;
+  backgroundColor?:
+    | ('var(--frontend-primary)' | 'var(--frontend-secondary)' | 'var(--frontend-base-200)' | 'var(--frontend-neutral)')
+    | null;
   textPosition?: ('left' | 'right' | 'center') | null;
   id?: string | null;
   blockName?: string | null;
