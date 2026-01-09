@@ -1,4 +1,5 @@
 import { Content } from '@/blocks/Content/config'
+import { Hero } from '@/blocks/Hero/config'
 import { slugify } from '@/utils/slugify'
 import type { CollectionConfig } from 'payload'
 
@@ -72,7 +73,7 @@ export const Posts: CollectionConfig = {
         plural: 'Inhalte',
       },
       type: 'blocks',
-      blocks: [Content],
+      blocks: [Hero, Content],
     },
     {
       name: 'relatedBreeds',

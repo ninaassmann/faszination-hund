@@ -1,35 +1,40 @@
-import { Post } from '@/payload-types'
+import type { Post, Page } from '@/payload-types'
+
 import { ContentBlock } from './Content/Component'
+import { HeroBlock } from './Hero/Component'
 
 const blockComponents = {
   content: ContentBlock,
+  hero: HeroBlock,
 }
 
-export const RenderBlocks: React.FC<{ blocks: Post['content'] }> = (props) => {
-  const { blocks } = props
-
+export const RenderBlocks: React.FC<{
+  blocks: Post['content'] | Page['content']
+}> = ({ blocks }) => {
   const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0
 
-  if (hasBlocks) {
-    return (
-      <>
-        {blocks.map((block, index) => {
-          const { blockType } = block
-          if (blockType && blockType in blockComponents) {
-            const Block = blockComponents[blockType]
+  if (!hasBlocks) return null
 
-            if (Block) {
-              return (
-                <div key={index}>
-                  <Block {...block} />
-                </div>
-              )
-            }
-            return null
+  return (
+    <>
+      {blocks.map((block, index) => {
+        const { blockType } = block
+
+        if (blockType && blockType in blockComponents) {
+          const Block = blockComponents[blockType]
+
+          if (Block) {
+            return (
+              <div key={index}>
+                {/* @ts-expect-error Payload Blocks haben unterschiedliche Props */}
+                <Block {...block} />
+              </div>
+            )
           }
-        })}
-      </>
-    )
-  }
-  return null
+        }
+
+        return null
+      })}
+    </>
+  )
 }

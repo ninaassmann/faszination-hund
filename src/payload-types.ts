@@ -591,7 +591,8 @@ export interface Page {
   slug?: string | null;
   status: 'draft' | 'published';
   publishedAt?: string | null;
-  content?: Content[] | null;
+  hideBreadcrumps?: boolean | null;
+  content?: (Content | Hero)[] | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -605,6 +606,43 @@ export interface Page {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Hero".
+ */
+export interface Hero {
+  variant: 'stacked' | 'split' | 'imageBackground';
+  /**
+   * Dieser Text wird oberhalb der Überschrift ausgegeben
+   */
+  eyebrow?: string | null;
+  /**
+   * Dies wird die H1 auf der Seite sein. Denk dran, es sollte immer nur eine H1 pro Seite geben
+   */
+  headline: string;
+  text?: string | null;
+  ctas?:
+    | {
+        label: string;
+        type: 'intern' | 'extern';
+        intern?: (number | null) | Page;
+        extern?: string | null;
+        style?: ('primary' | 'secondary' | 'ghost') | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Optional. Wird je nach Variante unterschiedlich dargestellt
+   */
+  image?: (number | null) | Media;
+  backgroundColor?:
+    | ('var(--frontend-primary)' | 'var(--frontend-secondary)' | 'var(--frontend-base-200)' | 'var(--frontend-neutral)')
+    | null;
+  textPosition?: ('left' | 'right' | 'center') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'hero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts".
  */
 export interface Post {
@@ -614,7 +652,7 @@ export interface Post {
   status: 'draft' | 'published';
   publishedAt?: string | null;
   heroImage?: (number | null) | Media;
-  content?: Content[] | null;
+  content?: (Hero | Content)[] | null;
   relatedBreeds?: (number | Dogbreed)[] | null;
   sources?:
     | {
@@ -917,10 +955,12 @@ export interface PagesSelect<T extends boolean = true> {
   slug?: T;
   status?: T;
   publishedAt?: T;
+  hideBreadcrumps?: T;
   content?:
     | T
     | {
         content?: T | ContentSelect<T>;
+        hero?: T | HeroSelect<T>;
       };
   meta?:
     | T
@@ -931,6 +971,31 @@ export interface PagesSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Hero_select".
+ */
+export interface HeroSelect<T extends boolean = true> {
+  variant?: T;
+  eyebrow?: T;
+  headline?: T;
+  text?: T;
+  ctas?:
+    | T
+    | {
+        label?: T;
+        type?: T;
+        intern?: T;
+        extern?: T;
+        style?: T;
+        id?: T;
+      };
+  image?: T;
+  backgroundColor?: T;
+  textPosition?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -945,6 +1010,7 @@ export interface PostsSelect<T extends boolean = true> {
   content?:
     | T
     | {
+        hero?: T | HeroSelect<T>;
         content?: T | ContentSelect<T>;
       };
   relatedBreeds?: T;

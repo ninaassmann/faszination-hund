@@ -41,30 +41,7 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
-    components: {
-      graphics: {
-        Logo: '/graphics/Logo/index.tsx#Logos',
-        Icon: '/graphics/Icon/index.tsx#Icons',
-      },
-    },
     meta: {
-      icons: [
-        {
-          fetchPriority: 'high',
-          sizes: '32x32',
-          type: 'image/svg',
-          rel: 'icon',
-          url: iconUrl,
-        },
-        {
-          fetchPriority: 'high',
-          sizes: '32x32',
-          type: 'image/svg',
-          rel: 'icon',
-          url: darkIconUrl,
-          media: '(prefers-color-scheme: dark)',
-        },
-      ],
       title: 'Dashboard',
       titleSuffix: '- Faszination Hund',
       description: 'Hunderassen, News und Tiervermittlung',

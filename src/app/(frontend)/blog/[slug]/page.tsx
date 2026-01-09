@@ -19,9 +19,9 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   const post = posts.docs[0]
 
   return (
-    <section className="container my-10">
+    <div className="container my-10">
       <h1>{post.title}</h1>
       <RenderBlocks blocks={post.content} />
-    </section>
+    </div>
   )
 }

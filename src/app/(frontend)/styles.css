@@ -28,6 +28,7 @@
   --color-warning-content: oklch(17.834% 0.009 71.47);
   --color-error: oklch(70% 0.191 22.216);
   --color-error-content: oklch(14.618% 0.022 20.076);
+  --color-border: --theme-elevation-150;
   --radius-selector: 1rem;
   --radius-field: 0.5rem;
   --radius-box: 1rem;
