@@ -39,6 +39,8 @@
   --noise: 0;
 }
 
+/* -------------- General -------------- */
+
 .container {
   @apply max-w-6xl mx-auto px-8;
 }
@@ -65,4 +67,138 @@ p {
 
 p + h2 {
   @apply border-t-1 pt-8;
+}
+
+/* -------------- Section Themes -------------- */
+
+/* -------------- Primary Background -------------- */
+
+.section-bg-primary {
+  @apply bg-primary text-primary-content;
+}
+
+.section-bg-primary .btn-primary {
+  --btn-color: var(--color-base-200);
+  --btn-fg: var(--color-primary);
+}
+
+.section-bg-primary .btn-primary.btn-outline {
+  --btn-color: #0000;
+  --btn-fg: var(--color-base-200);
+  --btn-border: var(--color-base-200);
+}
+
+.section-bg-primary .btn-link {
+  text-decoration-line: none;
+  outline-color: var(--color-base-200);
+  --btn-fg: var(--color-base-200);
+  --btn-border: #0000;
+  --btn-bg: #0000;
+  --btn-noise: none;
+  --btn-shadow: '';
+  padding: 0;
+}
+
+.section-bg-primary .btn-link:hover {
+  text-decoration-line: underline;
+  text-underline-offset: 4px;
+}
+
+/* -------------- Secondary Background -------------- */
+
+.section-bg-secondary {
+  @apply bg-secondary text-secondary-content;
+}
+
+.section-bg-secondary .btn-primary {
+  --btn-color: var(--color-base-200);
+  --btn-fg: var(--color-secondary);
+}
+
+.section-bg-secondary .btn-primary.btn-outline {
+  --btn-color: #0000;
+  --btn-fg: var(--color-base-200);
+  --btn-border: var(--color-base-200);
+}
+
+.section-bg-secondary .btn-link {
+  text-decoration-line: none;
+  outline-color: var(--color-base-200);
+  --btn-fg: var(--color-base-200);
+  --btn-border: #0000;
+  --btn-bg: #0000;
+  --btn-noise: none;
+  --btn-shadow: '';
+  padding: 0;
+}
+
+.section-bg-secondary .btn-link:hover {
+  text-decoration-line: underline;
+  text-underline-offset: 4px;
+}
+
+/* -------------- Light Background -------------- */
+
+.section-bg-light {
+  @apply bg-base-200 text-neutral;
+}
+
+.section-bg-light .btn-primary {
+  --btn-color: var(--color-primary);
+  --btn-fg: var(--color-primary-content);
+}
+
+.section-bg-light .btn-primary.btn-outline {
+  --btn-color: #0000;
+  --btn-fg: var(--color-primary);
+  --btn-border: var(--color-primary);
+}
+
+.section-bg-light .btn-link {
+  text-decoration-line: none;
+  outline-color: var(--color-primary);
+  --btn-fg: var(--color-primary);
+  --btn-border: #0000;
+  --btn-bg: #0000;
+  --btn-noise: none;
+  --btn-shadow: '';
+  padding: 0;
+}
+
+.section-bg-light .btn-link:hover {
+  text-decoration-line: underline;
+  text-underline-offset: 4px;
+}
+
+/* -------------- Dark Background -------------- */
+
+.section-bg-dark {
+  @apply bg-neutral text-base-200;
+}
+
+.section-bg-dark .btn-primary {
+  --btn-color: var(--color-base-200);
+  --btn-fg: var(--color-primary);
+}
+
+.section-bg-dark .btn-primary.btn-outline {
+  --btn-color: #0000;
+  --btn-fg: var(--color-base-200);
+  --btn-border: var(--color-base-200);
+}
+
+.section-bg-dark .btn-link {
+  text-decoration-line: none;
+  outline-color: var(--color-base-200);
+  --btn-fg: var(--color-base-200);
+  --btn-border: #0000;
+  --btn-bg: #0000;
+  --btn-noise: none;
+  --btn-shadow: '';
+  padding: 0;
+}
+
+.section-bg-dark .btn-link:hover {
+  text-decoration-line: underline;
+  text-underline-offset: 4px;
 }

@@ -625,7 +625,7 @@ export interface Hero {
         type: 'intern' | 'extern';
         intern?: (number | null) | Page;
         extern?: string | null;
-        style?: ('primary' | 'secondary' | 'ghost') | null;
+        style?: ('btn-primary' | 'btn-primary btn-outline' | 'btn-link') | null;
         id?: string | null;
       }[]
     | null;
@@ -634,7 +634,13 @@ export interface Hero {
    */
   image?: (number | null) | Media;
   backgroundColor?:
-    | ('var(--frontend-primary)' | 'var(--frontend-secondary)' | 'var(--frontend-base-200)' | 'var(--frontend-neutral)')
+    | (
+        | 'var(--frontend-general)'
+        | 'var(--frontend-primary)'
+        | 'var(--frontend-secondary)'
+        | 'var(--frontend-base-200)'
+        | 'var(--frontend-neutral)'
+      )
     | null;
   textPosition?: ('left' | 'right' | 'center') | null;
   id?: string | null;

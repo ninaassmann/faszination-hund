@@ -113,9 +113,9 @@ export const Hero: Block = {
                   name: 'style',
                   type: 'select',
                   options: [
-                    { label: 'Primary', value: 'primary' },
-                    { label: 'Secondary', value: 'secondary' },
-                    { label: 'ghost', value: 'ghost' },
+                    { label: 'Primary', value: 'btn-primary' },
+                    { label: 'Secondary', value: 'btn-primary btn-outline' },
+                    { label: 'Link', value: 'btn-link' },
                   ],
                   defaultValue: 'primary',
                 },
@@ -139,6 +139,7 @@ export const Hero: Block = {
               label: 'Hintergrundfarbe',
               type: 'select',
               options: [
+                { label: 'Allgemein', value: 'var(--frontend-general)' },
                 { label: 'Primary', value: 'var(--frontend-primary)' },
                 { label: 'Secondary', value: 'var(--frontend-secondary)' },
                 { label: 'Hell', value: 'var(--frontend-base-200)' },

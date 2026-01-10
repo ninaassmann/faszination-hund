@@ -36,7 +36,7 @@ export const HeroSplit: React.FC<Props> = ({
         <div className="w-1/2">
           <span className="uppercase tracking-widest text-sm mb-2">{eyebrow}</span>
           <h1>{headline}</h1>
-          <p className="max-w-4/5">{text}</p>
+          <p className="max-w-[80%]">{text}</p>
           {Array.isArray(ctas) && ctas.length > 0 && (
             <div className="flex gap-4">
               {ctas.map((button, index) => {
@@ -56,7 +56,7 @@ export const HeroSplit: React.FC<Props> = ({
                     href={href}
                     target={button.type === 'extern' ? '_blank' : undefined}
                     rel={button.type === 'extern' ? 'noopener noreferrer' : undefined}
-                    className={`btn btn-${button.style || 'primary'}`}
+                    className={`btn ${button.style || 'btn-primary'}`}
                   >
                     {button.label}
                   </Link>

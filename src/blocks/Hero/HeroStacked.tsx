@@ -25,15 +25,17 @@ export const HeroStacked: React.FC<Props> = ({
       ? 'text-left items-start'
       : textPosition === 'right'
         ? 'text-right items-end'
-        : 'text-center items-center'
+        : textPosition === 'center'
+          ? 'text-center items-center'
+          : 'text-left items-start'
   const backgroundClass = getSectionClass(backgroundColor)
 
   return (
     <section className={`py-28 ${backgroundClass} ${className ?? ''}`}>
-      <div className={`container flex flex-col max ${alignClass}`}>
+      <div className={`container flex flex-col ${alignClass}`}>
         <span className="uppercase tracking-widest text-sm mb-2">{eyebrow}</span>
         <h1>{headline}</h1>
-        <p className="max-w-4/5">{text}</p>
+        <p className="max-w-[80%]">{text}</p>
         {Array.isArray(ctas) && ctas.length > 0 && (
           <div className="flex gap-4">
             {ctas.map((button, index) => {
@@ -53,7 +55,7 @@ export const HeroStacked: React.FC<Props> = ({
                   href={href}
                   target={button.type === 'extern' ? '_blank' : undefined}
                   rel={button.type === 'extern' ? 'noopener noreferrer' : undefined}
-                  className={`btn btn-${button.style || 'primary'}`}
+                  className={`btn ${button.style || 'btn-primary'}`}
                 >
                   {button.label}
                 </Link>
