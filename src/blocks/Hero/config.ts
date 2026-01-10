@@ -22,7 +22,7 @@ export const Hero: Block = {
               options: [
                 { label: 'Stacked Layout', value: 'stacked' },
                 { label: 'Split Layout', value: 'split' },
-                { label: 'Bild als Hintergrund', value: 'imageBackground' },
+                { label: 'Hintergrundbild', value: 'imageBackground' },
               ],
             },
             {
