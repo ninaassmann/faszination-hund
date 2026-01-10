@@ -22,7 +22,7 @@ export const HeroCtas: React.FC<{ ctas?: HeroProps['ctas'] }> = ({ ctas }) => {
             href={href}
             target={button.type === 'extern' ? '_blank' : undefined}
             rel={button.type === 'extern' ? 'noopener noreferrer' : undefined}
-            className={`btn btn-${button.style || 'primary'}`}
+            className={`btn ${button.style || 'primary'}`}
           >
             {button.label}
           </Link>

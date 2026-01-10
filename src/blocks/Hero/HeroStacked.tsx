@@ -2,6 +2,7 @@ import type { Hero as HeroProps } from '@/payload-types'
 import Link from 'next/link'
 import Image from 'next/image'
 import { getSectionClass } from '@/utils/getSectionClass'
+import { HeroCtas } from './HeroCtas'
 
 type Props = {
   className?: string
@@ -36,33 +37,7 @@ export const HeroStacked: React.FC<Props> = ({
         <span className="uppercase tracking-widest text-sm mb-2">{eyebrow}</span>
         <h1>{headline}</h1>
         <p className="max-w-[80%]">{text}</p>
-        {Array.isArray(ctas) && ctas.length > 0 && (
-          <div className="flex gap-4">
-            {ctas.map((button, index) => {
-              let href: string = '#'
-
-              if (button.type === 'intern') {
-                if (button.intern && typeof button.intern === 'object') {
-                  href = button.intern.slug ?? '#'
-                }
-              } else if (button.type === 'extern') {
-                href = button.extern ?? '#'
-              }
-
-              return (
-                <Link
-                  key={index}
-                  href={href}
-                  target={button.type === 'extern' ? '_blank' : undefined}
-                  rel={button.type === 'extern' ? 'noopener noreferrer' : undefined}
-                  className={`btn ${button.style || 'btn-primary'}`}
-                >
-                  {button.label}
-                </Link>
-              )
-            })}
-          </div>
-        )}
+        <HeroCtas ctas={ctas} />
         {mediaImage?.url && (
           <div className="rounded-2xl aspect-[10/3] overflow-clip relative mt-10 w-full">
             <Image
