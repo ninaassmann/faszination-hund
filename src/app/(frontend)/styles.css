@@ -69,6 +69,14 @@ p + h2 {
   @apply border-t-1 pt-8;
 }
 
+/* -------------- DaisyUI Card Adjustments -------------- */
+
+.card h2,
+.card h3,
+.card p {
+  @apply mb-0;
+}
+
 /* -------------- Section Themes -------------- */
 
 .btn-link {
@@ -78,6 +86,7 @@ p + h2 {
   --btn-noise: none;
   --btn-shadow: '';
   padding: 0;
+  height: unset;
 }
 
 .btn-link:hover {

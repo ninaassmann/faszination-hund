@@ -17,7 +17,7 @@ export default async function HomePage() {
   })
 
   return (
-    <section className="container flex flex-wrap gap-6 my-40">
+    <section className="container grid gap-6 grid-cols-3 my-40">
       {breeds.docs.map((breed) => {
         const thumbnail = breed.images?.find(
           (img): img is { media: Media; type: 'thumbnail' } =>
@@ -25,14 +25,14 @@ export default async function HomePage() {
         )
 
         return (
-          <div className="card bg-base-100 w-96 shadow-sm overflow-clip" key={breed.id}>
+          <div className="card bg-base-100 shadow-sm overflow-clip" key={breed.id}>
             {thumbnail?.media.url ? (
-              <div className="bg-gray-200 w-full h-64 flex items-center justify-center aspect-[3/4]">
+              <div className="bg-gray-200 w-full h-64 flex items-center justify-center aspect-[3/4] relative">
                 <Image
                   src={thumbnail.media.url}
                   alt={thumbnail.media.alt || 'Bild'}
-                  width={thumbnail.media.width || 400}
-                  height={thumbnail.media.height || 300}
+                  fill
+                  className="object-cover"
                 />
               </div>
             ) : (
@@ -40,8 +40,8 @@ export default async function HomePage() {
                 <ImageIcon />
               </div>
             )}
-            <div className="card-body justify-between">
-              <h2 className="card-title">{breed.breed}</h2>
+            <div className="card-body justify-between gap-3">
+              <h2 className="card-title mb-2">{breed.breed}</h2>
               <div className="flex flex-wrap gap-2 mb-6">
                 {breed.general?.tags?.map(
                   (tag): tag is Tag => typeof tag !== 'number', // Type Guard
