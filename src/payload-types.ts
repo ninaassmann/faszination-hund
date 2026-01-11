@@ -592,7 +592,7 @@ export interface Page {
   status: 'draft' | 'published';
   publishedAt?: string | null;
   hideBreadcrumps?: boolean | null;
-  content?: (Content | Hero)[] | null;
+  content?: (Content | Hero | Accordion)[] | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -649,6 +649,24 @@ export interface Hero {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Accordion".
+ */
+export interface Accordion {
+  title?: string | null;
+  text?: string | null;
+  accordions?:
+    | {
+        title: string;
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'accordion';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts".
  */
 export interface Post {
@@ -658,7 +676,7 @@ export interface Post {
   status: 'draft' | 'published';
   publishedAt?: string | null;
   heroImage?: (number | null) | Media;
-  content?: (Hero | Content)[] | null;
+  content?: (Hero | Content | Accordion)[] | null;
   relatedBreeds?: (number | Dogbreed)[] | null;
   sources?:
     | {
@@ -967,6 +985,7 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         content?: T | ContentSelect<T>;
         hero?: T | HeroSelect<T>;
+        accordion?: T | AccordionSelect<T>;
       };
   meta?:
     | T
@@ -1005,6 +1024,23 @@ export interface HeroSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Accordion_select".
+ */
+export interface AccordionSelect<T extends boolean = true> {
+  title?: T;
+  text?: T;
+  accordions?:
+    | T
+    | {
+        title?: T;
+        text?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts_select".
  */
 export interface PostsSelect<T extends boolean = true> {
@@ -1018,6 +1054,7 @@ export interface PostsSelect<T extends boolean = true> {
     | {
         hero?: T | HeroSelect<T>;
         content?: T | ContentSelect<T>;
+        accordion?: T | AccordionSelect<T>;
       };
   relatedBreeds?: T;
   sources?:

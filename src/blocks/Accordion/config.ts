@@ -20,6 +20,7 @@ export const Accordion: Block = {
     },
     {
       name: 'accordions',
+      label: 'Akkordeons',
       labels: {
         singular: 'Eintrag',
         plural: 'Einträge',
