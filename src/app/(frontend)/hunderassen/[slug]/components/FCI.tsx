@@ -19,6 +19,16 @@ export function FCI({ fci }: Props) {
     fciSourcePDF,
   } = fci
 
+  const acceptanceYear =
+    typeof fciAcceptanceDate === 'string' && fciAcceptanceDate.length >= 4
+      ? fciAcceptanceDate.slice(0, 4)
+      : null
+
+  const publicationYear =
+    typeof fciPublicationDate === 'string' && fciPublicationDate.length >= 4
+      ? fciPublicationDate.slice(0, 4)
+      : null
+
   return (
     <section className="mt-20 flex flex-col gap-2 card bg-base-100 shadow-sm overflow-clip">
       <div className="card-body justify-between">
@@ -30,10 +40,11 @@ export function FCI({ fci }: Props) {
 
         {fciSection && typeof fciSection !== 'number' && <span>{fciSection.name}</span>}
 
-        {fciAcceptanceDate && <span>Akzeptanz: {new Date(fciAcceptanceDate).getFullYear()}</span>}
-        {fciPublicationDate && (
-          <span>Publikation: {new Date(fciPublicationDate).getFullYear()}</span>
-        )}
+        {fciGroup && typeof fciGroup !== 'number' && <span>{fciGroup.name}</span>}
+        {fciSection && typeof fciSection !== 'number' && <span>{fciSection.name}</span>}
+
+        {acceptanceYear && <span>Akzeptanz: {acceptanceYear}</span>}
+        {publicationYear && <span>Publikation: {publicationYear}</span>}
 
         <div className="card-actions justify-end">
           <div className="flex flex-wrap gap-2">

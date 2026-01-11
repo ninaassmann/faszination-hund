@@ -14,10 +14,10 @@ export function ColorBox() {
       }
     })
 
-    return typeof bgValue === 'string' ? bgValue : 'var(--frontend-base-200)'
+    return typeof bgValue === 'string' ? bgValue : 'var(--frontend-general)'
   })
 
-  const displayColor = backgroundColor || 'var(--frontend-base-200)'
+  const displayColor = backgroundColor || 'var(--frontend-general)'
 
   return (
     <div className="mb-4">

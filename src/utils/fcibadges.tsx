@@ -1,6 +1,3 @@
-// app/utils/badges.tsx
-import React from 'react'
-
 export function getFciStatusBadge(status: string) {
   switch (status) {
     case 'recognized':

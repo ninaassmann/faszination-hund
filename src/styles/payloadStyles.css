@@ -13,11 +13,12 @@
 
 :root {
   /* Frontend Hero Block Colors */
+  --frontend-general: white;
   --frontend-primary: oklch(52% 0.105 223.128);
   --frontend-secondary: oklch(42.551% 0.161 282.339);
   --frontend-base-200: oklch(97.466% 0.011 259.822);
   --frontend-neutral: oklch(19.616% 0.063 257.651);
-  
+
   /* Variables */
   --theme-bg: var(--theme-elevation-0);
   --theme-input-bg: var(--theme-elevation-0);
