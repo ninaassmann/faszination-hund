@@ -19,7 +19,7 @@ export const AccordionBlock: React.FC<Props> = (props) => {
                 key={index}
                 className="collapse collapse-plus border border-base-300"
                 name="accordion-details"
-                open
+                open={index === 0}
               >
                 <summary className="collapse-title font-semibold">{entry.title}</summary>
                 <div className="collapse-content text-sm">{entry.text}</div>

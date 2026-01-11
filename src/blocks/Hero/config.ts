@@ -117,7 +117,6 @@ export const Hero: Block = {
                     { label: 'Secondary', value: 'btn-primary btn-outline' },
                     { label: 'Link', value: 'btn-link' },
                   ],
-                  defaultValue: 'primary',
                 },
               ],
             },
