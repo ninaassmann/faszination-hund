@@ -592,7 +592,7 @@ export interface Page {
   status: 'draft' | 'published';
   publishedAt?: string | null;
   hideBreadcrumps?: boolean | null;
-  content?: (Content | Hero | Accordion)[] | null;
+  content?: (Content | Hero | Accordion | FeaturedList)[] | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -664,6 +664,30 @@ export interface Accordion {
   id?: string | null;
   blockName?: string | null;
   blockType: 'accordion';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeaturedList".
+ */
+export interface FeaturedList {
+  title?: string | null;
+  text?: string | null;
+  type: 'dogbreeds' | 'dogs';
+  /**
+   * Wähle bis zu 3 Hunderassen aus, die hervorgehoben werden sollen.
+   */
+  featuredBreeds?: (number | Dogbreed)[] | null;
+  /**
+   * Wähle bis zu 3 Hunde aus, die hervorgehoben werden sollen.
+   */
+  featuredDogs?: (number | Dog)[] | null;
+  /**
+   * Der Button führt dann auf die jeweilige Übersichtsseite.
+   */
+  showButton?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'featuredList';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -986,6 +1010,7 @@ export interface PagesSelect<T extends boolean = true> {
         content?: T | ContentSelect<T>;
         hero?: T | HeroSelect<T>;
         accordion?: T | AccordionSelect<T>;
+        featuredList?: T | FeaturedListSelect<T>;
       };
   meta?:
     | T
@@ -1036,6 +1061,20 @@ export interface AccordionSelect<T extends boolean = true> {
         text?: T;
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeaturedList_select".
+ */
+export interface FeaturedListSelect<T extends boolean = true> {
+  title?: T;
+  text?: T;
+  type?: T;
+  featuredBreeds?: T;
+  featuredDogs?: T;
+  showButton?: T;
   id?: T;
   blockName?: T;
 }

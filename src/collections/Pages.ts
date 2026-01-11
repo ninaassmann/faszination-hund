@@ -1,5 +1,6 @@
 import { Accordion } from '@/blocks/Accordion/config'
 import { Content } from '@/blocks/Content/config'
+import { FeaturedList } from '@/blocks/FeaturedList/config'
 import { Hero } from '@/blocks/Hero/config'
 
 import { slugify } from '@/utils/slugify'
@@ -68,7 +69,7 @@ export const Pages: CollectionConfig = {
       name: 'content',
       label: 'Inhalte',
       type: 'blocks',
-      blocks: [Content, Hero, Accordion],
+      blocks: [Content, Hero, Accordion, FeaturedList],
     },
   ],
 }
