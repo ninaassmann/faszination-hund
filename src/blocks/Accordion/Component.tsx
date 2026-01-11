@@ -15,14 +15,15 @@ export const AccordionBlock: React.FC<Props> = (props) => {
         <div className="flex max-w-[80%] min-w-[18rem] flex-wrap items-center justify-center gap-2 overflow-x-hidden">
           {accordions?.map((entry, index) => {
             return (
-              <div
+              <details
                 key={index}
-                className="collapse collapse-plus bg-base-100 border border-base-300"
+                className="collapse collapse-plus border border-base-300"
+                name="accordion-details"
+                open
               >
-                <input type="radio" name="my-accordion-3" />
-                <div className="collapse-title font-semibold">{entry.title}</div>
+                <summary className="collapse-title font-semibold">{entry.title}</summary>
                 <div className="collapse-content text-sm">{entry.text}</div>
-              </div>
+              </details>
             )
           })}
         </div>
