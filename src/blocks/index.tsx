@@ -2,10 +2,12 @@ import type { Post, Page } from '@/payload-types'
 
 import { ContentBlock } from './Content/Component'
 import { HeroBlock } from './Hero/Component'
+import { AccordionBlock } from './Accordion/Component'
 
 const blockComponents = {
   content: ContentBlock,
   hero: HeroBlock,
+  accordion: AccordionBlock,
 }
 
 export const RenderBlocks: React.FC<{

@@ -1,3 +1,4 @@
+import { Accordion } from '@/blocks/Accordion/config'
 import { Content } from '@/blocks/Content/config'
 import { Hero } from '@/blocks/Hero/config'
 import { slugify } from '@/utils/slugify'
@@ -73,7 +74,7 @@ export const Posts: CollectionConfig = {
         plural: 'Inhalte',
       },
       type: 'blocks',
-      blocks: [Hero, Content],
+      blocks: [Hero, Content, Accordion],
     },
     {
       name: 'relatedBreeds',
