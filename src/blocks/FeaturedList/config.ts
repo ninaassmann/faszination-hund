@@ -38,7 +38,7 @@ export const FeaturedList: Block = {
       hasMany: true,
       maxRows: 3,
       admin: {
-        condition: (siblingData) => siblingData?.type === 'dogbreeds',
+        condition: (data, siblingData) => siblingData?.type === 'dogbreeds',
         description: 'Wähle bis zu 3 Hunderassen aus, die hervorgehoben werden sollen.',
       },
     },
@@ -50,7 +50,7 @@ export const FeaturedList: Block = {
       hasMany: true,
       maxRows: 3,
       admin: {
-        condition: (siblingData) => siblingData?.type === 'dogs',
+        condition: (data, siblingData) => siblingData?.type === 'dogs',
         description: 'Wähle bis zu 3 Hunde aus, die hervorgehoben werden sollen.',
       },
     },

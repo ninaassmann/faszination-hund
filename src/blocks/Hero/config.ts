@@ -94,7 +94,7 @@ export const Hero: Block = {
                   type: 'relationship',
                   relationTo: 'pages',
                   admin: {
-                    condition: (siblingData) => {
+                    condition: (data, siblingData) => {
                       return siblingData?.type === 'intern'
                     },
                   },
@@ -104,7 +104,7 @@ export const Hero: Block = {
                   type: 'text',
                   validate: validateUrl,
                   admin: {
-                    condition: (siblingData) => {
+                    condition: (data, siblingData) => {
                       return siblingData?.type === 'extern'
                     },
                   },
