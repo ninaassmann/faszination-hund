@@ -64,7 +64,7 @@ export const HeroStacked: React.FC<Props> = ({
           </div>
         )}
       </div>
-      <Alert className="mt-6" />
+      <Alert className="mt-6" textPosition={textPosition as string} />
     </section>
   )
 }

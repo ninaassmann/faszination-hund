@@ -73,7 +73,7 @@ export const HeroSplit: React.FC<Props> = ({
           </div>
         )}
       </div>
-      <Alert className="mt-6" />
+      <Alert className="mt-6" textPosition="left" />
     </section>
   )
 }
