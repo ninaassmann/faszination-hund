@@ -27,7 +27,7 @@ export const FeaturedList: Block = {
         { label: 'Hunderassen', value: 'dogbreeds' },
         { label: 'Zu vermittelnde Hunde', value: 'dogs' },
       ],
-      defaultValue: { label: 'Hunderassen', value: 'dogbreeds' },
+      defaultValue: 'dogbreeds',
     },
 
     {
