@@ -22,6 +22,7 @@ export const HeroSplit: React.FC<Props> = ({
 
   const mediaImage = typeof image === 'object' && image !== null ? image : undefined
   const backgroundClass = getSectionClass(backgroundColor)
+  const hasCtas = Array.isArray(ctas) && ctas.length > 0
 
   return (
     <section className={`py-28 ${backgroundClass} ${className ?? ''}`}>
@@ -38,7 +39,9 @@ export const HeroSplit: React.FC<Props> = ({
 
         {/* Image */}
         {mediaImage?.url && (
-          <div className="rounded-2xl aspect-[3/2] sm:aspect-[2/3] overflow-clip relative w-full sm:w-1/3">
+          <div
+            className={`rounded-2xl aspect-[3/2] sm:aspect-[2/3] overflow-clip relative w-full sm:w-1/3 ${hasCtas ? 'mt-10 sm:mt-0' : 'mt-4 sm:mt-0'}`}
+          >
             <Image
               src={mediaImage?.url}
               alt={mediaImage?.alt}
