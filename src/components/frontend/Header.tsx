@@ -1,10 +1,7 @@
-import config from '@/payload.config'
 import { Menu } from 'lucide-react'
 import Link from 'next/link'
 
-export async function Header() {
-  const payloadConfig = await config
-
+export function Header() {
   return (
     <header className="container py-4 flex justify-between items-center">
       <Link href="/">
@@ -13,7 +10,7 @@ export async function Header() {
       <nav className="hidden sm:flex gap-10 h-10 items-center">
         <Link href="/hunderassen">Hunderassen</Link>
         <Link href="/blog">Blog</Link>
-        <Link href={payloadConfig.routes.admin} rel="noopener noreferrer" target="_blank">
+        <Link href="/admin" rel="noopener noreferrer" target="_blank">
           Login
         </Link>
       </nav>
@@ -22,7 +19,7 @@ export async function Header() {
           <Menu />
         </button>
         <ul
-          tabIndex="-1"
+          tabIndex={-1}
           className="dropdown-content menu bg-base-100 rounded z-1 w-52 p-2 shadow-sm"
         >
           <li>
@@ -32,7 +29,7 @@ export async function Header() {
             <Link href="/blog">Blog</Link>
           </li>
           <li>
-            <Link href={payloadConfig.routes.admin} rel="noopener noreferrer" target="_blank">
+            <Link href="/admin" rel="noopener noreferrer" target="_blank">
               Login
             </Link>
           </li>
