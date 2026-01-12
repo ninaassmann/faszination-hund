@@ -10,7 +10,6 @@ export function Header() {
       <nav className="hidden sm:flex gap-10 h-10 items-center">
         <Link href="/hunderassen">Hunderassen</Link>
         <Link href="/hunde">Hunde</Link>
-        <Link href="/blog">Blog</Link>
         <Link href="/admin" rel="noopener noreferrer" target="_blank">
           Login
         </Link>
@@ -28,9 +27,6 @@ export function Header() {
           </li>
           <li>
             <Link href="/hunde">Hunde</Link>
-          </li>
-          <li>
-            <Link href="/blog">Blog</Link>
           </li>
           <li>
             <Link href="/admin" rel="noopener noreferrer" target="_blank">

@@ -19,8 +19,6 @@ export const HeroSplit: React.FC<Props> = ({
   textPosition,
   className,
 }) => {
-  if (!text) return null
-
   const mediaImage = typeof image === 'object' && image !== null ? image : undefined
   const backgroundClass = getSectionClass(backgroundColor)
   const hasCtas = Array.isArray(ctas) && ctas.length > 0

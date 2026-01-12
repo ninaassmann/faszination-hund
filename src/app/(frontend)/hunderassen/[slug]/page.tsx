@@ -37,11 +37,11 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     | undefined
 
   return (
-    <section className="container my-10">
+    <>
       <BreedHero breed={breed} heroImage={heroImage} thumbnail={thumbnail} />
       <BreedDetails breed={breed} origin={origin} coatColors={coatColors} coatTypes={coatTypes} />
       {breed.descriptions && <BreedDesc breed={breed} />}
       {breed.fci && <FCI fci={breed.fci} />}
-    </section>
+    </>
   )
 }

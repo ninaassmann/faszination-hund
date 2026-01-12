@@ -1,7 +1,7 @@
 export function getFciStatusBadge(status: string) {
   switch (status) {
     case 'recognized':
-      return <div className="badge badge-success">Endgültig anerkannt</div>
+      return <div className="badge badge-success mt-1">Endgültig anerkannt</div>
     case 'provisional':
       return <div className="badge badge-warning">Provisorisch anerkannt</div>
     case 'not_recognized':

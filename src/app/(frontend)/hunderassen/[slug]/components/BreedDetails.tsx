@@ -18,11 +18,11 @@ export function BreedDetails({ breed, origin, coatColors, coatTypes }: Props) {
   ].filter((item) => item.value)
 
   return (
-    <section className="mt-20">
+    <section className="container my-16 sm:my-20">
       <h2>Details</h2>
       <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
         {origin && (
-          <div className="col-span-2">
+          <div className="sm:col-span-2">
             <dt className="text-sm text-muted">Herkunft</dt>
             <dd>{origin.name}</dd>
           </div>

@@ -7,10 +7,10 @@ type Props = {
 
 export function BreedDesc({ breed }: Props) {
   return (
-    <section className="mt-10">
+    <section className="container my-16 sm:my-20">
       {breed.descriptions?.map((desc) => {
         return (
-          <div key={desc.id} className="mb-10">
+          <div key={desc.id} className="mb-10 max-w-full md:max-w-[80%]">
             <h2>{desc.title}</h2>
             <p>{desc.content}</p>
             {desc.source && !desc.source.includes('fci.be') && (
