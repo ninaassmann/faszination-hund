@@ -21,25 +21,19 @@ export const HeroSplit: React.FC<Props> = ({
   if (!text) return null
 
   const mediaImage = typeof image === 'object' && image !== null ? image : undefined
-  const alignClass =
-    textPosition === 'left'
-      ? 'text-left'
-      : textPosition === 'right'
-        ? 'text-right'
-        : textPosition === 'center'
-          ? 'text-center'
-          : 'text-left'
   const backgroundClass = getSectionClass(backgroundColor)
 
   return (
     <section className={`py-28 ${backgroundClass} ${className ?? ''}`}>
-      <div className={`container flex justify-between items-center ${alignClass}`}>
-        <div className="w-1/2">
-          <span className="uppercase tracking-widest text-sm mb-2">{eyebrow}</span>
-          <h1>{headline}</h1>
-          <p className="max-w-[80%]">{text}</p>
-          <HeroCtas ctas={ctas} />
-        </div>
+      <div className="container flex justify-between items-center">
+        {textPosition == 'left' && (
+          <div className="w-1/2">
+            <span className="uppercase tracking-widest text-sm mb-2">{eyebrow}</span>
+            <h1>{headline}</h1>
+            <p className="max-w-[80%]">{text}</p>
+            <HeroCtas ctas={ctas} />
+          </div>
+        )}
         {mediaImage?.url && (
           <div className="rounded-2xl aspect-[2/3] overflow-clip relative w-1/3">
             <Image
@@ -59,6 +53,15 @@ export const HeroSplit: React.FC<Props> = ({
                 Adobe Stock
               </Link>
             )}
+          </div>
+        )}
+
+        {textPosition == 'right' && (
+          <div className="w-1/2">
+            <span className="uppercase tracking-widest text-sm mb-2">{eyebrow}</span>
+            <h1>{headline}</h1>
+            <p className="max-w-[80%]">{text}</p>
+            <HeroCtas ctas={ctas} />
           </div>
         )}
       </div>
