@@ -1,6 +1,7 @@
 import type { Hero as HeroProps } from '@/payload-types'
 import { getSectionClass } from '@/utils/getSectionClass'
 import { HeroCtas } from './HeroCtas'
+import { Alert } from '@/components/frontend/Alert'
 
 type Props = {
   className?: string
@@ -21,11 +22,11 @@ export const HeroBackground: React.FC<Props> = ({
   const mediaImage = typeof image === 'object' && image !== null ? image : undefined
   const alignClass =
     textPosition === 'left'
-      ? 'text-left items-start'
+      ? 'text-left items-start justify-start'
       : textPosition === 'right'
-        ? 'text-right items-end'
+        ? 'text-right items-end justify-end'
         : textPosition === 'center'
-          ? 'text-center items-center'
+          ? 'text-center items-center justify-center'
           : 'text-left'
   const overlayClass =
     backgroundColor === 'var(--frontend-primary)'
@@ -41,7 +42,7 @@ export const HeroBackground: React.FC<Props> = ({
 
   return (
     <section
-      className={`relative py-28 ${backgroundClass} ${className ?? ''}`}
+      className={`relative pt-28 pb-36 ${backgroundClass} ${className ?? ''}`}
       style={
         mediaImage?.url
           ? {
@@ -60,6 +61,7 @@ export const HeroBackground: React.FC<Props> = ({
         <p className="max-w-[60%]">{text}</p>
         <HeroCtas ctas={ctas} />
       </div>
+      <Alert className="absolute z-10 bottom-6" textPosition={textPosition as string} />
     </section>
   )
 }
