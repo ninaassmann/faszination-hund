@@ -10,9 +10,9 @@ export const AccordionBlock: React.FC<Props> = (props) => {
   return (
     <section className="py-28">
       <div className="container">
-        <h2>{headline}</h2>
-        <p className="max-w-[80%]">{text}</p>
-        <div className="flex max-w-[80%] min-w-[18rem] flex-wrap items-center justify-center gap-2 overflow-x-hidden">
+        <h2 className="ml-1">{headline}</h2>
+        <p className="max-w-full sm:max-w-[80%] ml-1">{text}</p>
+        <div className="flex max-w-full md:max-w-[80%] min-w-[18rem] flex-wrap items-center justify-center gap-2 overflow-x-hidden">
           {accordions?.map((entry, index) => {
             return (
               <details
