@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { getSectionClass } from '@/utils/getSectionClass'
 import { HeroCtas } from './HeroCtas'
+import { Alert } from '@/components/frontend/Alert'
 
 type Props = {
   className?: string
@@ -63,6 +64,7 @@ export const HeroStacked: React.FC<Props> = ({
           </div>
         )}
       </div>
+      <Alert className="mt-6" />
     </section>
   )
 }
