@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { ImageIcon } from 'lucide-react'
 import Link from 'next/link'
 
-export default async function HomePage() {
+export default async function DogbreedPage() {
   const payload = await getPayload({ config: configPromise })
 
   const breeds: { docs: Dogbreed[] } = await payload.find({
