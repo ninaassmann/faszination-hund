@@ -19,8 +19,6 @@ export const HeroStacked: React.FC<Props> = ({
   textPosition,
   className,
 }) => {
-  if (!text) return null
-
   const mediaImage = typeof image === 'object' && image !== null ? image : undefined
   const alignClass =
     textPosition === 'left'

@@ -50,16 +50,16 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
   return (
     <>
-      <section className="container mt-40">
+      <section className="container my-16 sm:my-20">
         <h1>{dog.name}</h1>
         <span className="text-sm text-base-content/70 block mb-2">
           {dog.location} · {locationType}
           {dog.adoptionStatus === 'available' && ' · Vermittlung möglich'}
         </span>
-        <p className="">{adoptionLabel}</p>
-        <div className="grid grid-cols-8 grid-rows-4 mt-10">
+        <p>{adoptionLabel}</p>
+        <div className="grid grid-cols-8 grid-rows-3 md:grid-rows-4 mt-6 sm:mt-10 -ml-1">
           {heroImage?.url && (
-            <div className="rounded-2xl aspect-[10/3] overflow-clip relative col-start-1 row-start-1 col-span-8 row-span-3">
+            <div className="rounded-2xl aspect-video sm:aspect-[10/3] overflow-clip relative col-start-1 row-start-1 col-span-8 row-span-3">
               <Image
                 src={heroImage?.url}
                 alt={heroImage?.alt}
@@ -80,7 +80,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             </div>
           )}
           {thumbnail?.url && (
-            <div className="rounded-2xl overflow-clip relative col-start-2 col-span-2 row-start-3 row-span-2 w-full h-full">
+            <div className="hidden md:flex rounded-2xl overflow-clip relative col-start-2 col-span-2 row-start-3 row-span-2 w-full h-full">
               <Image
                 src={thumbnail?.url}
                 alt={thumbnail?.alt}
@@ -102,7 +102,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
           )}
         </div>
       </section>
-      <section className="container mt-20">
+      <section className="container my-16 sm:my-20">
         <h2>Details</h2>
         <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
           {dog.location && (
@@ -157,9 +157,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
           )}
         </dl>
       </section>
-      <section className="mt-20">
-        <RenderBlocks blocks={dog.description} />
-      </section>
+      <RenderBlocks blocks={dog.description} />
     </>
   )
 }

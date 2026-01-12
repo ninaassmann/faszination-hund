@@ -591,8 +591,6 @@ export interface Page {
   title: string;
   slug?: string | null;
   status: 'draft' | 'published';
-  publishedAt?: string | null;
-  hideBreadcrumps?: boolean | null;
   content?: (Content | Hero | Accordion | FeaturedList | ContentWithMedia)[] | null;
   meta?: {
     title?: string | null;
@@ -1037,8 +1035,6 @@ export interface PagesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   status?: T;
-  publishedAt?: T;
-  hideBreadcrumps?: T;
   content?:
     | T
     | {

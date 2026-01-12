@@ -54,19 +54,6 @@ export const Pages: CollectionConfig = {
       ],
     },
     {
-      name: 'publishedAt',
-      label: 'Veröffentlichungsdatum',
-      type: 'date',
-      admin: {
-        condition: (data) => data.status === 'published',
-      },
-    },
-    {
-      name: 'hideBreadcrumps',
-      label: 'Breadcrumps auf dieser Seite ausblenden',
-      type: 'checkbox',
-    },
-    {
       name: 'content',
       label: 'Inhalte',
       type: 'blocks',
