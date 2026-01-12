@@ -545,6 +545,7 @@ export interface Dog {
    */
   breeds?: (number | Dogbreed)[] | null;
   breedType?: ('known' | 'estimated' | 'unknown') | null;
+  mixedBreed?: boolean | null;
   description?: Content[] | null;
   meta?: {
     title?: string | null;
@@ -916,6 +917,7 @@ export interface DogsSelect<T extends boolean = true> {
   birthDateType?: T;
   breeds?: T;
   breedType?: T;
+  mixedBreed?: T;
   description?:
     | T
     | {

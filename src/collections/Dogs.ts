@@ -244,6 +244,11 @@ export const Dogs: CollectionConfig = {
           ],
           defaultValue: 'unknown',
         },
+        {
+          name: 'mixedBreed',
+          label: 'Mischling',
+          type: 'checkbox',
+        },
       ],
     },
 
