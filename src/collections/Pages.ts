@@ -1,5 +1,6 @@
 import { Accordion } from '@/blocks/Accordion/config'
 import { Content } from '@/blocks/Content/config'
+import { ContentWithMedia } from '@/blocks/ContentWithMedia/config'
 import { FeaturedList } from '@/blocks/FeaturedList/config'
 import { Hero } from '@/blocks/Hero/config'
 
@@ -69,7 +70,7 @@ export const Pages: CollectionConfig = {
       name: 'content',
       label: 'Inhalte',
       type: 'blocks',
-      blocks: [Content, Hero, Accordion, FeaturedList],
+      blocks: [Content, Hero, Accordion, FeaturedList, ContentWithMedia],
     },
   ],
 }

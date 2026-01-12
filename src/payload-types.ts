@@ -592,7 +592,7 @@ export interface Page {
   status: 'draft' | 'published';
   publishedAt?: string | null;
   hideBreadcrumps?: boolean | null;
-  content?: (Content | Hero | Accordion | FeaturedList)[] | null;
+  content?: (Content | Hero | Accordion | FeaturedList | ContentWithMedia)[] | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -652,7 +652,7 @@ export interface Hero {
  * via the `definition` "Accordion".
  */
 export interface Accordion {
-  title?: string | null;
+  headline?: string | null;
   text?: string | null;
   accordions?:
     | {
@@ -688,6 +688,39 @@ export interface FeaturedList {
   id?: string | null;
   blockName?: string | null;
   blockType: 'featuredList';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContentWithMedia".
+ */
+export interface ContentWithMedia {
+  headline: string;
+  /**
+   * Wähle die HTML-Überschriftsebene. H2 für Hauptabschnitte, H3 für Unterabschnitte.
+   */
+  headlineLevel?: ('h2' | 'h3') | null;
+  text: string;
+  image: {
+    media: number | Media;
+    /**
+     * Überschreibt ggf. den Alt-Text aus der Media-Collection.
+     */
+    alt?: string | null;
+    caption?: string | null;
+  };
+  backgroundColor?:
+    | (
+        | 'var(--frontend-general)'
+        | 'var(--frontend-primary)'
+        | 'var(--frontend-secondary)'
+        | 'var(--frontend-base-200)'
+        | 'var(--frontend-neutral)'
+      )
+    | null;
+  textPosition?: ('left' | 'right') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contentWithMedia';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1011,6 +1044,7 @@ export interface PagesSelect<T extends boolean = true> {
         hero?: T | HeroSelect<T>;
         accordion?: T | AccordionSelect<T>;
         featuredList?: T | FeaturedListSelect<T>;
+        contentWithMedia?: T | ContentWithMediaSelect<T>;
       };
   meta?:
     | T
@@ -1052,7 +1086,7 @@ export interface HeroSelect<T extends boolean = true> {
  * via the `definition` "Accordion_select".
  */
 export interface AccordionSelect<T extends boolean = true> {
-  title?: T;
+  headline?: T;
   text?: T;
   accordions?:
     | T
@@ -1075,6 +1109,26 @@ export interface FeaturedListSelect<T extends boolean = true> {
   featuredBreeds?: T;
   featuredDogs?: T;
   showButton?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContentWithMedia_select".
+ */
+export interface ContentWithMediaSelect<T extends boolean = true> {
+  headline?: T;
+  headlineLevel?: T;
+  text?: T;
+  image?:
+    | T
+    | {
+        media?: T;
+        alt?: T;
+        caption?: T;
+      };
+  backgroundColor?: T;
+  textPosition?: T;
   id?: T;
   blockName?: T;
 }
