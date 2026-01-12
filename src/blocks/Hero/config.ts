@@ -165,6 +165,14 @@ export const Hero: Block = {
                 { label: 'Rechts', value: 'right' },
                 { label: 'Zentriert', value: 'center' },
               ],
+              filterOptions: ({ options, siblingData }) => {
+                if (siblingData?.variant === 'split') {
+                  return options.filter(
+                    (option) => typeof option !== 'object' || option.value !== 'center',
+                  )
+                }
+                return options
+              },
             },
           ],
         },
