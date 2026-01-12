@@ -41,7 +41,7 @@ export default async function HomePage() {
               </div>
             )}
             <div className="card-body justify-between gap-3">
-              <h2 className="card-title mb-2">{breed.breed}</h2>
+              <h3 className="card-title mb-2">{breed.breed}</h3>
               <div className="flex flex-wrap gap-2 mb-6">
                 {breed.general?.tags?.map(
                   (tag): tag is Tag => typeof tag !== 'number', // Type Guard
