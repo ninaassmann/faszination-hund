@@ -21,11 +21,11 @@ export const HeroBackground: React.FC<Props> = ({
   const mediaImage = typeof image === 'object' && image !== null ? image : undefined
   const alignClass =
     textPosition === 'left'
-      ? 'text-left'
+      ? 'text-left items-start'
       : textPosition === 'right'
-        ? 'text-right'
+        ? 'text-right items-end'
         : textPosition === 'center'
-          ? 'text-center'
+          ? 'text-center items-center'
           : 'text-left'
   const overlayClass =
     backgroundColor === 'var(--frontend-primary)'
@@ -54,10 +54,10 @@ export const HeroBackground: React.FC<Props> = ({
     >
       {/* Overlay */}
       {mediaImage?.url && <div className={`absolute inset-0 ${overlayClass}`} aria-hidden="true" />}
-      <div className={`relative container flex flex-col items-center z-10 ${alignClass}`}>
+      <div className={`relative container flex flex-col z-10 ${alignClass}`}>
         <span className="uppercase tracking-widest text-sm mb-2">{eyebrow}</span>
         <h1>{headline}</h1>
-        <p className="max-w-[80%]">{text}</p>
+        <p className="max-w-[60%]">{text}</p>
         <HeroCtas ctas={ctas} />
       </div>
     </section>
