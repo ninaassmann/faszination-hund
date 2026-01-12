@@ -30,16 +30,19 @@ export const HeroStacked: React.FC<Props> = ({
           ? 'text-center items-center'
           : 'text-left items-start'
   const backgroundClass = getSectionClass(backgroundColor)
+  const hasCtas = Array.isArray(ctas) && ctas.length > 0
 
   return (
     <section className={`py-28 ${backgroundClass} ${className ?? ''}`}>
       <div className={`container flex flex-col ${alignClass}`}>
-        <span className="uppercase tracking-widest text-sm mb-2">{eyebrow}</span>
+        <span className="uppercase tracking-widest text-sm mb-2 ml-1">{eyebrow}</span>
         <h1>{headline}</h1>
-        <p className="max-w-[80%]">{text}</p>
+        <p className="sm:max-w-[80%] ml-1">{text}</p>
         <HeroCtas ctas={ctas} />
         {mediaImage?.url && (
-          <div className="rounded-2xl aspect-[10/3] overflow-clip relative mt-10 w-full">
+          <div
+            className={`rounded-2xl aspect-[10/3] overflow-clip relative w-full ${hasCtas ? 'mt-10' : 'mt-4'}`}
+          >
             <Image
               src={mediaImage?.url}
               alt={mediaImage?.alt}
