@@ -4,12 +4,14 @@ import { ContentBlock } from './Content/Component'
 import { HeroBlock } from './Hero/Component'
 import { AccordionBlock } from './Accordion/Component'
 import { FeaturedListBlock } from './FeaturedList/Component'
+import { ContentWithMediaBlock } from './ContentWithMedia/Component'
 
 const blockComponents = {
   content: ContentBlock,
   hero: HeroBlock,
   accordion: AccordionBlock,
   featuredList: FeaturedListBlock,
+  contentWithMedia: ContentWithMediaBlock,
 }
 
 export const RenderBlocks: React.FC<{

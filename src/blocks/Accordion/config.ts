@@ -9,7 +9,7 @@ export const Accordion: Block = {
   },
   fields: [
     {
-      name: 'title',
+      name: 'headline',
       label: 'Überschrift',
       type: 'text',
     },
