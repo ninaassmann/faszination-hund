@@ -29,7 +29,7 @@ export const HeroSplit: React.FC<Props> = ({
       <div className="container flex flex-wrap justify-between items-center">
         {/* Textposition Left */}
         {textPosition == 'left' && (
-          <div className="w-full sm:w-2/3 lg:w-1/2">
+          <div className="w-full sm:w-2/3 lg:w-1/2 ml-1 md:ml-0">
             <span className="uppercase tracking-widest text-sm mb-2">{eyebrow}</span>
             <h1>{headline}</h1>
             <p className="max-w-[80%]">{text}</p>
@@ -64,7 +64,7 @@ export const HeroSplit: React.FC<Props> = ({
 
         {/* Textposition Right */}
         {textPosition == 'right' && (
-          <div className="w-full sm:w-2/3 lg:w-1/2 mt-6 sm:mt-0">
+          <div className="w-full sm:w-2/3 lg:w-1/2 mt-6 sm:mt-0 ml-1 md:ml-0">
             <span className="uppercase tracking-widest text-sm mb-2">{eyebrow}</span>
             <h1>{headline}</h1>
             <p className="max-w-[80%]">{text}</p>

@@ -17,15 +17,18 @@ export const ContentWithMediaBlock: React.FC<Props> = (props) => {
 
   return (
     <section className={`py-28 ${backgroundClass} ${className ?? ''}`}>
-      <div className={`container flex justify-between items-center`}>
+      <div className="container flex flex-wrap justify-between items-center">
+        {/* Textposition Left */}
         {textPosition === 'left' && (
-          <div className="w-1/2">
+          <div className="w-full md:w-2/3 lg:w-1/2 ml-1 md:ml-0">
             <Tag>{headline}</Tag>
             <p className="max-w-[80%]">{text}</p>
           </div>
         )}
+
+        {/* Image */}
         {mediaImage?.url && (
-          <div className="rounded-2xl aspect-[4/3] overflow-clip relative w-1/3">
+          <div className="rounded-2xl aspect-[3/2] md:aspect-square overflow-clip relative w-full md:w-1/3">
             <Image
               src={mediaImage?.url}
               alt={mediaImage?.alt}
@@ -46,8 +49,9 @@ export const ContentWithMediaBlock: React.FC<Props> = (props) => {
           </div>
         )}
 
+        {/* Textposition Right */}
         {textPosition === 'right' && (
-          <div className="w-1/2">
+          <div className="w-full md:w-1/2 mt-6 md:mt-0 ml-1 md:ml-0">
             <Tag>{headline}</Tag>
             <p className="max-w-[80%]">{text}</p>
           </div>
