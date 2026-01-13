@@ -27,6 +27,9 @@ import { Pages } from './collections/Pages'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+const iconUrl = '/api/media/file/icon.svg'
+const darkIconUrl = '/api/media/file/icon-dark.svg'
+const openGraphImageUrl = '/api/media/file/og-image.png'
 
 export default buildConfig({
   /* onInit: async (payload) => {
@@ -38,7 +41,30 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    components: {
+      graphics: {
+        Logo: '/graphics/Logo/index.tsx#Logos',
+        Icon: '/graphics/Icon/index.tsx#Icons',
+      },
+    },
     meta: {
+      icons: [
+        {
+          fetchPriority: 'high',
+          sizes: '32x32',
+          type: 'image/svg',
+          rel: 'icon',
+          url: iconUrl,
+        },
+        {
+          fetchPriority: 'high',
+          sizes: '32x32',
+          type: 'image/svg',
+          rel: 'icon',
+          url: darkIconUrl,
+          media: '(prefers-color-scheme: dark)',
+        },
+      ],
       title: 'Dashboard',
       titleSuffix: '- Faszination Hund',
       description: 'Hunderassen, News und Tiervermittlung',
@@ -46,6 +72,11 @@ export default buildConfig({
       openGraph: {
         title: 'Dashboard',
         description: 'Hunderassen, News und Tiervermittlung',
+        images: [
+          {
+            url: openGraphImageUrl,
+          },
+        ],
       },
     },
   },
