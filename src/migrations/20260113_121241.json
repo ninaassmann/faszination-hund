@@ -1,5 +1,5 @@
 {
-  "id": "d803883c-a6c0-4880-a008-89dd5b54a71e",
+  "id": "cf71ac60-e6ef-4a96-9866-59a4ff0b485e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -789,8 +789,7 @@
           "type": "enum_dogs_earliest_arrival_type",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": false,
-          "default": "'unknown'"
+          "notNull": false
         },
         "earliest_arrival_date": {
           "name": "earliest_arrival_date",
@@ -809,16 +808,14 @@
           "type": "enum_dogs_birth_date_type",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": false,
-          "default": "'unknown'"
+          "notNull": false
         },
         "breed_type": {
           "name": "breed_type",
           "type": "enum_dogs_breed_type",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": false,
-          "default": "'unknown'"
+          "notNull": false
         },
         "mixed_breed": {
           "name": "mixed_breed",
@@ -1497,22 +1494,19 @@
           "type": "enum_dogbreeds_status",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": true,
-          "default": "'draft'"
+          "notNull": true
         },
         "general_is_hybrid": {
           "name": "general_is_hybrid",
           "type": "boolean",
           "primaryKey": false,
-          "notNull": false,
-          "default": false
+          "notNull": false
         },
         "general_is_variant": {
           "name": "general_is_variant",
           "type": "boolean",
           "primaryKey": false,
-          "notNull": false,
-          "default": false
+          "notNull": false
         },
         "general_main_breeds_id": {
           "name": "general_main_breeds_id",
@@ -2321,8 +2315,7 @@
           "type": "enum_pages_blocks_hero_ctas_type",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": true,
-          "default": "'intern'"
+          "notNull": true
         },
         "intern_id": {
           "name": "intern_id",
@@ -2341,8 +2334,7 @@
           "type": "enum_pages_blocks_hero_ctas_style",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": false,
-          "default": "'btn-primary'"
+          "notNull": false
         }
       },
       "indexes": {
@@ -2459,8 +2451,7 @@
           "type": "enum_pages_blocks_hero_variant",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": true,
-          "default": "'stacked'"
+          "notNull": true
         },
         "eyebrow": {
           "name": "eyebrow",
@@ -2491,16 +2482,14 @@
           "type": "enum_pages_blocks_hero_background_color",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": false,
-          "default": "'var(--frontend-general)'"
+          "notNull": false
         },
         "text_position": {
           "name": "text_position",
           "type": "enum_pages_blocks_hero_text_position",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": false,
-          "default": "'left'"
+          "notNull": false
         },
         "block_name": {
           "name": "block_name",
@@ -2853,8 +2842,7 @@
           "type": "enum_pages_blocks_featured_list_type",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": true,
-          "default": "'dogbreeds'"
+          "notNull": true
         },
         "show_button": {
           "name": "show_button",
@@ -2976,8 +2964,7 @@
           "type": "enum_pages_blocks_content_with_media_headline_level",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": false,
-          "default": "'h2'"
+          "notNull": false
         },
         "text": {
           "name": "text",
@@ -3008,16 +2995,14 @@
           "type": "enum_pages_blocks_content_with_media_background_color",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": false,
-          "default": "'var(--frontend-general)'"
+          "notNull": false
         },
         "text_position": {
           "name": "text_position",
           "type": "enum_pages_blocks_content_with_media_text_position",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": false,
-          "default": "'left'"
+          "notNull": false
         },
         "block_name": {
           "name": "block_name",
@@ -3149,8 +3134,7 @@
           "type": "enum_pages_status",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": true,
-          "default": "'draft'"
+          "notNull": true
         },
         "meta_title": {
           "name": "meta_title",
@@ -3481,8 +3465,7 @@
           "type": "enum_posts_blocks_hero_ctas_type",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": true,
-          "default": "'intern'"
+          "notNull": true
         },
         "intern_id": {
           "name": "intern_id",
@@ -3501,8 +3484,7 @@
           "type": "enum_posts_blocks_hero_ctas_style",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": false,
-          "default": "'btn-primary'"
+          "notNull": false
         }
       },
       "indexes": {
@@ -3619,8 +3601,7 @@
           "type": "enum_posts_blocks_hero_variant",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": true,
-          "default": "'stacked'"
+          "notNull": true
         },
         "eyebrow": {
           "name": "eyebrow",
@@ -3651,16 +3632,14 @@
           "type": "enum_posts_blocks_hero_background_color",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": false,
-          "default": "'var(--frontend-general)'"
+          "notNull": false
         },
         "text_position": {
           "name": "text_position",
           "type": "enum_posts_blocks_hero_text_position",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": false,
-          "default": "'left'"
+          "notNull": false
         },
         "block_name": {
           "name": "block_name",
@@ -4192,8 +4171,7 @@
           "type": "enum_posts_status",
           "typeSchema": "public",
           "primaryKey": false,
-          "notNull": true,
-          "default": "'draft'"
+          "notNull": true
         },
         "published_at": {
           "name": "published_at",
