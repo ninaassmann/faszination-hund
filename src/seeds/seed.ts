@@ -6,6 +6,8 @@ import { seedCoatTypes } from './coatTypes'
 import { seedCountries } from './countriesSeed'
 import { seedRoles } from './rolesSeed'
 import { seedTags } from './tagsSeed'
+import { seedFciGroups } from './fciGroupsSeed'
+import { seedFciSections } from './fciSectionsSeed'
 
 export const runSeed = async () => {
   await payload.init({
@@ -19,6 +21,8 @@ export const runSeed = async () => {
   await seedCountries(payload)
   await seedRoles(payload)
   await seedTags(payload)
+  await seedFciGroups(payload)
+  await seedFciSections(payload)
 
   console.log('✅ Seeding complete')
   process.exit()

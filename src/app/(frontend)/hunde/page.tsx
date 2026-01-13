@@ -12,19 +12,12 @@ export default async function DogPage() {
   const payload = await getPayload({ config: configPromise })
   const page = await getPageBySlug('hunde')
 
-  console.log('PAGE:', page)
-
   const dogs: { docs: Dog[] } = await payload.find({
     collection: 'dogs',
     depth: 3,
     limit: 12,
     overrideAccess: false,
   })
-
-  if (!page) {
-    console.warn('Page "hunde" not found')
-    return null
-  }
 
   return (
     <>
