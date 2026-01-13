@@ -24,6 +24,7 @@ import { Settings } from './globals/config'
 import { Posts } from './collections/Posts'
 import { Dogs } from './collections/Dogs'
 import { Pages } from './collections/Pages'
+import { PayloadIcon } from '@payloadcms/ui'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -54,14 +55,14 @@ export default buildConfig({
           sizes: '32x32',
           type: 'image/svg',
           rel: 'icon',
-          url: iconUrl,
+          url: iconUrl || PayloadIcon,
         },
         {
           fetchPriority: 'high',
           sizes: '32x32',
           type: 'image/svg',
           rel: 'icon',
-          url: darkIconUrl,
+          url: darkIconUrl || PayloadIcon,
           media: '(prefers-color-scheme: dark)',
         },
       ],
@@ -74,7 +75,7 @@ export default buildConfig({
         description: 'Hunderassen, News und Tiervermittlung',
         images: [
           {
-            url: openGraphImageUrl,
+            url: openGraphImageUrl || PayloadIcon,
           },
         ],
       },

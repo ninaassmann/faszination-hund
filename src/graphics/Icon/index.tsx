@@ -2,6 +2,7 @@ import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { Media } from '@/payload-types'
 import Image from 'next/image'
+import { DogIcon } from 'lucide-react'
 
 export const Icons = async () => {
   const payload = await getPayload({ config: configPromise })
@@ -11,20 +12,29 @@ export const Icons = async () => {
 
   return (
     <>
-      <Image
-        src={lightModeIcon.url || ''}
-        alt={lightModeIcon.alt}
-        width={lightModeIcon.width || 640}
-        height={lightModeIcon.height || 360}
-        className="block dark:hidden"
-      />
-      <Image
-        src={darkModeIcon.url || ''}
-        alt={darkModeIcon.alt}
-        width={darkModeIcon.width || 640}
-        height={darkModeIcon.height || 360}
-        className="hidden dark:block"
-      />
+      {lightModeIcon?.url ? (
+        <Image
+          src={lightModeIcon.url}
+          alt={lightModeIcon.alt || 'Logo'}
+          width={lightModeIcon.width || 64}
+          height={lightModeIcon.height || 64}
+          className="block dark:hidden"
+        />
+      ) : (
+        <DogIcon className="block dark:hidden w-8 h-8" />
+      )}
+
+      {darkModeIcon?.url ? (
+        <Image
+          src={darkModeIcon.url}
+          alt={darkModeIcon.alt || 'Logo'}
+          width={darkModeIcon.width || 64}
+          height={darkModeIcon.height || 64}
+          className="hidden dark:block"
+        />
+      ) : (
+        <DogIcon className="hidden dark:block w-8 h-8" />
+      )}
     </>
   )
 }
