@@ -5,6 +5,7 @@ import { CoatColor, CoatType, Country, Dogbreed, Media } from '@/payload-types'
 import { FCI } from './components/FCI'
 import { BreedDetails } from './components/BreedDetails'
 import { BreedDesc } from './components/BreedDesc'
+import { notFound } from 'next/navigation'
 
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -22,6 +23,8 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   })
 
   const breed = dogbreeds.docs[0] as Dogbreed
+
+  if (!breed) return notFound()
 
   const origin = breed.details?.origin as Country
   const coatColors = (breed.details?.coatColors || []).filter(

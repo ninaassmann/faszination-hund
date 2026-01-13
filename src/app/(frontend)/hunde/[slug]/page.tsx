@@ -7,6 +7,7 @@ import { getLocationTypeLabel } from '@/utils/getLocationTypeLabel'
 import { getAdoptionLabel } from '@/utils/getAdoptionLabel'
 import { calculateAge } from '@/utils/calculateAge'
 import { RenderBlocks } from '@/blocks'
+import { notFound } from 'next/navigation'
 
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -24,6 +25,8 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   })
 
   const dog = dogs.docs[0] as Dog
+
+  if (!dog) return notFound()
 
   const heroImage = dog.images?.find((img) => img.type === 'gallery')?.media as Media | undefined
   const thumbnail = dog.images?.find((img) => img.type === 'thumbnail')?.media as Media | undefined
