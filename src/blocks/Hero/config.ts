@@ -24,7 +24,7 @@ export const Hero: Block = {
                 { label: 'Split Layout', value: 'split' },
                 { label: 'Hintergrundbild', value: 'imageBackground' },
               ],
-              defaultValue: 'stacked',
+              // defaultValue: 'stacked',
             },
             {
               name: 'stackedHint',
@@ -89,7 +89,7 @@ export const Hero: Block = {
                     { label: 'Intern', value: 'intern' },
                     { label: 'Extern', value: 'extern' },
                   ],
-                  defaultValue: 'intern',
+                  // defaultValue: 'intern',
                 },
                 {
                   name: 'intern',
@@ -119,7 +119,7 @@ export const Hero: Block = {
                     { label: 'Secondary', value: 'btn-primary btn-outline' },
                     { label: 'Link', value: 'btn-link' },
                   ],
-                  defaultValue: 'btn-primary',
+                  // defaultValue: 'btn-primary',
                 },
               ],
             },
@@ -147,7 +147,7 @@ export const Hero: Block = {
                 { label: 'Hell', value: 'var(--frontend-base-200)' },
                 { label: 'Dunkel', value: 'var(--frontend-neutral)' },
               ],
-              defaultValue: 'var(--frontend-general)',
+              // defaultValue: 'var(--frontend-general)',
             },
             {
               name: 'colorInfo',
@@ -169,7 +169,7 @@ export const Hero: Block = {
                 { label: 'Rechts', value: 'right' },
                 { label: 'Zentriert', value: 'center' },
               ],
-              defaultValue: 'left',
+              // defaultValue: 'left',
               filterOptions: ({ options, siblingData }) => {
                 if (siblingData?.variant === 'split') {
                   return options.filter(

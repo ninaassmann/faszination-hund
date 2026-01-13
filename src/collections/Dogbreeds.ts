@@ -58,7 +58,7 @@ export const Dogbreeds: CollectionConfig = {
         { label: 'Veröffentlicht', value: 'published' },
         { label: 'Teilveröffentlicht', value: 'partial' },
       ],
-      defaultValue: 'draft',
+      // defaultValue: 'draft',
       admin: {
         description:
           'Steuert, ob die Rasse auf der Website angezeigt wird und ob sie vollständig ist.',
@@ -95,7 +95,7 @@ export const Dogbreeds: CollectionConfig = {
           name: 'isHybrid',
           label: 'Hybrid / Mischling',
           type: 'checkbox',
-          defaultValue: false,
+          // defaultValue: false,
           admin: {
             description: 'Aktivieren, wenn es sich um eine Hybrid- oder Mischlingsrasse handelt.',
           },
@@ -132,7 +132,7 @@ export const Dogbreeds: CollectionConfig = {
           name: 'isVariant',
           label: 'Variante',
           type: 'checkbox',
-          defaultValue: false,
+          // defaultValue: false,
           admin: {
             description: 'Aktivieren, wenn dies eine Variante einer bestehenden Hunderasse ist.',
             condition: (data) => !data.general?.isHybrid,

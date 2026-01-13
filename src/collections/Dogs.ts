@@ -175,7 +175,7 @@ export const Dogs: CollectionConfig = {
           name: 'earliestArrivalType',
           label: 'Angabe zur Ausreise',
           type: 'select',
-          defaultValue: 'unknown',
+          // defaultValue: 'unknown',
           options: [
             { label: 'Termin festgelegt', value: 'fixed' },
             { label: 'Voraussichtlich möglich', value: 'estimated' },
@@ -213,7 +213,7 @@ export const Dogs: CollectionConfig = {
             { label: 'Geburtsdatum geschätzt', value: 'estimated' },
             { label: 'Geburtsdatum unbekannt', value: 'unknown' },
           ],
-          defaultValue: 'unknown',
+          // defaultValue: 'unknown',
         },
       ],
     },
@@ -242,7 +242,7 @@ export const Dogs: CollectionConfig = {
             { label: 'Rasse geschätzt', value: 'estimated' },
             { label: 'Rasse unbekannt', value: 'unknown' },
           ],
-          defaultValue: 'unknown',
+          // defaultValue: 'unknown',
         },
         {
           name: 'mixedBreed',

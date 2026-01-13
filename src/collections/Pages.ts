@@ -46,7 +46,7 @@ export const Pages: CollectionConfig = {
       name: 'status',
       label: 'Status',
       type: 'select',
-      defaultValue: 'draft',
+      // defaultValue: 'draft',
       required: true,
       options: [
         { label: 'Entwurf', value: 'draft' },

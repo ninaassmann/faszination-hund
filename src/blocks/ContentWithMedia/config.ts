@@ -28,7 +28,7 @@ export const ContentWithMedia: Block = {
                 { label: 'H2', value: 'h2' },
                 { label: 'H3', value: 'h3' },
               ],
-              defaultValue: 'h2',
+              // defaultValue: 'h2',
               admin: {
                 description:
                   'Wähle die HTML-Überschriftsebene. H2 für Hauptabschnitte, H3 für Unterabschnitte.',
@@ -82,7 +82,7 @@ export const ContentWithMedia: Block = {
                 { label: 'Hell', value: 'var(--frontend-base-200)' },
                 { label: 'Dunkel', value: 'var(--frontend-neutral)' },
               ],
-              defaultValue: 'var(--frontend-general)',
+              // defaultValue: 'var(--frontend-general)',
             },
             {
               name: 'colorInfo',
@@ -103,7 +103,7 @@ export const ContentWithMedia: Block = {
                 { label: 'Links', value: 'left' },
                 { label: 'Rechts', value: 'right' },
               ],
-              defaultValue: 'left',
+              // defaultValue: 'left',
             },
           ],
         },
