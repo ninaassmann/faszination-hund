@@ -56,7 +56,7 @@ export const HeroStacked: React.FC<Props> = ({
                 rel="noopener noreferrer"
                 className="badge absolute bottom-2 right-2 z-10"
               >
-                Adobe Stock
+                Bildquelle
               </Link>
             )}
           </div>

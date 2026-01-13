@@ -77,7 +77,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                   rel="noopener noreferrer"
                   className="badge absolute bottom-2 right-2 z-10"
                 >
-                  Adobe Stock
+                  Bildquelle
                 </Link>
               )}
             </div>
@@ -98,7 +98,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                   rel="noopener noreferrer"
                   className="badge absolute bottom-2 right-2 z-10"
                 >
-                  Adobe Stock
+                  Bildquelle
                 </Link>
               )}
             </div>
