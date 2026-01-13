@@ -7,7 +7,6 @@ import React from 'react'
 import { importMap } from './admin/importMap.js'
 import './custom.scss'
 import '@/styles/payloadStyles.css'
-import AdminSeedButton from '@/components/AdminSeedButton'
 
 type Args = {
   children: React.ReactNode
@@ -25,7 +24,6 @@ const serverFunction: ServerFunctionClient = async function (args) {
 const Layout = ({ children }: Args) => (
   <RootLayout config={config} importMap={importMap} serverFunction={serverFunction}>
     {children}
-    <AdminSeedButton />
   </RootLayout>
 )
 
