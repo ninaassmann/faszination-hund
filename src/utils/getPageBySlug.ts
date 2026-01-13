@@ -11,6 +11,7 @@ export async function getPageBySlug(slug: string) {
       slug: { equals: slug },
       status: { equals: 'published' },
     },
+    overrideAccess: true,
   })
 
   return pages.docs[0] ?? null

@@ -3,6 +3,8 @@ import './styles.css'
 import { Faustina } from 'next/font/google'
 import { Header } from '@/components/frontend/Header'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   description: 'Infos, News und Vermittlung.',
   title: 'Faszination Hund',
