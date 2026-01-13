@@ -10,9 +10,6 @@ export function Header() {
       <nav className="hidden sm:flex gap-10 h-10 items-center">
         <Link href="/hunderassen">Hunderassen</Link>
         <Link href="/hunde">Hunde</Link>
-        <Link href="/admin" rel="noopener noreferrer" target="_blank">
-          Login
-        </Link>
       </nav>
       <div className="inline-block sm:hidden dropdown dropdown-end">
         <button tabIndex={0} className="btn btn-square btn-ghost">
@@ -27,11 +24,6 @@ export function Header() {
           </li>
           <li>
             <Link href="/hunde">Hunde</Link>
-          </li>
-          <li>
-            <Link href="/admin" rel="noopener noreferrer" target="_blank">
-              Login
-            </Link>
           </li>
         </ul>
       </div>
